@@ -204,8 +204,9 @@ img {
 }
 
 .stats__icon {
-  width: 15px;
-  height: 15px;
+  font-size: 16px;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+  line-height: 1;
   flex: none;
   opacity: 0.8;
 }
