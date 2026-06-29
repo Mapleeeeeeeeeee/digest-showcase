@@ -94,36 +94,6 @@ img {
   height: 100%;
 }
 
-/* ---- Loading screen ---- */
-.loading-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  background: var(--color-bg);
-  transition: opacity 0.4s ease;
-}
-
-.loading-screen--hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-#clawd-loading {
-  width: 160px;
-  height: 160px;
-}
-
-.loading-text {
-  margin: 0;
-  font-size: 0.95rem;
-  color: var(--color-text-muted);
-  font-weight: 600;
-}
 
 .site-header__title {
   margin: 0;

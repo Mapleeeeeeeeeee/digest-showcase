@@ -12,7 +12,6 @@ const SITE_NAME = "Claude Taiwan 社團精華展示櫃";
 const homeHref = buildUrl("/");
 const currentYear = new Date().getFullYear();
 const soccerSrc = buildUrl("/clawd-soccer.json");
-const laptopSrc = buildUrl("/clawd-laptop.json");
 const clawdSrc = buildUrl("/clawd.svg");
 ---
 
@@ -42,11 +41,6 @@ const clawdSrc = buildUrl("/clawd.svg");
       </div>
     </header>
 
-    <div id="loading-screen" class="loading-screen">
-      <div id="clawd-loading" data-lottie-src={laptopSrc}></div>
-      <p class="loading-text">Clawd 正在整理精華...</p>
-    </div>
-
     <main>
       <slot />
     </main>
@@ -75,23 +69,16 @@ const clawdSrc = buildUrl("/clawd.svg");
           });
         }
 
-        var loading = document.getElementById('clawd-loading');
-        var screen = document.getElementById('loading-screen');
-        if (loading && screen) {
+        document.querySelectorAll('[data-lottie-src]').forEach(function(el) {
+          if (el.id === 'clawd-header') return;
           lottie.loadAnimation({
-            container: loading,
+            container: el,
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: loading.dataset.lottieSrc
+            path: el.dataset.lottieSrc
           });
-          setTimeout(function() {
-            screen.classList.add('loading-screen--hidden');
-            screen.addEventListener('transitionend', function() {
-              screen.remove();
-            });
-          }, 1200);
-        }
+        });
       });
     </script>
   </body>

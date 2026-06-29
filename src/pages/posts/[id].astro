@@ -9,6 +9,8 @@ import { formatDateZh } from "../../lib/format";
 import { buildUrl, authorUrl } from "../../lib/url";
 import BackLink from "../../components/BackLink.astro";
 
+const laptopSrc = buildUrl("/clawd-laptop.json");
+
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
   return posts.map((post) => ({
@@ -76,7 +78,8 @@ const authorHref = authorUrl(data.authorId);
         target="_blank"
         rel="noopener noreferrer"
       >
-        前往原文討論 ↗
+        前往原文討論
+        <span class="source-link__lottie" data-lottie-src={laptopSrc}></span>
       </a>
     </div>
   </article>
@@ -361,5 +364,13 @@ const authorHref = authorUrl(data.authorId);
     transform: translateY(-2px);
     background: var(--color-primary-dark);
     box-shadow: 0 10px 26px rgba(217, 119, 87, 0.4);
+  }
+
+  .source-link__lottie {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+    margin: -8px -4px -8px 2px;
   }
 </style>
