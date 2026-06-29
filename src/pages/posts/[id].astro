@@ -6,7 +6,7 @@ import CategoryBadge from "../../components/CategoryBadge.astro";
 import PostStats from "../../components/PostStats.astro";
 import { getImageSrc } from "../../lib/images";
 import { formatDateZh } from "../../lib/format";
-import { buildUrl } from "../../lib/url";
+import { buildUrl, authorUrl } from "../../lib/url";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -22,6 +22,7 @@ const { Content } = await render(post);
 
 const formattedDate = formatDateZh(data.date);
 const homeHref = buildUrl("/");
+const authorHref = authorUrl(data.authorId);
 ---
 
 <BaseLayout title={`${data.title} · Claude Taiwan 社團精華展示櫃`}>
@@ -36,10 +37,8 @@ const homeHref = buildUrl("/");
       <h1 class="post__title">{data.title}</h1>
       <p class="post__meta">
         <a
-          href={data.authorUrl}
+          href={authorHref}
           class="author-link"
-          target="_blank"
-          rel="noopener noreferrer"
         >
           {data.author}
         </a> · {formattedDate}

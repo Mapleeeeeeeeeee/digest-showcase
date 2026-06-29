@@ -24,3 +24,8 @@ export function buildUrl(path: string): string {
 export function postUrl(id: string): string {
   return buildUrl(`/posts/${id}`);
 }
+
+/** Canonical route for an author page, keyed by the author's stable id. */
+export function authorUrl(authorId: string): string {
+  return buildUrl(`/authors/${authorId}/`);
+}

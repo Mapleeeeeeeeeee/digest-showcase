@@ -4,7 +4,7 @@ import CategoryBadge from "./CategoryBadge.astro";
 import PostStats from "./PostStats.astro";
 import { getThumbnail } from "../lib/images";
 import { formatDateZh } from "../lib/format";
-import { postUrl, buildUrl } from "../lib/url";
+import { postUrl, buildUrl, authorUrl } from "../lib/url";
 
 interface Props {
   post: CollectionEntry<"posts">;
@@ -16,6 +16,7 @@ const thumbnail = getThumbnail(data.images);
 const href = postUrl(post.id);
 const formattedDate = formatDateZh(data.date);
 const sparkSrc = buildUrl("/spark-static.svg");
+const authorHref = authorUrl(data.authorId);
 ---
 
 <article class="card" data-category={data.category}>
@@ -49,10 +50,8 @@ const sparkSrc = buildUrl("/spark-static.svg");
     </h2>
     <p class="card__meta">
       <a
-        href={data.authorUrl}
+        href={authorHref}
         class="card__author-link"
-        target="_blank"
-        rel="noopener noreferrer"
       >
         {data.author}
       </a> · {formattedDate}
