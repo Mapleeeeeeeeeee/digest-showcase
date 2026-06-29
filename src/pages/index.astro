@@ -1,0 +1,178 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { POST_CATEGORIES } from "../content.config";
+
+const posts = (await getCollection("posts")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+const ALL_FILTER = "全部";
+const filters = [ALL_FILTER, ...POST_CATEGORIES];
+---
+
+<BaseLayout
+  title="Claude Taiwan 社團精華展示櫃"
+  description="精選 Claude Taiwan Facebook 社團的知識精華與社群活動分享。"
+>
+  <section class="container intro">
+    <h2 class="intro__heading">精華展示櫃</h2>
+    <p class="intro__lead">
+      收藏 Claude Taiwan 社團裡值得一看再看的分享 —— 從 AI 協作開發、工具實作到社群活動紀錄。
+    </p>
+
+    <div class="filters" role="group" aria-label="依分類篩選">
+      {
+        filters.map((filter, index) => (
+          <button
+            type="button"
+            class="filter-chip"
+            class:list={[{ "filter-chip--active": index === 0 }]}
+            data-filter={filter}
+            aria-pressed={index === 0 ? "true" : "false"}
+          >
+            {filter}
+          </button>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="grid" id="post-grid">
+      {posts.map((post, index) => (
+        <div class="reveal" style={`--i: ${index}`}>
+          <PostCard post={post} />
+        </div>
+      ))}
+    </div>
+    <p class="empty" id="empty-state" hidden>此分類目前沒有貼文。</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-top: 40px;
+  }
+
+  .intro__heading {
+    margin: 0 0 8px;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+
+  .intro__lead {
+    margin: 0 0 24px;
+    max-width: 60ch;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .filter-chip {
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .filter-chip:hover {
+    color: var(--color-text);
+    border-color: var(--color-primary-light);
+  }
+
+  .filter-chip--active {
+    color: #fff;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: 48px 0;
+  }
+
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Client-side category filter for this prototype: toggles card visibility by
+  // the data-category attribute. No framework — runs after the page loads.
+  const ALL_FILTER = "全部";
+  const ACTIVE_CLASS = "filter-chip--active";
+
+  const chips = document.querySelectorAll<HTMLButtonElement>(".filter-chip");
+  const cards = document.querySelectorAll<HTMLElement>("[data-category]");
+  const emptyState = document.getElementById("empty-state");
+
+  function applyFilter(selected: string): void {
+    let visibleCount = 0;
+    cards.forEach((card) => {
+      const matches =
+        selected === ALL_FILTER || card.dataset.category === selected;
+      const wrapper = card.closest('.reveal') as HTMLElement | null;
+      const target = wrapper ?? card;
+      target.hidden = !matches;
+      if (matches) {
+        visibleCount += 1;
+        if (wrapper) {
+          wrapper.style.animation = 'none';
+          wrapper.offsetHeight; // force reflow
+          wrapper.style.animation = 'fadeIn 0.3s ease both';
+        }
+      }
+    });
+    if (emptyState) emptyState.hidden = visibleCount > 0;
+  }
+
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      chips.forEach((other) => {
+        const isActive = other === chip;
+        other.classList.toggle(ACTIVE_CLASS, isActive);
+        other.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+      applyFilter(chip.dataset.filter ?? ALL_FILTER);
+    });
+  });
+
+  // Scroll reveal: fade in cards as they enter the viewport
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+</script>

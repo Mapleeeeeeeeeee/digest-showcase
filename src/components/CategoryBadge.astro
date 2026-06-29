@@ -1,0 +1,13 @@
+---
+import type { PostCategory } from "../content.config";
+import { categorySlug } from "../lib/format";
+
+interface Props {
+  category: PostCategory;
+}
+
+const { category } = Astro.props;
+const slug = categorySlug(category);
+---
+
+<span class={`badge badge--${slug}`}>{category}</span>

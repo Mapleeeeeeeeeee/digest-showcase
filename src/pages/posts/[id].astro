@@ -1,0 +1,204 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CategoryBadge from "../../components/CategoryBadge.astro";
+import PostStats from "../../components/PostStats.astro";
+import { getImageSrc } from "../../lib/images";
+import { formatDateZh } from "../../lib/format";
+import { buildUrl } from "../../lib/url";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { data } = post;
+const { Content } = await render(post);
+
+const formattedDate = formatDateZh(data.date);
+const homeHref = buildUrl("/");
+---
+
+<BaseLayout title={`${data.title} · Claude Taiwan 社團精華展示櫃`}>
+  <article class="container post">
+    <a href={homeHref} class="post__back">← 返回展示櫃</a>
+
+    <header class="post__header">
+      <div class="post__badges">
+        <CategoryBadge category={data.category} />
+        {data.tags.map((tag) => <span class="tag">#{tag}</span>)}
+      </div>
+      <h1 class="post__title">{data.title}</h1>
+      <p class="post__meta">
+        <a
+          href={data.authorUrl}
+          class="author-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {data.author}
+        </a> · {formattedDate}
+      </p>
+      <div class="post__stats">
+        <PostStats likes={data.likes} comments={data.comments} shares={data.shares} />
+      </div>
+    </header>
+
+    <div class="post__body">
+      <Content />
+    </div>
+
+    {
+      data.images.length > 0 && (
+        <section class="post__gallery" aria-label="貼文圖片">
+          {data.images.map((image, index) => (
+            <img
+              class="post__image"
+              src={getImageSrc(image)}
+              alt={`${data.title} 圖片 ${index + 1}`}
+              loading="lazy"
+              decoding="async"
+            />
+          ))}
+        </section>
+      )
+    }
+
+    <div class="post__source">
+      <a
+        href={data.sourceUrl}
+        class="source-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        前往原文討論 ↗
+      </a>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    max-width: 760px;
+    padding-top: 32px;
+  }
+
+  .post__back {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .post__back:hover {
+    color: var(--color-primary);
+  }
+
+  .post__header {
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 28px;
+  }
+
+  .post__badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .tag {
+    font-size: 0.78rem;
+    color: var(--color-text-secondary);
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-sm);
+    padding: 2px 8px;
+  }
+
+  .post__title {
+    margin: 0 0 12px;
+    font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+    font-weight: 800;
+    line-height: 1.4;
+  }
+
+  .post__meta {
+    margin: 0 0 14px;
+    color: var(--color-text-muted);
+    font-size: 0.92rem;
+  }
+
+  .author-link {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .author-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .post__body {
+    font-size: 1.02rem;
+    color: var(--color-text);
+  }
+
+  .post__body :global(p) {
+    margin: 0 0 1.1em;
+  }
+
+  .post__body :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .post__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin: 32px 0;
+  }
+
+  .post__image {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-alt);
+  }
+
+  .post__source {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 12px 22px;
+    border-radius: 999px;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+    box-shadow: 0 6px 18px rgba(217, 119, 87, 0.3);
+  }
+
+  .source-link:hover {
+    transform: translateY(-2px);
+    background: var(--color-primary-dark);
+    box-shadow: 0 10px 26px rgba(217, 119, 87, 0.4);
+  }
+</style>
