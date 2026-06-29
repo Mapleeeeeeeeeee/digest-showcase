@@ -79,7 +79,36 @@ const authorHref = authorUrl(data.authorId);
       </a>
     </div>
   </article>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox__close" aria-label="關閉">&times;</button>
+    <img class="lightbox__img" src="" alt="" />
+  </div>
 </BaseLayout>
+
+<script>
+  const lightbox = document.getElementById('lightbox')!;
+  const lightboxImg = lightbox.querySelector<HTMLImageElement>('.lightbox__img')!;
+
+  document.querySelectorAll<HTMLImageElement>('.post__image').forEach((img) => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('lightbox--open');
+    });
+  });
+
+  function closeLightbox(): void {
+    lightbox.classList.remove('lightbox--open');
+  }
+
+  lightbox.addEventListener('click', closeLightbox);
+  lightboxImg.addEventListener('click', (e) => e.stopPropagation());
+  lightbox.querySelector('.lightbox__close')!.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
 
 <style>
   .post {
@@ -171,6 +200,65 @@ const authorHref = authorUrl(data.authorId);
     border-radius: var(--radius-md);
     border: 1px solid var(--color-border);
     background: var(--color-surface-alt);
+    cursor: zoom-in;
+    transition: opacity 0.15s ease;
+  }
+
+  .post__image:hover {
+    opacity: 0.85;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.85);
+    cursor: zoom-out;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .lightbox--open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lightbox__img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    transform: scale(0.95);
+    transition: transform 0.25s ease;
+  }
+
+  .lightbox--open .lightbox__img {
+    transform: scale(1);
+  }
+
+  .lightbox__close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    color: #fff;
+    font-size: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+    font-family: inherit;
+    line-height: 1;
+  }
+
+  .lightbox__close:hover {
+    opacity: 1;
   }
 
   .post__source {
