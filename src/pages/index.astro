@@ -44,7 +44,7 @@ function formatMonth(ym: string): string {
       <div class="search-row">
         <div class="search-input">
           <span class="material-symbols-outlined search-input__icon" aria-hidden="true">search</span>
-          <input type="text" id="title-search" class="search-input__field" placeholder="搜尋標題…" autocomplete="off" />
+          <input type="text" id="title-search" class="search-input__field focus-ring" placeholder="搜尋標題…" autocomplete="off" />
         </div>
       </div>
       <!-- Filters row: chips + dropdowns + view toggle -->
@@ -79,7 +79,7 @@ function formatMonth(ym: string): string {
           </button>
           <div class="dropdown__panel" hidden>
             <div class="dropdown__search-wrap">
-              <input type="text" class="dropdown__search" placeholder="搜尋作者…" autocomplete="off" />
+              <input type="text" class="dropdown__search focus-ring" placeholder="搜尋作者…" autocomplete="off" />
             </div>
             <ul class="dropdown__list" role="listbox">
               <li class="dropdown__option dropdown__option--active" role="option" data-value="" aria-selected="true">所有作者</li>
@@ -184,8 +184,6 @@ function formatMonth(ym: string): string {
 
   .filter-chip__icon {
     font-size: 16px;
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
-    line-height: 1;
   }
 
   .filter-chip--active .filter-chip__icon {
@@ -243,12 +241,6 @@ function formatMonth(ym: string): string {
       border-color 0.15s ease;
   }
 
-  .view-toggle__btn .material-symbols-outlined {
-    font-size: 20px;
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
-    line-height: 1;
-  }
-
   .view-toggle__btn:hover:not(.view-toggle__btn--active) {
     color: var(--color-text);
     border-color: var(--color-primary-light);
@@ -288,9 +280,7 @@ function formatMonth(ym: string): string {
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px;
     color: var(--color-text-muted);
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
     pointer-events: none;
   }
 
@@ -312,10 +302,6 @@ function formatMonth(ym: string): string {
     color: var(--color-text-muted);
   }
 
-  .search-input__field:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px var(--color-primary-subtle);
-  }
 
   /* Filters row */
   .filters-row {
@@ -364,8 +350,6 @@ function formatMonth(ym: string): string {
 
   .dropdown__icon {
     font-size: 16px;
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
-    line-height: 1;
   }
 
   .dropdown__trigger[aria-expanded="true"] .dropdown__icon {
@@ -374,8 +358,6 @@ function formatMonth(ym: string): string {
 
   .dropdown__chevron {
     font-size: 18px;
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
-    line-height: 1;
     transition: transform 0.2s ease;
   }
 
@@ -425,9 +407,6 @@ function formatMonth(ym: string): string {
     box-sizing: border-box;
   }
 
-  .dropdown__search:focus {
-    border-color: var(--color-primary);
-  }
 
   .dropdown__search::placeholder {
     color: var(--color-text-muted);

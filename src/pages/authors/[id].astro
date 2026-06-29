@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PostCard from "../../components/PostCard.astro";
 import { buildUrl } from "../../lib/url";
+import BackLink from "../../components/BackLink.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -39,7 +40,7 @@ const homeHref = buildUrl("/");
 
 <BaseLayout title={`${authorName} · Claude Taiwan 社團精華展示櫃`}>
   <section class="container author">
-    <a href={homeHref} class="author__back">← 返回展示櫃</a>
+    <BackLink href={homeHref} />
 
     <header class="author__header">
       <div class="author__avatar" aria-hidden="true">
@@ -81,18 +82,6 @@ const homeHref = buildUrl("/");
   .author {
     max-width: 760px;
     padding-top: 32px;
-  }
-
-  .author__back {
-    display: inline-block;
-    margin-bottom: 24px;
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .author__back:hover {
-    color: var(--color-primary);
   }
 
   .author__header {

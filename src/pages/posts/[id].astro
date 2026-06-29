@@ -7,6 +7,7 @@ import PostStats from "../../components/PostStats.astro";
 import { getImageSrc } from "../../lib/images";
 import { formatDateZh } from "../../lib/format";
 import { buildUrl, authorUrl } from "../../lib/url";
+import BackLink from "../../components/BackLink.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -27,7 +28,7 @@ const authorHref = authorUrl(data.authorId);
 
 <BaseLayout title={`${data.title} · Claude Taiwan 社團精華展示櫃`}>
   <article class="container post">
-    <a href={homeHref} class="post__back">← 返回展示櫃</a>
+    <BackLink href={homeHref} />
 
     <header class="post__header">
       <div class="post__badges">
@@ -148,18 +149,6 @@ const authorHref = authorUrl(data.authorId);
   .post {
     max-width: 760px;
     padding-top: 32px;
-  }
-
-  .post__back {
-    display: inline-block;
-    margin-bottom: 24px;
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .post__back:hover {
-    color: var(--color-primary);
   }
 
   .post__header {
