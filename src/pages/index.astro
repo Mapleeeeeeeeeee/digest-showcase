@@ -16,6 +16,17 @@ const FILTER_ICONS: Record<string, string> = {
   '知識精華': 'lightbulb',
   '社群活動': 'groups',
 };
+
+const uniqueAuthors = [...new Set(posts.map(p => p.data.author))].sort();
+const uniqueMonths = [...new Set(posts.map(p => {
+  const d = p.data.date;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}))].sort().reverse();
+
+function formatMonth(ym: string): string {
+  const [y, m] = ym.split('-');
+  return `${y} 年 ${parseInt(m)} 月`;
+}
 ---
 
 <BaseLayout
@@ -29,33 +40,81 @@ const FILTER_ICONS: Record<string, string> = {
     </p>
 
     <div class="filter-bar">
-      <div class="filters" role="group" aria-label="依分類篩選">
-        {
-          filters.map((filter, index) => (
-            <button
-              type="button"
-              class="filter-chip"
-              class:list={[{ "filter-chip--active": index === 0 }]}
-              data-filter={filter}
-              aria-pressed={index === 0 ? "true" : "false"}
-            >
-              {FILTER_ICONS[filter] && (
-                <span class="material-symbols-outlined filter-chip__icon" aria-hidden="true">
-                  {FILTER_ICONS[filter]}
-                </span>
-              )}
-              {filter}
-            </button>
-          ))
-        }
+      <!-- Search input: full width row -->
+      <div class="search-row">
+        <div class="search-input">
+          <span class="material-symbols-outlined search-input__icon" aria-hidden="true">search</span>
+          <input type="text" id="title-search" class="search-input__field" placeholder="搜尋標題…" autocomplete="off" />
+        </div>
       </div>
-      <div class="view-toggle" role="group" aria-label="切換顯示模式">
-        <button type="button" class="view-toggle__btn view-toggle__btn--active" data-view="grid" aria-pressed="true">
-          <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
-        </button>
-        <button type="button" class="view-toggle__btn" data-view="list" aria-pressed="false">
-          <span class="material-symbols-outlined" aria-hidden="true">view_list</span>
-        </button>
+      <!-- Filters row: chips + dropdowns + view toggle -->
+      <div class="filters-row">
+        <div class="filters" role="group" aria-label="依分類篩選">
+          {
+            filters.map((filter, index) => (
+              <button
+                type="button"
+                class="filter-chip"
+                class:list={[{ "filter-chip--active": index === 0 }]}
+                data-filter={filter}
+                aria-pressed={index === 0 ? "true" : "false"}
+              >
+                {FILTER_ICONS[filter] && (
+                  <span class="material-symbols-outlined filter-chip__icon" aria-hidden="true">
+                    {FILTER_ICONS[filter]}
+                  </span>
+                )}
+                {filter}
+              </button>
+            ))
+          }
+        </div>
+
+        <!-- Author combobox -->
+        <div class="dropdown" id="author-dropdown">
+          <button type="button" class="dropdown__trigger" aria-expanded="false" aria-haspopup="listbox">
+            <span class="material-symbols-outlined dropdown__icon" aria-hidden="true">person</span>
+            <span class="dropdown__label">所有作者</span>
+            <span class="material-symbols-outlined dropdown__chevron" aria-hidden="true">expand_more</span>
+          </button>
+          <div class="dropdown__panel" hidden>
+            <div class="dropdown__search-wrap">
+              <input type="text" class="dropdown__search" placeholder="搜尋作者…" autocomplete="off" />
+            </div>
+            <ul class="dropdown__list" role="listbox">
+              <li class="dropdown__option dropdown__option--active" role="option" data-value="" aria-selected="true">所有作者</li>
+              {uniqueAuthors.map(author => (
+                <li class="dropdown__option" role="option" data-value={author} aria-selected="false">{author}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Date dropdown -->
+        <div class="dropdown" id="date-dropdown">
+          <button type="button" class="dropdown__trigger" aria-expanded="false" aria-haspopup="listbox">
+            <span class="material-symbols-outlined dropdown__icon" aria-hidden="true">calendar_month</span>
+            <span class="dropdown__label">所有日期</span>
+            <span class="material-symbols-outlined dropdown__chevron" aria-hidden="true">expand_more</span>
+          </button>
+          <div class="dropdown__panel" hidden>
+            <ul class="dropdown__list" role="listbox">
+              <li class="dropdown__option dropdown__option--active" role="option" data-value="" aria-selected="true">所有日期</li>
+              {uniqueMonths.map(ym => (
+                <li class="dropdown__option" role="option" data-value={ym} aria-selected="false">{formatMonth(ym)}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div class="view-toggle" role="group" aria-label="切換顯示模式">
+          <button type="button" class="view-toggle__btn view-toggle__btn--active" data-view="grid" aria-pressed="true">
+            <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
+          </button>
+          <button type="button" class="view-toggle__btn" data-view="list" aria-pressed="false">
+            <span class="material-symbols-outlined" aria-hidden="true">view_list</span>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -63,12 +122,12 @@ const FILTER_ICONS: Record<string, string> = {
   <section class="container">
     <div class="grid" id="post-grid">
       {posts.map((post, index) => (
-        <div class="reveal" style={`--i: ${index}`}>
+        <div class="reveal" style={`--i: ${index}`} data-title={post.data.title.toLowerCase()} data-author={post.data.author} data-date={`${post.data.date.getFullYear()}-${String(post.data.date.getMonth() + 1).padStart(2, '0')}`}>
           <PostCard post={post} />
         </div>
       ))}
     </div>
-    <p class="empty" id="empty-state" hidden>此分類目前沒有貼文。</p>
+    <p class="empty" id="empty-state" hidden>目前沒有符合條件的貼文。</p>
   </section>
 </BaseLayout>
 
@@ -93,9 +152,8 @@ const FILTER_ICONS: Record<string, string> = {
 
   .filter-bar {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
+    flex-direction: column;
+    gap: 14px;
     margin-bottom: 28px;
   }
 
@@ -215,43 +273,262 @@ const FILTER_ICONS: Record<string, string> = {
     gap: 12px;
   }
 
+  /* Search input */
+  .search-row {
+    width: 100%;
+  }
+
+  .search-input {
+    position: relative;
+    width: 100%;
+  }
+
+  .search-input__icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--color-text-muted);
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+    pointer-events: none;
+  }
+
+  .search-input__field {
+    width: 100%;
+    padding: 10px 16px 10px 44px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    box-sizing: border-box;
+  }
+
+  .search-input__field::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .search-input__field:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-subtle);
+  }
+
+  /* Filters row */
+  .filters-row {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .filters-row .view-toggle {
+    margin-left: auto;
+  }
+
+  /* Dropdown (combobox) */
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .dropdown__trigger:hover {
+    color: var(--color-text);
+    border-color: var(--color-primary-light);
+  }
+
+  .dropdown__trigger[aria-expanded="true"] {
+    color: #fff;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .dropdown__icon {
+    font-size: 16px;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+    line-height: 1;
+  }
+
+  .dropdown__trigger[aria-expanded="true"] .dropdown__icon {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+  }
+
+  .dropdown__chevron {
+    font-size: 18px;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+
+  .dropdown__trigger[aria-expanded="true"] .dropdown__chevron {
+    transform: rotate(180deg);
+  }
+
+  .dropdown__label {
+    line-height: 1;
+  }
+
+  .dropdown__panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 200px;
+    max-height: 280px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    z-index: 100;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dropdown__panel[hidden] {
+    display: none;
+  }
+
+  .dropdown__search-wrap {
+    padding: 8px 8px 4px;
+  }
+
+  .dropdown__search {
+    width: 100%;
+    padding: 7px 12px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+  }
+
+  .dropdown__search:focus {
+    border-color: var(--color-primary);
+  }
+
+  .dropdown__search::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .dropdown__list {
+    list-style: none;
+    margin: 0;
+    padding: 4px;
+    overflow-y: auto;
+    max-height: 220px;
+  }
+
+  .dropdown__option {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    color: var(--color-text);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.1s ease;
+  }
+
+  .dropdown__option:hover {
+    background: var(--color-primary-subtle);
+  }
+
+  .dropdown__option--active {
+    color: var(--color-primary);
+    font-weight: 600;
+    background: var(--color-primary-subtle);
+  }
+
+  .dropdown__option[hidden] {
+    display: none;
+  }
+
   @media (max-width: 560px) {
     .grid {
       grid-template-columns: 1fr;
+    }
+
+    .filters-row {
+      gap: 8px;
+    }
+
+    .dropdown__panel {
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-radius: 16px 16px 0 0;
+      max-height: 50vh;
     }
   }
 </style>
 
 <script>
-  // Client-side category filter for this prototype: toggles card visibility by
-  // the data-category attribute. No framework — runs after the page loads.
+  // Unified client-side filtering: category, title search, author, date (AND logic).
   const ALL_FILTER = "全部";
   const ACTIVE_CLASS = "filter-chip--active";
 
   const chips = document.querySelectorAll<HTMLButtonElement>(".filter-chip");
-  const cards = document.querySelectorAll<HTMLElement>("[data-category]");
+  const wrappers = document.querySelectorAll<HTMLElement>(".reveal");
   const emptyState = document.getElementById("empty-state");
+  const titleSearchInput = document.getElementById("title-search") as HTMLInputElement;
 
-  function applyFilter(selected: string): void {
+  // --- Filter state ---
+  let activeCategory = ALL_FILTER;
+  let searchQuery = "";
+  let selectedAuthor = "";
+  let selectedDate = "";
+
+  function applyAllFilters(): void {
     let visibleCount = 0;
-    cards.forEach((card) => {
-      const matches =
-        selected === ALL_FILTER || card.dataset.category === selected;
-      const wrapper = card.closest('.reveal') as HTMLElement | null;
-      const target = wrapper ?? card;
-      target.hidden = !matches;
-      if (matches) {
+    const query = searchQuery.toLowerCase();
+
+    wrappers.forEach((wrapper) => {
+      const card = wrapper.querySelector<HTMLElement>("[data-category]");
+      if (!card) return;
+
+      const matchesCategory = activeCategory === ALL_FILTER || card.dataset.category === activeCategory;
+      const matchesTitle = !query || (wrapper.dataset.title?.includes(query) ?? false);
+      const matchesAuthor = !selectedAuthor || wrapper.dataset.author === selectedAuthor;
+      const matchesDate = !selectedDate || wrapper.dataset.date === selectedDate;
+
+      const isVisible = matchesCategory && matchesTitle && matchesAuthor && matchesDate;
+      wrapper.hidden = !isVisible;
+
+      if (isVisible) {
         visibleCount += 1;
-        if (wrapper) {
-          wrapper.style.animation = 'none';
-          wrapper.offsetHeight; // force reflow
-          wrapper.style.animation = 'fadeIn 0.3s ease both';
-        }
+        wrapper.style.animation = 'none';
+        wrapper.offsetHeight; // force reflow
+        wrapper.style.animation = 'fadeIn 0.3s ease both';
       }
     });
+
     if (emptyState) emptyState.hidden = visibleCount > 0;
   }
 
+  // --- Category chips ---
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {
       chips.forEach((other) => {
@@ -259,11 +536,122 @@ const FILTER_ICONS: Record<string, string> = {
         other.classList.toggle(ACTIVE_CLASS, isActive);
         other.setAttribute("aria-pressed", isActive ? "true" : "false");
       });
-      applyFilter(chip.dataset.filter ?? ALL_FILTER);
+      activeCategory = chip.dataset.filter ?? ALL_FILTER;
+      applyAllFilters();
     });
   });
 
-  // Scroll reveal: fade in cards as they enter the viewport
+  // --- Title search ---
+  titleSearchInput?.addEventListener("input", () => {
+    searchQuery = titleSearchInput.value;
+    applyAllFilters();
+  });
+
+  // --- Dropdown logic ---
+  function initDropdown(containerId: string, onSelect: (value: string) => void): void {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const trigger = container.querySelector<HTMLButtonElement>(".dropdown__trigger");
+    const panel = container.querySelector<HTMLElement>(".dropdown__panel");
+    const label = container.querySelector<HTMLElement>(".dropdown__label");
+    const options = container.querySelectorAll<HTMLElement>(".dropdown__option");
+    const searchInput = container.querySelector<HTMLInputElement>(".dropdown__search");
+
+    if (!trigger || !panel || !label) return;
+
+    function openPanel(): void {
+      panel!.hidden = false;
+      trigger!.setAttribute("aria-expanded", "true");
+      searchInput?.focus();
+    }
+
+    function closePanel(): void {
+      panel!.hidden = true;
+      trigger!.setAttribute("aria-expanded", "false");
+      if (searchInput) searchInput.value = "";
+      options.forEach((opt) => { opt.hidden = false; });
+    }
+
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = trigger.getAttribute("aria-expanded") === "true";
+      // Close other dropdowns first
+      document.querySelectorAll(".dropdown__trigger[aria-expanded='true']").forEach((other) => {
+        if (other !== trigger) {
+          const otherPanel = other.closest(".dropdown")?.querySelector<HTMLElement>(".dropdown__panel");
+          if (otherPanel) otherPanel.hidden = true;
+          other.setAttribute("aria-expanded", "false");
+        }
+      });
+      if (isOpen) {
+        closePanel();
+      } else {
+        openPanel();
+      }
+    });
+
+    panel.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
+    options.forEach((opt) => {
+      opt.addEventListener("click", () => {
+        const value = opt.dataset.value ?? "";
+        options.forEach((o) => {
+          const isActive = o === opt;
+          o.classList.toggle("dropdown__option--active", isActive);
+          o.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+        label!.textContent = opt.textContent?.trim() ?? "";
+        onSelect(value);
+        closePanel();
+      });
+    });
+
+    // Inline search within dropdown
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        const q = searchInput.value.toLowerCase();
+        options.forEach((opt) => {
+          // "所有作者"/"所有日期" (empty value) always visible
+          if (!opt.dataset.value) {
+            opt.hidden = false;
+            return;
+          }
+          opt.hidden = !(opt.textContent?.toLowerCase().includes(q) ?? false);
+        });
+      });
+
+      searchInput.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+  }
+
+  initDropdown("author-dropdown", (value) => {
+    selectedAuthor = value;
+    applyAllFilters();
+  });
+
+  initDropdown("date-dropdown", (value) => {
+    selectedDate = value;
+    applyAllFilters();
+  });
+
+  // Close dropdowns on outside click
+  document.addEventListener("click", () => {
+    document.querySelectorAll<HTMLElement>(".dropdown__panel:not([hidden])").forEach((panel) => {
+      panel.hidden = true;
+      const trigger = panel.closest(".dropdown")?.querySelector<HTMLElement>(".dropdown__trigger");
+      if (trigger) trigger.setAttribute("aria-expanded", "false");
+      const search = panel.querySelector<HTMLInputElement>(".dropdown__search");
+      if (search) search.value = "";
+      panel.querySelectorAll<HTMLElement>(".dropdown__option").forEach((opt) => { opt.hidden = false; });
+    });
+  });
+
+  // --- Scroll reveal ---
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -275,7 +663,7 @@ const FILTER_ICONS: Record<string, string> = {
 
   document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
 
-  // View toggle: switch between grid and list layout
+  // --- View toggle ---
   const VIEW_ACTIVE_CLASS = "view-toggle__btn--active";
   const LIST_CLASS = "grid--list";
   const VIEW_STORAGE_KEY = "digest-view-mode";
