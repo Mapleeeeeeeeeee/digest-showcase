@@ -82,18 +82,39 @@ const authorHref = authorUrl(data.authorId);
 
   <div class="lightbox" id="lightbox">
     <button class="lightbox__close" aria-label="關閉">&times;</button>
+    <button class="lightbox__nav lightbox__nav--prev" aria-label="上一張">
+      <span class="material-symbols-outlined">chevron_left</span>
+    </button>
     <img class="lightbox__img" src="" alt="" />
+    <button class="lightbox__nav lightbox__nav--next" aria-label="下一張">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </button>
+    <span class="lightbox__counter"></span>
   </div>
 </BaseLayout>
 
 <script>
   const lightbox = document.getElementById('lightbox')!;
   const lightboxImg = lightbox.querySelector<HTMLImageElement>('.lightbox__img')!;
+  const prevBtn = lightbox.querySelector<HTMLButtonElement>('.lightbox__nav--prev')!;
+  const nextBtn = lightbox.querySelector<HTMLButtonElement>('.lightbox__nav--next')!;
+  const counter = lightbox.querySelector<HTMLElement>('.lightbox__counter')!;
+  const galleryImages = document.querySelectorAll<HTMLImageElement>('.post__image');
+  let currentIndex = 0;
 
-  document.querySelectorAll<HTMLImageElement>('.post__image').forEach((img) => {
+  function showImage(index: number): void {
+    currentIndex = index;
+    const img = galleryImages[index];
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    counter.textContent = `${index + 1} / ${galleryImages.length}`;
+    prevBtn.hidden = index === 0;
+    nextBtn.hidden = index === galleryImages.length - 1;
+  }
+
+  galleryImages.forEach((img, i) => {
     img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
+      showImage(i);
       lightbox.classList.add('lightbox--open');
     });
   });
@@ -102,11 +123,24 @@ const authorHref = authorUrl(data.authorId);
     lightbox.classList.remove('lightbox--open');
   }
 
+  prevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (currentIndex > 0) showImage(currentIndex - 1);
+  });
+
+  nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (currentIndex < galleryImages.length - 1) showImage(currentIndex + 1);
+  });
+
   lightbox.addEventListener('click', closeLightbox);
   lightboxImg.addEventListener('click', (e) => e.stopPropagation());
   lightbox.querySelector('.lightbox__close')!.addEventListener('click', closeLightbox);
   document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('lightbox--open')) return;
     if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft' && currentIndex > 0) showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight' && currentIndex < galleryImages.length - 1) showImage(currentIndex + 1);
   });
 </script>
 
@@ -259,6 +293,56 @@ const authorHref = authorUrl(data.authorId);
 
   .lightbox__close:hover {
     opacity: 1;
+  }
+
+  .lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.15s ease, background 0.15s ease;
+    font-family: inherit;
+  }
+
+  .lightbox__nav:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .lightbox__nav .material-symbols-outlined {
+    font-size: 28px;
+  }
+
+  .lightbox__nav--prev {
+    left: 20px;
+  }
+
+  .lightbox__nav--next {
+    right: 20px;
+  }
+
+  .lightbox__nav[hidden] {
+    display: none;
+  }
+
+  .lightbox__counter {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    font-weight: 600;
   }
 
   .post__source {
