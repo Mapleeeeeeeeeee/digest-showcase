@@ -278,18 +278,28 @@ const FILTER_ICONS: Record<string, string> = {
   // View toggle: switch between grid and list layout
   const VIEW_ACTIVE_CLASS = "view-toggle__btn--active";
   const LIST_CLASS = "grid--list";
+  const VIEW_STORAGE_KEY = "digest-view-mode";
 
   const viewBtns = document.querySelectorAll<HTMLButtonElement>(".view-toggle__btn");
   const postGrid = document.getElementById("post-grid");
 
+  function setView(mode: string): void {
+    viewBtns.forEach((btn) => {
+      const isActive = btn.dataset.view === mode;
+      btn.classList.toggle(VIEW_ACTIVE_CLASS, isActive);
+      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+    postGrid?.classList.toggle(LIST_CLASS, mode === "list");
+  }
+
+  const savedView = localStorage.getItem(VIEW_STORAGE_KEY);
+  if (savedView === "list") setView("list");
+
   viewBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      viewBtns.forEach((other) => {
-        const isActive = other === btn;
-        other.classList.toggle(VIEW_ACTIVE_CLASS, isActive);
-        other.setAttribute("aria-pressed", isActive ? "true" : "false");
-      });
-      postGrid?.classList.toggle(LIST_CLASS, btn.dataset.view === "list");
+      const mode = btn.dataset.view ?? "grid";
+      setView(mode);
+      localStorage.setItem(VIEW_STORAGE_KEY, mode);
     });
   });
 </script>

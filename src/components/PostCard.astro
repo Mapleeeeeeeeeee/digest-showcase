@@ -64,6 +64,7 @@ const authorHref = authorUrl(data.authorId);
 
 <style>
   .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -162,6 +163,13 @@ const authorHref = authorUrl(data.authorId);
     color: inherit;
   }
 
+  .card__title-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
   .card__title-link:hover {
     color: var(--color-primary);
   }
@@ -173,6 +181,8 @@ const authorHref = authorUrl(data.authorId);
   }
 
   .card__author-link {
+    position: relative;
+    z-index: 1;
     color: var(--color-primary);
     font-weight: 600;
   }
