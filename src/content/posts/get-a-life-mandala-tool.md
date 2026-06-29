@@ -5,11 +5,6 @@ authorId: "pfbid0TnDKP9sxutKMpsrwvuvnKig6LigpvFHaNrj4Cw5gzNgCrdgvQCL54esdiPPF6eY
 authorUrl: "https://www.facebook.com/pfbid0TnDKP9sxutKMpsrwvuvnKig6LigpvFHaNrj4Cw5gzNgCrdgvQCL54esdiPPF6eYEl"
 date: 2026-06-23T09:56:43.000Z
 category: "知識精華"
-tags:
-  - "開源"
-  - "個人工具"
-  - "file over app"
-  - "UI 設計"
 sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/1328906972140719/"
 likes: 211
 comments: 13

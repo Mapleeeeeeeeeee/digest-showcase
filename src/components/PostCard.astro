@@ -186,4 +186,38 @@ const authorHref = authorUrl(data.authorId);
     margin-top: auto;
     padding-top: 6px;
   }
+
+  /* List mode overrides */
+  :global(.grid--list) .card {
+    flex-direction: row;
+    height: auto;
+  }
+
+  :global(.grid--list) .card:hover {
+    transform: translateY(-2px);
+  }
+
+  :global(.grid--list) .card__media-link {
+    flex-shrink: 0;
+  }
+
+  :global(.grid--list) .card__media {
+    width: 120px;
+    min-width: 120px;
+    aspect-ratio: 1;
+  }
+
+  :global(.grid--list) .card__body {
+    padding: 12px 16px;
+  }
+
+  :global(.grid--list) .card__title {
+    font-size: 0.95rem;
+    -webkit-line-clamp: 1;
+  }
+
+  :global(.grid--list) .card__badge {
+    top: 8px;
+    left: 8px;
+  }
 </style>

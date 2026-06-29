@@ -16,7 +16,7 @@ const posts = defineCollection({
     // ISO datetime string in frontmatter -> Date via coercion.
     date: z.coerce.date(),
     category: z.enum(POST_CATEGORIES),
-    tags: z.array(z.string()),
+    tags: z.array(z.string()).default([]),
     sourceUrl: z.string().url(),
     likes: z.number(),
     comments: z.number(),

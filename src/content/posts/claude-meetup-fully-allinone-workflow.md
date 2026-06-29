@@ -5,11 +5,6 @@ authorId: "627625202"
 authorUrl: "https://www.facebook.com/627625202"
 date: 2026-06-19T02:28:23.000Z
 category: "社群活動"
-tags:
-  - "Meetup"
-  - "全包工作流"
-  - "Claude Code"
-  - "社群活動"
 sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/1325540795810670/"
 likes: 228
 comments: 6

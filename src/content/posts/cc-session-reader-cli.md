@@ -5,11 +5,6 @@ authorId: "61585105004197"
 authorUrl: "https://www.facebook.com/61585105004197"
 date: 2026-06-24T07:03:47.000Z
 category: "知識精華"
-tags:
-  - "CLI 工具"
-  - "Token 優化"
-  - "Claude Code"
-  - "開源"
 sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/1329599262071490/"
 likes: 164
 comments: 10

@@ -28,25 +28,35 @@ const FILTER_ICONS: Record<string, string> = {
       收藏 Claude Taiwan 社團裡值得一看再看的分享 —— 從 AI 協作開發、工具實作到社群活動紀錄。
     </p>
 
-    <div class="filters" role="group" aria-label="依分類篩選">
-      {
-        filters.map((filter, index) => (
-          <button
-            type="button"
-            class="filter-chip"
-            class:list={[{ "filter-chip--active": index === 0 }]}
-            data-filter={filter}
-            aria-pressed={index === 0 ? "true" : "false"}
-          >
-            {FILTER_ICONS[filter] && (
-              <span class="material-symbols-outlined filter-chip__icon" aria-hidden="true">
-                {FILTER_ICONS[filter]}
-              </span>
-            )}
-            {filter}
-          </button>
-        ))
-      }
+    <div class="filter-bar">
+      <div class="filters" role="group" aria-label="依分類篩選">
+        {
+          filters.map((filter, index) => (
+            <button
+              type="button"
+              class="filter-chip"
+              class:list={[{ "filter-chip--active": index === 0 }]}
+              data-filter={filter}
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              {FILTER_ICONS[filter] && (
+                <span class="material-symbols-outlined filter-chip__icon" aria-hidden="true">
+                  {FILTER_ICONS[filter]}
+                </span>
+              )}
+              {filter}
+            </button>
+          ))
+        }
+      </div>
+      <div class="view-toggle" role="group" aria-label="切換顯示模式">
+        <button type="button" class="view-toggle__btn view-toggle__btn--active" data-view="grid" aria-pressed="true">
+          <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
+        </button>
+        <button type="button" class="view-toggle__btn" data-view="list" aria-pressed="false">
+          <span class="material-symbols-outlined" aria-hidden="true">view_list</span>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -81,11 +91,18 @@ const FILTER_ICONS: Record<string, string> = {
     font-size: 1rem;
   }
 
+  .filter-bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
   .filters {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 28px;
   }
 
   .filter-chip {
@@ -142,6 +159,60 @@ const FILTER_ICONS: Record<string, string> = {
     text-align: center;
     color: var(--color-text-muted);
     padding: 48px 0;
+  }
+
+  .view-toggle {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .view-toggle__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    font-family: inherit;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition:
+      color 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .view-toggle__btn .material-symbols-outlined {
+    font-size: 20px;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+    line-height: 1;
+  }
+
+  .view-toggle__btn:hover:not(.view-toggle__btn--active) {
+    color: var(--color-text);
+    border-color: var(--color-primary-light);
+  }
+
+  .view-toggle__btn--active {
+    color: #fff;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .view-toggle__btn--active .material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+  }
+
+  .view-toggle__btn--active:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .grid--list {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   @media (max-width: 560px) {
@@ -203,4 +274,22 @@ const FILTER_ICONS: Record<string, string> = {
   }, { threshold: 0.1 });
 
   document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+  // View toggle: switch between grid and list layout
+  const VIEW_ACTIVE_CLASS = "view-toggle__btn--active";
+  const LIST_CLASS = "grid--list";
+
+  const viewBtns = document.querySelectorAll<HTMLButtonElement>(".view-toggle__btn");
+  const postGrid = document.getElementById("post-grid");
+
+  viewBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      viewBtns.forEach((other) => {
+        const isActive = other === btn;
+        other.classList.toggle(VIEW_ACTIVE_CLASS, isActive);
+        other.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+      postGrid?.classList.toggle(LIST_CLASS, btn.dataset.view === "list");
+    });
+  });
 </script>

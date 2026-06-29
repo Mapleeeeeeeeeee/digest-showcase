@@ -5,11 +5,6 @@ authorId: "100000600055924"
 authorUrl: "https://www.facebook.com/100000600055924"
 date: 2026-06-23T07:56:48.000Z
 category: "知識精華"
-tags:
-  - "AI 協作"
-  - "Android App"
-  - "產品開發"
-  - "專利"
 sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/1328841428813940/"
 likes: 662
 comments: 70

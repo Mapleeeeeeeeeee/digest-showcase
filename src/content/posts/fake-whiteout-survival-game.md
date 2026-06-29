@@ -5,11 +5,6 @@ authorId: "61584339789020"
 authorUrl: "https://www.facebook.com/61584339789020"
 date: 2026-06-21T03:34:42.000Z
 category: "知識精華"
-tags:
-  - "遊戲開發"
-  - "3D"
-  - "Claude"
-  - "Cloudflare"
 sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/1327105062320910/"
 likes: 356
 comments: 43

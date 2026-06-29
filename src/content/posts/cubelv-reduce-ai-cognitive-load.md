@@ -5,11 +5,6 @@ authorId: "100000168800575"
 authorUrl: "https://www.facebook.com/100000168800575"
 date: 2026-06-23T14:14:53.000Z
 category: "知識精華"
-tags:
-  - "Harness"
-  - "Vibe Coding"
-  - "架構設計"
-  - "AI 認知負擔"
 sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/1328971368800946/"
 likes: 18
 comments: 12
