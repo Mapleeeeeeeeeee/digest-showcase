@@ -24,6 +24,13 @@ const { data } = post;
 const { Content } = await render(post);
 
 const formattedDate = formatDateZh(data.date);
+
+function linkify(text: string): string {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/\n/g, '<br>');
+}
 const homeHref = buildUrl("/");
 const authorHref = authorUrl(data.authorId);
 ---
@@ -35,6 +42,18 @@ const authorHref = authorUrl(data.authorId);
     <header class="post__header">
       <div class="post__badges">
         <CategoryBadge category={data.category} />
+        {data.postType === "discussion" && (
+          <span class="badge-discussion">
+            <span class="material-symbols-outlined" style="font-size:14px">forum</span>
+            留言精華
+          </span>
+        )}
+        {data.postType === "qa" && (
+          <span class="badge-qa">
+            <span class="material-symbols-outlined" style="font-size:14px">help</span>
+            常見問題
+          </span>
+        )}
         {data.tags.map((tag) => <span class="tag">#{tag}</span>)}
       </div>
       <h1 class="post__title">{data.title}</h1>
@@ -54,6 +73,42 @@ const authorHref = authorUrl(data.authorId);
     <div class="post__body">
       <Content />
     </div>
+
+    {(data.postType === "discussion" || data.postType === "qa") && data.highlights.length > 0 && (
+      <section class="post__highlights">
+        {data.highlights.filter(h => h.isBestAnswer).map(h => (
+          <div class="highlight highlight--best">
+            <div class="highlight__label">
+              <span class="material-symbols-outlined" style="font-size:18px">check_circle</span>
+              最佳解答
+            </div>
+            <div class="highlight__author">{h.author}</div>
+            <div class="highlight__text" set:html={linkify(h.text)} />
+            <div class="highlight__likes">
+              <span class="material-symbols-outlined" style="font-size:16px">favorite</span>
+              {h.likes}
+            </div>
+          </div>
+        ))}
+
+        {data.highlights.filter(h => !h.isBestAnswer).length > 0 && (
+          <div class="highlight__others-label">其他留言</div>
+        )}
+
+        {data.highlights.filter(h => !h.isBestAnswer).map(h => (
+          <div class="highlight highlight--other">
+            <div class="highlight__other-header">
+              <span class="highlight__author">{h.author}</span>
+              <span class="highlight__likes">
+                <span class="material-symbols-outlined" style="font-size:14px">favorite</span>
+                {h.likes}
+              </span>
+            </div>
+            <div class="highlight__text" set:html={linkify(h.text)} />
+          </div>
+        ))}
+      </section>
+    )}
 
     {
       data.images.length > 0 && (
@@ -373,5 +428,121 @@ const authorHref = authorUrl(data.authorId);
     display: block;
     width: 72px;
     height: 72px;
+  }
+
+  /* Discussion / QA badges */
+  .badge-discussion, .badge-qa {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    padding: 2px 8px;
+  }
+
+  .badge-discussion {
+    color: #1565c0;
+    background: #e3f2fd;
+  }
+
+  .badge-qa {
+    color: #e65100;
+    background: #fff3e0;
+  }
+
+  /* Comment highlights */
+  .post__highlights {
+    margin: 32px 0;
+  }
+
+  .highlight--best {
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .highlight__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #2e7d32;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+
+  .highlight--best .highlight__author {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #2e7d32;
+    margin-bottom: 8px;
+  }
+
+  .highlight--best .highlight__text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text);
+    margin-bottom: 10px;
+  }
+
+  .highlight--best .highlight__likes {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.82rem;
+    color: #2e7d32;
+  }
+
+  .highlight__others-label {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .highlight--other {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .highlight--other:last-child {
+    border-bottom: none;
+  }
+
+  .highlight__other-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .highlight--other .highlight__author {
+    font-weight: 600;
+    font-size: 0.88rem;
+  }
+
+  .highlight--other .highlight__likes {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+
+  .highlight--other .highlight__text {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .highlight__text :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    word-break: break-all;
   }
 </style>

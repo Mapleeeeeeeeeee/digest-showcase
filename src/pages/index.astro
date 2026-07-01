@@ -9,12 +9,18 @@ const posts = (await getCollection("posts")).sort(
 );
 
 const ALL_FILTER = "全部";
+const POST_TYPE_FILTERS = [
+  { label: "留言精華", value: "discussion" },
+  { label: "常見問題", value: "qa" },
+];
 const filters = [ALL_FILTER, ...POST_CATEGORIES];
 
 const FILTER_ICONS: Record<string, string> = {
   '全部': 'grid_view',
   '知識精華': 'lightbulb',
   '社群活動': 'groups',
+  '留言精華': 'forum',
+  '常見問題': 'help',
 };
 
 const uniqueAuthors = [...new Set(posts.map(p => p.data.author))].sort();
@@ -57,6 +63,7 @@ function formatMonth(ym: string): string {
                 class="filter-chip"
                 class:list={[{ "filter-chip--active": index === 0 }]}
                 data-filter={filter}
+                data-filter-type="category"
                 aria-pressed={index === 0 ? "true" : "false"}
               >
                 {FILTER_ICONS[filter] && (
@@ -65,6 +72,22 @@ function formatMonth(ym: string): string {
                   </span>
                 )}
                 {filter}
+              </button>
+            ))
+          }
+          {
+            POST_TYPE_FILTERS.map((pt) => (
+              <button
+                type="button"
+                class="filter-chip"
+                data-filter={pt.value}
+                data-filter-type="postType"
+                aria-pressed="false"
+              >
+                <span class="material-symbols-outlined filter-chip__icon" aria-hidden="true">
+                  {FILTER_ICONS[pt.label]}
+                </span>
+                {pt.label}
               </button>
             ))
           }
@@ -475,7 +498,8 @@ function formatMonth(ym: string): string {
   const titleSearchInput = document.getElementById("title-search") as HTMLInputElement;
 
   // --- Filter state ---
-  let activeCategory = ALL_FILTER;
+  let activeFilterType: "category" | "postType" = "category";
+  let activeFilterValue = ALL_FILTER;
   let searchQuery = "";
   let selectedAuthor = "";
   let selectedDate = "";
@@ -488,12 +512,17 @@ function formatMonth(ym: string): string {
       const card = wrapper.querySelector<HTMLElement>("[data-category]");
       if (!card) return;
 
-      const matchesCategory = activeCategory === ALL_FILTER || card.dataset.category === activeCategory;
+      let matchesFilter = true;
+      if (activeFilterType === "category") {
+        matchesFilter = activeFilterValue === ALL_FILTER || card.dataset.category === activeFilterValue;
+      } else {
+        matchesFilter = card.dataset.postType === activeFilterValue;
+      }
       const matchesTitle = !query || (wrapper.dataset.title?.includes(query) ?? false);
       const matchesAuthor = !selectedAuthor || wrapper.dataset.author === selectedAuthor;
       const matchesDate = !selectedDate || wrapper.dataset.date === selectedDate;
 
-      const isVisible = matchesCategory && matchesTitle && matchesAuthor && matchesDate;
+      const isVisible = matchesFilter && matchesTitle && matchesAuthor && matchesDate;
       wrapper.hidden = !isVisible;
 
       if (isVisible) {
@@ -507,7 +536,7 @@ function formatMonth(ym: string): string {
     if (emptyState) emptyState.hidden = visibleCount > 0;
   }
 
-  // --- Category chips ---
+  // --- Filter chips (category + postType share the same active group) ---
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {
       chips.forEach((other) => {
@@ -515,7 +544,8 @@ function formatMonth(ym: string): string {
         other.classList.toggle(ACTIVE_CLASS, isActive);
         other.setAttribute("aria-pressed", isActive ? "true" : "false");
       });
-      activeCategory = chip.dataset.filter ?? ALL_FILTER;
+      activeFilterType = (chip.dataset.filterType as "category" | "postType") ?? "category";
+      activeFilterValue = chip.dataset.filter ?? ALL_FILTER;
       applyAllFilters();
     });
   });

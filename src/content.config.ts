@@ -22,6 +22,18 @@ const posts = defineCollection({
     comments: z.number(),
     shares: z.number(),
     images: z.array(z.string()),
+    postType: z.enum(["article", "discussion", "qa"]).default("article"),
+    highlights: z
+      .array(
+        z.object({
+          author: z.string(),
+          authorId: z.string(),
+          text: z.string(),
+          likes: z.number(),
+          isBestAnswer: z.boolean().default(false),
+        }),
+      )
+      .default([]),
   }),
 });
 

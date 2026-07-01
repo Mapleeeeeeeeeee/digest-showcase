@@ -19,7 +19,7 @@ const sparkSrc = buildUrl("/spark-static.svg");
 const authorHref = authorUrl(data.authorId);
 ---
 
-<article class="card" data-category={data.category}>
+<article class="card" data-category={data.category} data-post-type={data.postType}>
   <a href={href} class="card__media-link" aria-label={data.title}>
     <div class="card__media">
       {
@@ -39,7 +39,19 @@ const authorHref = authorUrl(data.authorId);
         )
       }
       <span class="card__badge">
-        <CategoryBadge category={data.category} />
+        {data.postType === "discussion" ? (
+          <span class="card__type-badge card__type-badge--discussion">
+            <span class="material-symbols-outlined" style="font-size:12px">forum</span>
+            留言精華
+          </span>
+        ) : data.postType === "qa" ? (
+          <span class="card__type-badge card__type-badge--qa">
+            <span class="material-symbols-outlined" style="font-size:12px">help</span>
+            常見問題
+          </span>
+        ) : (
+          <CategoryBadge category={data.category} />
+        )}
       </span>
     </div>
   </a>
@@ -137,6 +149,31 @@ const authorHref = authorUrl(data.authorId);
     position: absolute;
     top: 12px;
     left: 12px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .card__type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 3px 8px;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .card__type-badge--discussion {
+    color: #1565c0;
+    background: #e3f2fd;
+  }
+
+  .card__type-badge--qa {
+    color: #e65100;
+    background: #fff3e0;
   }
 
   .card__body {
