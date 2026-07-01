@@ -94,6 +94,17 @@ img {
   height: 100%;
 }
 
+.site-header__github {
+  margin-left: auto;
+  flex: none;
+  color: var(--color-text-muted);
+  transition: color 0.15s ease;
+}
+
+.site-header__github:hover {
+  color: var(--color-text);
+}
+
 
 .site-header__title {
   margin: 0;
