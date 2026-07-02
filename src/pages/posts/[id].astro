@@ -214,7 +214,7 @@ const authorHref = authorUrl(data.authorId);
     fetch(`https://claude-taiwan.goatcounter.com/counter/${path}.json`)
       .then(r => r.ok ? r.json() : null)
       .then(data => {
-        if (data?.count) {
+        if (data?.count != null) {
           viewCountEl.textContent = data.count;
           viewContainer.hidden = false;
         }
