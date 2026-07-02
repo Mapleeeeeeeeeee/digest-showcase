@@ -147,6 +147,12 @@ img {
   height: auto;
 }
 
+.site-footer__link {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* ---- Category badge ---- */
 .badge {
   display: inline-flex;

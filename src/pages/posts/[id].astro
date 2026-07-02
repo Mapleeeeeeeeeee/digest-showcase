@@ -67,6 +67,10 @@ const authorHref = authorUrl(data.authorId);
       </p>
       <div class="post__stats">
         <PostStats likes={data.likes} comments={data.comments} shares={data.shares} />
+        <span class="stats__item stats__item--views" title="瀏覽" hidden>
+          <span class="material-symbols-outlined stats__icon" aria-hidden="true">visibility</span>
+          <span class="visually-hidden">瀏覽 </span><span id="view-count"></span>
+        </span>
       </div>
     </header>
 
@@ -201,6 +205,22 @@ const authorHref = authorUrl(data.authorId);
     if (e.key === 'ArrowLeft' && currentIndex > 0) showImage(currentIndex - 1);
     if (e.key === 'ArrowRight' && currentIndex < galleryImages.length - 1) showImage(currentIndex + 1);
   });
+
+  // Fetch view count from GoatCounter
+  const viewCountEl = document.getElementById('view-count');
+  const viewContainer = viewCountEl?.closest('.stats__item--views') as HTMLElement | null;
+  if (viewCountEl && viewContainer) {
+    const path = encodeURIComponent(window.location.pathname);
+    fetch(`https://claude-taiwan.goatcounter.com/counter/${path}.json`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.count) {
+          viewCountEl.textContent = data.count;
+          viewContainer.hidden = false;
+        }
+      })
+      .catch(() => {});
+  }
 </script>
 
 <style>
@@ -252,6 +272,25 @@ const authorHref = authorUrl(data.authorId);
   .author-link:hover {
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  .post__stats {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .stats__item--views {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+  }
+
+  .stats__item--views .stats__icon {
+    font-size: 16px;
+    opacity: 0.8;
   }
 
   .post__body {
