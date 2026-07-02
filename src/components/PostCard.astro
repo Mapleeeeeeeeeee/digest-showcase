@@ -70,6 +70,10 @@ const authorHref = authorUrl(data.authorId);
     </p>
     <div class="card__footer">
       <PostStats likes={data.likes} comments={data.comments} shares={data.shares} />
+      <span class="card__views" data-view-path={href} hidden>
+        <span class="material-symbols-outlined" style="font-size:14px">visibility</span>
+        <span class="card__view-count"></span>
+      </span>
     </div>
   </div>
 </article>
@@ -232,6 +236,17 @@ const authorHref = authorUrl(data.authorId);
   .card__footer {
     margin-top: auto;
     padding-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card__views {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
   }
 
   /* List mode overrides */

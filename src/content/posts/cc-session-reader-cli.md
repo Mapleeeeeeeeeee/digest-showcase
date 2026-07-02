@@ -10,8 +10,8 @@ likes: 164
 comments: 10
 shares: 37
 images:
-  - "https://scontent-lga3-1.xx.fbcdn.net/v/t39.99422-6/731105187_2075888452999766_3584496141339363042_n.png?stp=dst-jpg_tt6&cstp=mx614x628&ctp=s590x590&_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=Z6dMsqjaNXcQ7kNvwGI4QGE&_nc_oc=AdrxHPbIYQKe69CCD86j_-VFr3erdSN_mFGTOf9eoycLbKD4a0VVaZyNn2q0mrMu-Qw&_nc_zt=14&_nc_ht=scontent-lga3-1.xx&_nc_gid=POGHSjscK3c2ZM_g4iOCkA&_nc_ss=72289&oh=00_Af_5SnxtEy6wbf9CULjOKThsvPmyZN6qHuuIz-6LyZirjQ&oe=6A447164"
-  - "https://scontent-lga3-2.xx.fbcdn.net/v/t39.99422-6/728196300_1843423649968508_3677374838604117886_n.png?stp=dst-jpg_tt6&cstp=mx614x628&ctp=s590x590&_nc_cat=105&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=fVgyWFG-zXUQ7kNvwHuVISa&_nc_oc=AdoMKPVZQSv5exVHBlOgdDTJSKVp6LA6FYOvNg2_BMMJjZiYlOFXuU6xSqVAATNp3dw&_nc_zt=14&_nc_ht=scontent-lga3-2.xx&_nc_gid=POGHSjscK3c2ZM_g4iOCkA&_nc_ss=72289&oh=00_Af8Gc1-q-YKCo7h5Zu7O_hdTQU-P_wrTDY8nfcpa4s2KNQ&oe=6A4445B4"
+  - "/images/posts/cc-session-reader-cli-0.png"
+  - "/images/posts/cc-session-reader-cli-1.png"
 ---
 Hi 大家，我想跟大家分享我最近做的一個 CLI 工具：cc-session-reader
 

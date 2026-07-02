@@ -1,18 +1,14 @@
+import { buildUrl } from "./url";
+
 /**
  * Image-source seam.
  *
- * Today image URLs come straight from the post frontmatter (remote Facebook CDN
- * URLs, which expire). Every template MUST resolve image sources through this
- * module rather than reading `images[0]` inline, so that a future migration to
- * "download once and serve locally" changes exactly one file.
+ * Local images live in public/images/ and are referenced with paths like
+ * "/images/posts/xxx.jpg". Remote URLs (https://) are passed through as-is.
  */
 
-/**
- * Resolve the renderable `src` for a single image URL.
- * Currently identity; the seam exists so the resolution strategy can change
- * (e.g. rewrite to a locally cached asset path) without touching callers.
- */
 export function getImageSrc(url: string): string {
+  if (url.startsWith("/")) return buildUrl(url);
   return url;
 }
 

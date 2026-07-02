@@ -10,8 +10,8 @@ likes: 211
 comments: 13
 shares: 64
 images:
-  - "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/729747149_4399769280298416_2420674725092593068_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x2048&ctp=s2048x2048&_nc_cat=103&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=0RBa63EogsEQ7kNvwFksoOw&_nc_oc=AdqA3nXSvQYNVf5p04RTpCfEk2FKTqeLZTIlXZFfOB4eMCECXzG_FoxqlUZkdjXl5S0&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=bkU7aO-7JxEYjtxc1GEosQ&_nc_ss=7c289&oh=00_Af-kqX8KEw-3GLJmKfzyeS19wBU-1QBIZk-ZPEeGXVUN1w&oe=6A4442DD"
-  - "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/729867839_4399769240298420_6693903817140358864_n.jpg?stp=dst-jpg_tt6&cstp=mx1239x1239&ctp=s1239x1239&_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=yeuegOOxJWcQ7kNvwEaW_mH&_nc_oc=AdptO1Z7HrWt6pKYiHUrLF-EdqZbUpruJJVnLEuoMgqPA0QZo4fl7DS805hstqToMsE&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=bkU7aO-7JxEYjtxc1GEosQ&_nc_ss=7c289&oh=00_Af82lG8e4KjAcHEUw89r_CKwgNrlGGZ3vOBKGTS7LFS1nA&oe=6A446376"
+  - "/images/posts/get-a-life-mandala-tool-0.jpg"
+  - "/images/posts/get-a-life-mandala-tool-1.jpg"
 ---
 【開源】Get-a-Life 工具（曼陀羅）的開發分享
 

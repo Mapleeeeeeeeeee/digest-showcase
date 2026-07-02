@@ -10,7 +10,7 @@ likes: 30
 comments: 20
 shares: 2
 images:
-  - "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/671548762_27182685077984593_4171140572227914332_n.jpg?stp=dst-jpg_tt6&cstp=mx733x527&ctp=s720x720&_nc_cat=107&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=DGVPS3M38CsQ7kNvwEW0ope&_nc_oc=AdpAFMV6osAZlQ_mPsLyPYfCkx8Ji3XgMJH_6c29ZbDd6QaL4alT2BULQ1Iezyhp7Pw&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=f5AP4sJK1im2LaO68m7enw&_nc_ss=72289&oh=00_AQC93eQvmstGeTgUhf5t5QopqxuvI9TkqXUMDQMVVwTZDw&oe=6A4AA0D5"
+  - "/images/posts/claude-credits-purchase-bug-718742e6ae0c.jpg"
 postType: "qa"
 highlights:
   - author: "黃士軒"

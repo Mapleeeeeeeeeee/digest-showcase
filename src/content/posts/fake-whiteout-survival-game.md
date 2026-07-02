@@ -10,11 +10,11 @@ likes: 356
 comments: 43
 shares: 38
 images:
-  - "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/729099258_122132623767144659_4798857682546516660_n.jpg?stp=dst-jpg_tt6&cstp=mx739x1056&ctp=s590x590&_nc_cat=100&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=uX3RkMNfHVQQ7kNvwGAatA0&_nc_oc=Adpya-qTOFAwQPDgzU8usbtpXI3K7YrEXBflued9mH8yqQKIeeYoHeF0I4Nfl4FMsUE&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=ygnAf40JuaKlNRpqi8fOKw&_nc_ss=7c289&oh=00_Af_mCAdJWD--ECefpbnAPy11Du0hu39LE0Pkw77AEAWViA&oe=6A444B86"
-  - "https://scontent-iad3-2.xx.fbcdn.net/v/t15.5256-10/727641855_3460284627486380_664327772414418363_n.jpg?stp=dst-jpg_tt6&cstp=mx746x1060&ctp=s590x590&_nc_cat=111&ccb=1-7&_nc_sid=117846&_nc_ohc=ewcj8ohncJYQ7kNvwGkX-K0&_nc_oc=AdoCPkKM--8gdjp32CC9KjgwrRoIRGmQdS68H07ToWMQQRESCJFva4_Nf1x121Kf6Ks&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=ygnAf40JuaKlNRpqi8fOKw&_nc_ss=7c289&oh=00_Af9BOYtroSrMoS01MDbbEUK7dyw1oD24NrfyS0_aMtvgYA&oe=6A44770B"
-  - "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/727303833_122132623635144659_4693620816405972658_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx1284x2778&ctp=s590x590&_nc_cat=108&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=hmcTA0uf0CAQ7kNvwHIqXvH&_nc_oc=AdpJkJJXXbNWzVhMz6B9fbTZVdz8zld-uXUoqK_gikqfvwYDk_KZ7AVxrbwrZrtiQRs&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=ygnAf40JuaKlNRpqi8fOKw&_nc_ss=7c289&oh=00_Af9z60_Y_MExwQg-BKvWUGAs1Hbez1TqMPCJNrzrhPVt2A&oe=6A4472C7"
-  - "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/725860679_122132623617144659_6844287770713060069_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx1284x2778&ctp=s590x590&_nc_cat=105&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=hbzkdeh_L3IQ7kNvwFVbu4s&_nc_oc=AdqZYQ-Jm0AMVkUJ91hYb-KFucPAmO1M03RIcC_kXexbRD-WHbSVBtagjBXc16oHxCA&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=ygnAf40JuaKlNRpqi8fOKw&_nc_ss=7c289&oh=00_Af-BvhUqJDOuvE5Z5GHkSpecgCleiXluyahWxq7fFW_gpA&oe=6A4465D5"
-  - "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/726839756_122132623641144659_8200040963444565368_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx1284x2778&ctp=s590x590&_nc_cat=102&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=XtfQ2sDYmYIQ7kNvwGyYCHx&_nc_oc=AdocfjpxYRTE58Hp3NjUIgnN6wAn7H9dF4N1GkhMbpojoDmQ8fM-00YwE_aNJtLWDYw&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=ygnAf40JuaKlNRpqi8fOKw&_nc_ss=7c289&oh=00_Af89c1wiPrpQVx7Tho1N-3m6rkEUg_tmekfq2bsRFsdMcA&oe=6A447638"
+  - "/images/posts/fake-whiteout-survival-game-0.jpg"
+  - "/images/posts/fake-whiteout-survival-game-1.jpg"
+  - "/images/posts/fake-whiteout-survival-game-2.jpg"
+  - "/images/posts/fake-whiteout-survival-game-3.jpg"
+  - "/images/posts/fake-whiteout-survival-game-4.jpg"
 ---
 ❄️【偽寒霜啟示錄】我又用 Claude 做了第二款遊戲
 

@@ -10,7 +10,7 @@ likes: 662
 comments: 70
 shares: 86
 images:
-  - "https://scontent-dfw6-1.xx.fbcdn.net/v/t39.30808-6/729979792_28298543196415637_7436544381003956255_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx1206x1658&ctp=s720x720&_nc_cat=103&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=RL-f-OpYzVYQ7kNvwE4aSOy&_nc_oc=AdokI-nTvIF0pY8BobypOZsuu_N6az5DKTKhINMkAT4AeQilmrqxOFFZKXE_6A2yI_s&_nc_zt=23&_nc_ht=scontent-dfw6-1.xx&_nc_gid=5Jx-CsOG4Vf6Qbgo6NgTLQ&_nc_ss=72289&oh=00_Af-JnVLn_GnZRD1AyaAfnCzBd2Ddg_LxcITH9ROyeLS2zQ&oe=6A4459F7"
+  - "/images/posts/calcright-patent-ai-collab-0.jpg"
 ---
 用 AI 協作，把一個房東實務痛點做成 Android App，並取得新型專利
 分享一個最近完成的里程碑。

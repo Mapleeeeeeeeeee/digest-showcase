@@ -10,7 +10,7 @@ likes: 228
 comments: 6
 shares: 92
 images:
-  - "https://scontent-lga3-2.xx.fbcdn.net/v/t39.30808-6/725860230_10174491885545203_5135273237824928848_n.jpg?stp=dst-jpg_tt6&cstp=mx1584x898&ctp=s1584x898&_nc_cat=105&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=BHbxoFg3EFMQ7kNvwHjAvIM&_nc_oc=AdoHmobCUroSFhBuwiBCOC9l1h0lqgxhn5uSBheYHx6Mm-IZSfQSX_2iPksyRAXH5iM&_nc_zt=23&_nc_ht=scontent-lga3-2.xx&_nc_gid=cIJHK7A9eag0CvT7mq4agQ&_nc_ss=7c289&oh=00_Af-mNRT1r47NWQays8KaSYX7YZQ_LlcwQEJ5W8MEbclqcg&oe=6A4449E3"
+  - "/images/posts/claude-meetup-fully-allinone-workflow-0.jpg"
 ---
 以下是 Rex 上週在 Claude 開發者 meetup 上 demo 的內容，我有用 AI 幫忙整理這場分享。他用的 deck 連結放在留言區。
 

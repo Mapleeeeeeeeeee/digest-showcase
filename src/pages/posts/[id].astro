@@ -71,6 +71,10 @@ const authorHref = authorUrl(data.authorId);
           <span class="material-symbols-outlined stats__icon" aria-hidden="true">visibility</span>
           <span class="visually-hidden">瀏覽 </span><span id="view-count"></span>
         </span>
+        <button class="share-btn" id="share-btn" type="button" title="分享文章">
+          <span class="material-symbols-outlined" style="font-size:18px">share</span>
+          <span class="share-btn__label">分享</span>
+        </button>
       </div>
     </header>
 
@@ -206,17 +210,47 @@ const authorHref = authorUrl(data.authorId);
     if (e.key === 'ArrowRight' && currentIndex < galleryImages.length - 1) showImage(currentIndex + 1);
   });
 
+  // Share button
+  const shareBtn = document.getElementById('share-btn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async () => {
+      const shareData = { title: document.title, url: window.location.href };
+      if (navigator.share) {
+        try { await navigator.share(shareData); } catch {}
+      } else {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          showToast('已複製連結');
+        } catch {}
+      }
+    });
+  }
+
+  function showToast(msg: string): void {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast';
+      toast.className = 'toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('toast--visible');
+    setTimeout(() => toast!.classList.remove('toast--visible'), 2000);
+  }
+
   // Fetch view count from GoatCounter
   const viewCountEl = document.getElementById('view-count');
   const viewContainer = viewCountEl?.closest('.stats__item--views') as HTMLElement | null;
   if (viewCountEl && viewContainer) {
+    viewCountEl.textContent = '0';
+    viewContainer.hidden = false;
     const path = encodeURIComponent(window.location.pathname);
     fetch(`https://claude-taiwan.goatcounter.com/counter/${path}.json`)
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (data?.count != null) {
           viewCountEl.textContent = data.count;
-          viewContainer.hidden = false;
         }
       })
       .catch(() => {});
@@ -583,5 +617,53 @@ const authorHref = authorUrl(data.authorId);
     text-decoration: underline;
     text-underline-offset: 2px;
     word-break: break-all;
+  }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    font-family: inherit;
+    margin-left: auto;
+  }
+
+  .share-btn:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary-light);
+  }
+</style>
+
+<style is:global>
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--color-text, #141413);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+  .toast--visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
   }
 </style>

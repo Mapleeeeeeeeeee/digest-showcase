@@ -699,4 +699,21 @@ function formatMonth(ym: string): string {
       localStorage.setItem(VIEW_STORAGE_KEY, mode);
     });
   });
+
+  // Fetch view counts for cards
+  document.querySelectorAll<HTMLElement>('.card__views').forEach(el => {
+    el.querySelector('.card__view-count')!.textContent = '0';
+    el.hidden = false;
+    const path = el.dataset.viewPath;
+    if (!path) return;
+    const encoded = encodeURIComponent(path);
+    fetch(`https://claude-taiwan.goatcounter.com/counter/${encoded}.json`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.count != null) {
+          el.querySelector('.card__view-count')!.textContent = data.count;
+        }
+      })
+      .catch(() => {});
+  });
 </script>
