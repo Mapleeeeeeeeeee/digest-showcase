@@ -215,12 +215,16 @@ const authorHref = authorUrl(data.authorId);
   if (shareBtn) {
     shareBtn.addEventListener('click', async () => {
       const shareData = { title: document.title, url: window.location.href };
+
+      // 1. Always copy link to clipboard (non-blocking to preserve user activation for navigator.share)
+      navigator.clipboard.writeText(window.location.href)
+        .then(() => showToast('已複製連結'))
+        .catch(() => {});
+
+      // 2. Trigger native share if available
       if (navigator.share) {
-        try { await navigator.share(shareData); } catch {}
-      } else {
         try {
-          await navigator.clipboard.writeText(window.location.href);
-          showToast('已複製連結');
+          await navigator.share(shareData);
         } catch {}
       }
     });

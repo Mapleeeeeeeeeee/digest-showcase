@@ -8,6 +8,18 @@ const posts = (await getCollection("posts")).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 
+const postsByMonth: Record<string, typeof posts> = {};
+for (const post of posts) {
+  const d = post.data.date;
+  const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  if (!postsByMonth[ym]) {
+    postsByMonth[ym] = [];
+  }
+  postsByMonth[ym].push(post);
+}
+
+const sortedMonths = Object.keys(postsByMonth).sort().reverse();
+
 const ALL_FILTER = "全部";
 const POST_TYPE_FILTERS = [
   { label: "留言精華", value: "discussion" },
@@ -142,14 +154,22 @@ function formatMonth(ym: string): string {
     </div>
   </section>
 
-  <section class="container">
-    <div class="grid" id="post-grid">
-      {posts.map((post, index) => (
-        <div class="reveal" style={`--i: ${index}`} data-title={post.data.title.toLowerCase()} data-author={post.data.author} data-date={`${post.data.date.getFullYear()}-${String(post.data.date.getMonth() + 1).padStart(2, '0')}`}>
-          <PostCard post={post} />
+  <section class="container" id="post-sections">
+    {sortedMonths.map((ym) => (
+      <div class="month-section" data-month={ym}>
+        <h3 class="month-section__title">
+          <span class="material-symbols-outlined" aria-hidden="true" style="font-size: 20px; color: var(--color-primary);">calendar_today</span>
+          {formatMonth(ym)}
+        </h3>
+        <div class="grid post-grid">
+          {postsByMonth[ym].map((post, index) => (
+            <div class="reveal" style={`--i: ${index}`} data-title={post.data.title.toLowerCase()} data-author={post.data.author} data-date={ym}>
+              <PostCard post={post} />
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
     <p class="empty" id="empty-state" hidden>目前沒有符合條件的貼文。</p>
   </section>
 </BaseLayout>
@@ -232,6 +252,22 @@ function formatMonth(ym: string): string {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 22px;
+  }
+
+  .month-section {
+    margin-bottom: 40px;
+  }
+
+  .month-section__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .empty {
@@ -493,7 +529,6 @@ function formatMonth(ym: string): string {
   const ACTIVE_CLASS = "filter-chip--active";
 
   const chips = document.querySelectorAll<HTMLButtonElement>(".filter-chip");
-  const wrappers = document.querySelectorAll<HTMLElement>(".reveal");
   const emptyState = document.getElementById("empty-state");
   const titleSearchInput = document.getElementById("title-search") as HTMLInputElement;
 
@@ -507,30 +542,39 @@ function formatMonth(ym: string): string {
   function applyAllFilters(): void {
     let visibleCount = 0;
     const query = searchQuery.toLowerCase();
+    const monthSections = document.querySelectorAll<HTMLElement>(".month-section");
 
-    wrappers.forEach((wrapper) => {
-      const card = wrapper.querySelector<HTMLElement>("[data-category]");
-      if (!card) return;
+    monthSections.forEach((section) => {
+      let sectionVisibleCount = 0;
+      const wrappers = section.querySelectorAll<HTMLElement>(".reveal");
 
-      let matchesFilter = true;
-      if (activeFilterType === "category") {
-        matchesFilter = activeFilterValue === ALL_FILTER || card.dataset.category === activeFilterValue;
-      } else {
-        matchesFilter = card.dataset.postType === activeFilterValue;
-      }
-      const matchesTitle = !query || (wrapper.dataset.title?.includes(query) ?? false);
-      const matchesAuthor = !selectedAuthor || wrapper.dataset.author === selectedAuthor;
-      const matchesDate = !selectedDate || wrapper.dataset.date === selectedDate;
+      wrappers.forEach((wrapper) => {
+        const card = wrapper.querySelector<HTMLElement>("[data-category]");
+        if (!card) return;
 
-      const isVisible = matchesFilter && matchesTitle && matchesAuthor && matchesDate;
-      wrapper.hidden = !isVisible;
+        let matchesFilter = true;
+        if (activeFilterType === "category") {
+          matchesFilter = activeFilterValue === ALL_FILTER || card.dataset.category === activeFilterValue;
+        } else {
+          matchesFilter = card.dataset.postType === activeFilterValue;
+        }
+        const matchesTitle = !query || (wrapper.dataset.title?.includes(query) ?? false);
+        const matchesAuthor = !selectedAuthor || wrapper.dataset.author === selectedAuthor;
+        const matchesDate = !selectedDate || wrapper.dataset.date === selectedDate;
 
-      if (isVisible) {
-        visibleCount += 1;
-        wrapper.style.animation = 'none';
-        wrapper.offsetHeight; // force reflow
-        wrapper.style.animation = 'fadeIn 0.3s ease both';
-      }
+        const isVisible = matchesFilter && matchesTitle && matchesAuthor && matchesDate;
+        wrapper.hidden = !isVisible;
+
+        if (isVisible) {
+          sectionVisibleCount += 1;
+          visibleCount += 1;
+          wrapper.style.animation = 'none';
+          wrapper.offsetHeight; // force reflow
+          wrapper.style.animation = 'fadeIn 0.3s ease both';
+        }
+      });
+
+      section.hidden = sectionVisibleCount === 0;
     });
 
     if (emptyState) emptyState.hidden = visibleCount > 0;
@@ -678,7 +722,7 @@ function formatMonth(ym: string): string {
   const VIEW_STORAGE_KEY = "digest-view-mode";
 
   const viewBtns = document.querySelectorAll<HTMLButtonElement>(".view-toggle__btn");
-  const postGrid = document.getElementById("post-grid");
+  const postGrids = document.querySelectorAll(".post-grid");
 
   function setView(mode: string): void {
     viewBtns.forEach((btn) => {
@@ -686,7 +730,9 @@ function formatMonth(ym: string): string {
       btn.classList.toggle(VIEW_ACTIVE_CLASS, isActive);
       btn.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
-    postGrid?.classList.toggle(LIST_CLASS, mode === "list");
+    postGrids.forEach((grid) => {
+      grid.classList.toggle(LIST_CLASS, mode === "list");
+    });
   }
 
   const savedView = localStorage.getItem(VIEW_STORAGE_KEY);

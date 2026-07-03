@@ -94,11 +94,32 @@ img {
   height: 100%;
 }
 
-.site-header__github {
+.site-header__nav {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: none;
+}
+
+.site-header__checker {
   flex: none;
   color: var(--color-text-muted);
   transition: color 0.15s ease;
+  display: flex;
+  align-items: center;
+}
+
+.site-header__checker:hover {
+  color: var(--color-text);
+}
+
+.site-header__github {
+  flex: none;
+  color: var(--color-text-muted);
+  transition: color 0.15s ease;
+  display: flex;
+  align-items: center;
 }
 
 .site-header__github:hover {
