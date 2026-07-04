@@ -32,6 +32,13 @@
     0 12px 28px rgba(0, 0, 0, 0.06);
 
   --content-max: 1120px;
+
+  /* Icon Sizing Tokens */
+  --icon-size-badge: 12px;
+  --icon-size-meta: 14px;
+  --icon-size-body: 16px;
+  --icon-size-button: 18px;
+  --icon-size-header: 20px;
 }
 
 * {
