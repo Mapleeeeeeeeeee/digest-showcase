@@ -13,6 +13,7 @@ images:
   - "/images/posts/cc-session-reader-cli-0.png"
   - "/images/posts/cc-session-reader-cli-1.png"
 ---
+
 Hi 大家，我想跟大家分享我最近做的一個 CLI 工具：cc-session-reader
 
 因應 token 越來越貴，大家都在想盡各種辦法省 token，所以這個工具可以省下 token，而且我發現好像省下不少，但我最一開始打造這個 CLI 是，我平常有個習慣，三不五時會讓 Claude 回去讀過去我跟他的對話紀錄，來找找看有沒有什麼可以改善我工作流的地方，比如我一直在重複強調某些事，可以做成 skills、或是抽成 hook、甚至丟進 CLAUDE[.]md 等等

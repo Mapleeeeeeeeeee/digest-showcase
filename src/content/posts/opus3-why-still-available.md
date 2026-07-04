@@ -33,6 +33,7 @@ highlights:
     likes: 0
     isBestAnswer: false
 ---
+
 我其實一直有個疑問，Anthropic 至今還在提供 Opus 3 的原因是什麼？
 
 之前在社團投票調查大家的目前 Opus 的使用狀況我還特地把 Opus 3 加上去，至今 Sonnet 5 都要出了但我還是不懂為什麼 Opus 3 還在

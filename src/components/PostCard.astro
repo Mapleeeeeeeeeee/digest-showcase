@@ -19,7 +19,11 @@ const sparkSrc = buildUrl("/spark-static.svg");
 const authorHref = authorUrl(data.authorId);
 ---
 
-<article class="card" data-category={data.category} data-post-type={data.postType}>
+<article
+  class="card"
+  data-category={data.category}
+  data-post-type={data.postType}
+>
   <a href={href} class="card__media-link" aria-label={data.title}>
     <div class="card__media">
       {
@@ -39,19 +43,21 @@ const authorHref = authorUrl(data.authorId);
         )
       }
       <span class="card__badge">
-        {data.postType === "discussion" ? (
-          <span class="card__type-badge card__type-badge--discussion">
-            <span class="material-symbols-outlined">forum</span>
-            留言精華
-          </span>
-        ) : data.postType === "qa" ? (
-          <span class="card__type-badge card__type-badge--qa">
-            <span class="material-symbols-outlined">help</span>
-            常見問題
-          </span>
-        ) : (
-          <CategoryBadge category={data.category} />
-        )}
+        {
+          data.postType === "discussion" ? (
+            <span class="card__type-badge card__type-badge--discussion">
+              <span class="material-symbols-outlined">forum</span>
+              留言精華
+            </span>
+          ) : data.postType === "qa" ? (
+            <span class="card__type-badge card__type-badge--qa">
+              <span class="material-symbols-outlined">help</span>
+              常見問題
+            </span>
+          ) : (
+            <CategoryBadge category={data.category} />
+          )
+        }
       </span>
     </div>
   </a>
@@ -61,15 +67,16 @@ const authorHref = authorUrl(data.authorId);
       <a href={href} class="card__title-link">{data.title}</a>
     </h2>
     <p class="card__meta">
-      <a
-        href={authorHref}
-        class="card__author-link"
-      >
+      <a href={authorHref} class="card__author-link">
         {data.author}
       </a> · {formattedDate}
     </p>
     <div class="card__footer">
-      <PostStats likes={data.likes} comments={data.comments} shares={data.shares} />
+      <PostStats
+        likes={data.likes}
+        comments={data.comments}
+        shares={data.shares}
+      />
       <span class="card__views" data-view-path={href} hidden>
         <span class="material-symbols-outlined">visibility</span>
         <span class="card__view-count"></span>
@@ -133,7 +140,11 @@ const authorHref = authorUrl(data.authorId);
     gap: 8px;
     color: var(--color-primary);
     background:
-      radial-gradient(circle at 50% 45%, var(--color-primary-subtle), transparent 70%),
+      radial-gradient(
+        circle at 50% 45%,
+        var(--color-primary-subtle),
+        transparent 70%
+      ),
       var(--color-surface-alt);
   }
 
@@ -209,7 +220,7 @@ const authorHref = authorUrl(data.authorId);
   }
 
   .card__title-link::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     z-index: 0;

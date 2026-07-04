@@ -15,9 +15,14 @@ const { prevPost, nextPost } = Astro.props;
     <nav class="post-nav" aria-label="文章導覽">
       <div class="post-nav__link-wrapper">
         {prevPost ? (
-          <a href={postUrl(prevPost.id)} class="post-nav__link post-nav__link--prev">
+          <a
+            href={postUrl(prevPost.id)}
+            class="post-nav__link post-nav__link--prev"
+          >
             <span class="post-nav__label">
-              <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+              <span class="material-symbols-outlined" aria-hidden="true">
+                arrow_back
+              </span>
               上一篇
             </span>
             <span class="post-nav__title">{prevPost.data.title}</span>
@@ -28,15 +33,20 @@ const { prevPost, nextPost } = Astro.props;
           </div>
         )}
       </div>
-      
+
       <div class="post-nav__separator" />
-      
+
       <div class="post-nav__link-wrapper">
         {nextPost ? (
-          <a href={postUrl(nextPost.id)} class="post-nav__link post-nav__link--next">
+          <a
+            href={postUrl(nextPost.id)}
+            class="post-nav__link post-nav__link--next"
+          >
             <span class="post-nav__label">
               下一篇
-              <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+              <span class="material-symbols-outlined" aria-hidden="true">
+                arrow_forward
+              </span>
             </span>
             <span class="post-nav__title">{nextPost.data.title}</span>
           </a>
@@ -150,7 +160,7 @@ const { prevPost, nextPost } = Astro.props;
       grid-template-columns: 1fr;
       gap: 12px;
     }
-    
+
     .post-nav__separator {
       display: none;
     }

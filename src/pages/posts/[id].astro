@@ -9,6 +9,7 @@ import { formatDateZh } from "../../lib/format";
 import { buildUrl, authorUrl, postUrl } from "../../lib/url";
 import BackLink from "../../components/BackLink.astro";
 import PostNavigation from "../../components/PostNavigation.astro";
+import Lightbox from "../../components/Lightbox.astro";
 
 const laptopSrc = buildUrl("/clawd-laptop.json");
 
@@ -34,9 +35,14 @@ const formattedDate = formatDateZh(data.date);
 
 function linkify(text: string): string {
   return text
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
-    .replace(/\n/g, '<br>');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(
+      /(https?:\/\/[^\s<]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>',
+    )
+    .replace(/\n/g, "<br>");
 }
 const homeHref = buildUrl("/");
 const authorHref = authorUrl(data.authorId);
@@ -49,34 +55,42 @@ const authorHref = authorUrl(data.authorId);
     <header class="post__header">
       <div class="post__badges">
         <CategoryBadge category={data.category} />
-        {data.postType === "discussion" && (
-          <span class="badge-discussion">
-            <span class="material-symbols-outlined">forum</span>
-            留言精華
-          </span>
-        )}
-        {data.postType === "qa" && (
-          <span class="badge-qa">
-            <span class="material-symbols-outlined">help</span>
-            常見問題
-          </span>
-        )}
+        {
+          data.postType === "discussion" && (
+            <span class="badge-discussion">
+              <span class="material-symbols-outlined">forum</span>
+              留言精華
+            </span>
+          )
+        }
+        {
+          data.postType === "qa" && (
+            <span class="badge-qa">
+              <span class="material-symbols-outlined">help</span>
+              常見問題
+            </span>
+          )
+        }
         {data.tags.map((tag) => <span class="tag">#{tag}</span>)}
       </div>
       <h1 class="post__title">{data.title}</h1>
       <p class="post__meta">
-        <a
-          href={authorHref}
-          class="author-link"
-        >
+        <a href={authorHref} class="author-link">
           {data.author}
         </a> · {formattedDate}
       </p>
       <div class="post__stats">
-        <PostStats likes={data.likes} comments={data.comments} shares={data.shares} />
+        <PostStats
+          likes={data.likes}
+          comments={data.comments}
+          shares={data.shares}
+        />
         <span class="stats__item stats__item--views" title="瀏覽" hidden>
-          <span class="material-symbols-outlined stats__icon" aria-hidden="true">visibility</span>
-          <span class="visually-hidden">瀏覽 </span><span id="view-count"></span>
+          <span class="material-symbols-outlined stats__icon" aria-hidden="true"
+            >visibility</span
+          >
+          <span class="visually-hidden">瀏覽 </span><span id="view-count"
+          ></span>
         </span>
         <button class="share-btn" id="share-btn" type="button" title="分享文章">
           <span class="material-symbols-outlined">share</span>
@@ -89,41 +103,48 @@ const authorHref = authorUrl(data.authorId);
       <Content />
     </div>
 
-    {(data.postType === "discussion" || data.postType === "qa") && data.highlights.length > 0 && (
-      <section class="post__highlights">
-        {data.highlights.filter(h => h.isBestAnswer).map(h => (
-          <div class="highlight highlight--best">
-            <div class="highlight__label">
-              <span class="material-symbols-outlined">check_circle</span>
-              最佳解答
-            </div>
-            <div class="highlight__author">{h.author}</div>
-            <div class="highlight__text" set:html={linkify(h.text)} />
-            <div class="highlight__likes">
-              <span class="material-symbols-outlined">favorite</span>
-              {h.likes}
-            </div>
-          </div>
-        ))}
+    {
+      (data.postType === "discussion" || data.postType === "qa") &&
+        data.highlights.length > 0 && (
+          <section class="post__highlights">
+            {data.highlights
+              .filter((h) => h.isBestAnswer)
+              .map((h) => (
+                <div class="highlight highlight--best">
+                  <div class="highlight__label">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    最佳解答
+                  </div>
+                  <div class="highlight__author">{h.author}</div>
+                  <div class="highlight__text" set:html={linkify(h.text)} />
+                  <div class="highlight__likes">
+                    <span class="material-symbols-outlined">favorite</span>
+                    {h.likes}
+                  </div>
+                </div>
+              ))}
 
-        {data.highlights.filter(h => !h.isBestAnswer).length > 0 && (
-          <div class="highlight__others-label">其他留言</div>
-        )}
+            {data.highlights.filter((h) => !h.isBestAnswer).length > 0 && (
+              <div class="highlight__others-label">其他留言</div>
+            )}
 
-        {data.highlights.filter(h => !h.isBestAnswer).map(h => (
-          <div class="highlight highlight--other">
-            <div class="highlight__other-header">
-              <span class="highlight__author">{h.author}</span>
-              <span class="highlight__likes">
-                <span class="material-symbols-outlined">favorite</span>
-                {h.likes}
-              </span>
-            </div>
-            <div class="highlight__text" set:html={linkify(h.text)} />
-          </div>
-        ))}
-      </section>
-    )}
+            {data.highlights
+              .filter((h) => !h.isBestAnswer)
+              .map((h) => (
+                <div class="highlight highlight--other">
+                  <div class="highlight__other-header">
+                    <span class="highlight__author">{h.author}</span>
+                    <span class="highlight__likes">
+                      <span class="material-symbols-outlined">favorite</span>
+                      {h.likes}
+                    </span>
+                  </div>
+                  <div class="highlight__text" set:html={linkify(h.text)} />
+                </div>
+              ))}
+          </section>
+        )
+    }
 
     {
       data.images.length > 0 && (
@@ -156,78 +177,20 @@ const authorHref = authorUrl(data.authorId);
     <PostNavigation prevPost={prevPost} nextPost={nextPost} />
   </article>
 
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox__close" aria-label="關閉">&times;</button>
-    <button class="lightbox__nav lightbox__nav--prev" aria-label="上一張">
-      <span class="material-symbols-outlined">chevron_left</span>
-    </button>
-    <img class="lightbox__img" src="" alt="" />
-    <button class="lightbox__nav lightbox__nav--next" aria-label="下一張">
-      <span class="material-symbols-outlined">chevron_right</span>
-    </button>
-    <span class="lightbox__counter"></span>
-  </div>
+  <Lightbox />
 </BaseLayout>
 
 <script>
-  const lightbox = document.getElementById('lightbox')!;
-  const lightboxImg = lightbox.querySelector<HTMLImageElement>('.lightbox__img')!;
-  const prevBtn = lightbox.querySelector<HTMLButtonElement>('.lightbox__nav--prev')!;
-  const nextBtn = lightbox.querySelector<HTMLButtonElement>('.lightbox__nav--next')!;
-  const counter = lightbox.querySelector<HTMLElement>('.lightbox__counter')!;
-  const galleryImages = document.querySelectorAll<HTMLImageElement>('.post__image');
-  let currentIndex = 0;
-
-  function showImage(index: number): void {
-    currentIndex = index;
-    const img = galleryImages[index];
-    lightboxImg.src = img.src;
-    lightboxImg.alt = img.alt;
-    counter.textContent = `${index + 1} / ${galleryImages.length}`;
-    prevBtn.hidden = index === 0;
-    nextBtn.hidden = index === galleryImages.length - 1;
-  }
-
-  galleryImages.forEach((img, i) => {
-    img.addEventListener('click', () => {
-      showImage(i);
-      lightbox.classList.add('lightbox--open');
-    });
-  });
-
-  function closeLightbox(): void {
-    lightbox.classList.remove('lightbox--open');
-  }
-
-  prevBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (currentIndex > 0) showImage(currentIndex - 1);
-  });
-
-  nextBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (currentIndex < galleryImages.length - 1) showImage(currentIndex + 1);
-  });
-
-  lightbox.addEventListener('click', closeLightbox);
-  lightboxImg.addEventListener('click', (e) => e.stopPropagation());
-  lightbox.querySelector('.lightbox__close')!.addEventListener('click', closeLightbox);
-  document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('lightbox--open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft' && currentIndex > 0) showImage(currentIndex - 1);
-    if (e.key === 'ArrowRight' && currentIndex < galleryImages.length - 1) showImage(currentIndex + 1);
-  });
-
   // Share button
-  const shareBtn = document.getElementById('share-btn');
+  const shareBtn = document.getElementById("share-btn");
   if (shareBtn) {
-    shareBtn.addEventListener('click', async () => {
+    shareBtn.addEventListener("click", async () => {
       const shareData = { title: document.title, url: window.location.href };
 
       // 1. Always copy link to clipboard (non-blocking to preserve user activation for navigator.share)
-      navigator.clipboard.writeText(window.location.href)
-        .then(() => showToast('已複製連結'))
+      navigator.clipboard
+        .writeText(window.location.href)
+        .then(() => showToast("已複製連結"))
         .catch(() => {});
 
       // 2. Trigger native share if available
@@ -240,28 +203,30 @@ const authorHref = authorUrl(data.authorId);
   }
 
   function showToast(msg: string): void {
-    let toast = document.getElementById('toast');
+    let toast = document.getElementById("toast");
     if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'toast';
-      toast.className = 'toast';
+      toast = document.createElement("div");
+      toast.id = "toast";
+      toast.className = "toast";
       document.body.appendChild(toast);
     }
     toast.textContent = msg;
-    toast.classList.add('toast--visible');
-    setTimeout(() => toast!.classList.remove('toast--visible'), 2000);
+    toast.classList.add("toast--visible");
+    setTimeout(() => toast!.classList.remove("toast--visible"), 2000);
   }
 
   // Fetch view count from GoatCounter
-  const viewCountEl = document.getElementById('view-count');
-  const viewContainer = viewCountEl?.closest('.stats__item--views') as HTMLElement | null;
+  const viewCountEl = document.getElementById("view-count");
+  const viewContainer = viewCountEl?.closest(
+    ".stats__item--views",
+  ) as HTMLElement | null;
   if (viewCountEl && viewContainer) {
-    viewCountEl.textContent = '0';
+    viewCountEl.textContent = "0";
     viewContainer.hidden = false;
     const path = encodeURIComponent(window.location.pathname);
     fetch(`https://claude-taiwan.goatcounter.com/counter/${path}.json`)
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
         if (data?.count != null) {
           viewCountEl.textContent = data.count;
         }
@@ -375,110 +340,6 @@ const authorHref = authorUrl(data.authorId);
     opacity: 0.85;
   }
 
-  /* Lightbox */
-  .lightbox {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.85);
-    cursor: zoom-out;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.25s ease, visibility 0.25s ease;
-  }
-
-  .lightbox--open {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .lightbox__img {
-    max-width: calc(100vw - 160px);
-    max-height: 90vh;
-    object-fit: contain;
-    border-radius: 8px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    transform: scale(0.95);
-    transition: transform 0.25s ease;
-  }
-
-  .lightbox--open .lightbox__img {
-    transform: scale(1);
-  }
-
-  .lightbox__close {
-    position: absolute;
-    top: 20px;
-    right: 24px;
-    color: #fff;
-    font-size: 32px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.15s ease;
-    font-family: inherit;
-    line-height: 1;
-  }
-
-  .lightbox__close:hover {
-    opacity: 1;
-  }
-
-  .lightbox__nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background: rgba(255, 255, 255, 0.15);
-    border: none;
-    border-radius: 50%;
-    color: #fff;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.15s ease, background 0.15s ease;
-    font-family: inherit;
-  }
-
-  .lightbox__nav:hover {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.25);
-  }
-
-  .lightbox__nav .material-symbols-outlined {
-    font-size: 28px;
-  }
-
-  .lightbox__nav--prev {
-    left: 20px;
-  }
-
-  .lightbox__nav--next {
-    right: 20px;
-  }
-
-  .lightbox__nav[hidden] {
-    display: none;
-  }
-
-  .lightbox__counter {
-    position: absolute;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.85rem;
-    font-weight: 600;
-  }
-
   .post__source {
     margin-top: 36px;
     padding-top: 28px;
@@ -517,7 +378,8 @@ const authorHref = authorUrl(data.authorId);
   }
 
   /* Discussion / QA badges */
-  .badge-discussion, .badge-qa {
+  .badge-discussion,
+  .badge-qa {
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -661,7 +523,9 @@ const authorHref = authorUrl(data.authorId);
     font-size: 0.82rem;
     font-weight: 600;
     cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
     font-family: inherit;
     margin-left: auto;
   }
@@ -690,7 +554,10 @@ const authorHref = authorUrl(data.authorId);
     font-weight: 600;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease,
+      visibility 0.25s ease;
     z-index: 10000;
     pointer-events: none;
   }

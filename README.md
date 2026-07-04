@@ -35,13 +35,13 @@ done
 
 ### Frontmatter 欄位
 
-| 欄位 | 說明 |
-|------|------|
-| `title` | 文章標題 |
-| `author` | 原始作者 |
-| `date` | 發文日期 (ISO 8601) |
-| `category` | `知識精華` 或 `社群活動` |
-| `postType` | `article`（預設）、`discussion`（留言精華）、`qa`（常見問題） |
-| `sourceUrl` | Facebook 原文連結 |
-| `highlights` | 精選留言（僅 discussion/qa 類型），含 `author`、`text`、`likes`、`isBestAnswer` |
-| `likes` / `comments` / `shares` | 互動數據 |
+| 欄位                            | 說明                                                                            |
+| ------------------------------- | ------------------------------------------------------------------------------- |
+| `title`                         | 文章標題                                                                        |
+| `author`                        | 原始作者                                                                        |
+| `date`                          | 發文日期 (ISO 8601)                                                             |
+| `category`                      | `知識精華` 或 `社群活動`                                                        |
+| `postType`                      | `article`（預設）、`discussion`（留言精華）、`qa`（常見問題）                   |
+| `sourceUrl`                     | Facebook 原文連結                                                               |
+| `highlights`                    | 精選留言（僅 discussion/qa 類型），含 `author`、`text`、`likes`、`isBestAnswer` |
+| `likes` / `comments` / `shares` | 互動數據                                                                        |

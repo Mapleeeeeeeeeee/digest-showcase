@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
+import Dropdown from "../components/Dropdown.astro";
 import { POST_CATEGORIES } from "../content.config";
 
 const posts = (await getCollection("posts")).sort(
@@ -11,7 +12,7 @@ const posts = (await getCollection("posts")).sort(
 const postsByMonth: Record<string, typeof posts> = {};
 for (const post of posts) {
   const d = post.data.date;
-  const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
   if (!postsByMonth[ym]) {
     postsByMonth[ym] = [];
   }
@@ -28,23 +29,38 @@ const POST_TYPE_FILTERS = [
 const filters = [ALL_FILTER, ...POST_CATEGORIES];
 
 const FILTER_ICONS: Record<string, string> = {
-  '全部': 'grid_view',
-  '知識精華': 'lightbulb',
-  '社群活動': 'groups',
-  '留言精華': 'forum',
-  '常見問題': 'help',
+  全部: "grid_view",
+  知識精華: "lightbulb",
+  社群活動: "groups",
+  留言精華: "forum",
+  常見問題: "help",
 };
 
-const uniqueAuthors = [...new Set(posts.map(p => p.data.author))].sort();
-const uniqueMonths = [...new Set(posts.map(p => {
-  const d = p.data.date;
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-}))].sort().reverse();
+const uniqueAuthors = [...new Set(posts.map((p) => p.data.author))].sort();
+const uniqueMonths = [
+  ...new Set(
+    posts.map((p) => {
+      const d = p.data.date;
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    }),
+  ),
+]
+  .sort()
+  .reverse();
 
 function formatMonth(ym: string): string {
-  const [y, m] = ym.split('-');
+  const [y, m] = ym.split("-");
   return `${y} 年 ${parseInt(m)} 月`;
 }
+
+const authorOptions = uniqueAuthors.map((author) => ({
+  label: author,
+  value: author,
+}));
+const dateOptions = uniqueMonths.map((ym) => ({
+  label: formatMonth(ym),
+  value: ym,
+}));
 ---
 
 <BaseLayout
@@ -54,17 +70,35 @@ function formatMonth(ym: string): string {
   <section class="container intro">
     <h2 class="intro__heading">精華展示櫃</h2>
     <p class="intro__lead">
-      收藏 Claude Taiwan 社團裡值得一看再看的分享 —— 從 AI 協作開發、工具實作到社群活動紀錄。
+      收藏 Claude Taiwan 社團裡值得一看再看的分享 —— 從 AI
+      協作開發、工具實作到社群活動紀錄。
     </p>
 
     <div class="filter-bar">
       <!-- Search input: full width row -->
       <div class="search-row">
         <div class="search-input">
-          <span class="material-symbols-outlined search-input__icon" aria-hidden="true">search</span>
-          <input type="text" id="title-search" class="search-input__field focus-ring" placeholder="搜尋標題…" autocomplete="off" />
-          <button type="button" id="search-clear-btn" class="search-input__clear" aria-label="清空搜尋內容" hidden>
-            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          <span
+            class="material-symbols-outlined search-input__icon"
+            aria-hidden="true">search</span
+          >
+          <input
+            type="text"
+            id="title-search"
+            class="search-input__field focus-ring"
+            placeholder="搜尋標題…"
+            autocomplete="off"
+          />
+          <button
+            type="button"
+            id="search-clear-btn"
+            class="search-input__clear"
+            aria-label="清空搜尋內容"
+            hidden
+          >
+            <span class="material-symbols-outlined" aria-hidden="true"
+              >close</span
+            >
           </button>
         </div>
       </div>
@@ -82,7 +116,10 @@ function formatMonth(ym: string): string {
                 aria-pressed={index === 0 ? "true" : "false"}
               >
                 {FILTER_ICONS[filter] && (
-                  <span class="material-symbols-outlined filter-chip__icon" aria-hidden="true">
+                  <span
+                    class="material-symbols-outlined filter-chip__icon"
+                    aria-hidden="true"
+                  >
                     {FILTER_ICONS[filter]}
                   </span>
                 )}
@@ -99,7 +136,10 @@ function formatMonth(ym: string): string {
                 data-filter-type="postType"
                 aria-pressed="false"
               >
-                <span class="material-symbols-outlined filter-chip__icon" aria-hidden="true">
+                <span
+                  class="material-symbols-outlined filter-chip__icon"
+                  aria-hidden="true"
+                >
                   {FILTER_ICONS[pt.label]}
                 </span>
                 {pt.label}
@@ -109,54 +149,56 @@ function formatMonth(ym: string): string {
         </div>
 
         <!-- Author combobox -->
-        <div class="dropdown" id="author-dropdown">
-          <button type="button" class="dropdown__trigger" aria-expanded="false" aria-haspopup="listbox">
-            <span class="material-symbols-outlined dropdown__icon" aria-hidden="true">person</span>
-            <span class="dropdown__label">所有作者</span>
-            <span class="material-symbols-outlined dropdown__chevron" aria-hidden="true">expand_more</span>
-          </button>
-          <div class="dropdown__panel" hidden>
-            <div class="dropdown__search-wrap">
-              <input type="text" class="dropdown__search focus-ring" placeholder="搜尋作者…" autocomplete="off" />
-            </div>
-            <ul class="dropdown__list" role="listbox">
-              <li class="dropdown__option dropdown__option--active" role="option" data-value="" aria-selected="true">所有作者</li>
-              {uniqueAuthors.map(author => (
-                <li class="dropdown__option" role="option" data-value={author} aria-selected="false">{author}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <Dropdown
+          id="author-dropdown"
+          icon="person"
+          defaultLabel="所有作者"
+          showSearch={true}
+          options={authorOptions}
+        />
 
         <!-- Date dropdown -->
-        <div class="dropdown" id="date-dropdown">
-          <button type="button" class="dropdown__trigger" aria-expanded="false" aria-haspopup="listbox">
-            <span class="material-symbols-outlined dropdown__icon" aria-hidden="true">calendar_month</span>
-            <span class="dropdown__label">所有日期</span>
-            <span class="material-symbols-outlined dropdown__chevron" aria-hidden="true">expand_more</span>
-          </button>
-          <div class="dropdown__panel" hidden>
-            <ul class="dropdown__list" role="listbox">
-              <li class="dropdown__option dropdown__option--active" role="option" data-value="" aria-selected="true">所有日期</li>
-              {uniqueMonths.map(ym => (
-                <li class="dropdown__option" role="option" data-value={ym} aria-selected="false">{formatMonth(ym)}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <Dropdown
+          id="date-dropdown"
+          icon="calendar_month"
+          defaultLabel="所有日期"
+          options={dateOptions}
+        />
 
         <!-- Clear Filters button -->
-        <button type="button" id="clear-filters-btn" class="clear-filters-btn focus-ring" disabled>
-          <span class="material-symbols-outlined clear-filters-btn__icon" aria-hidden="true">filter_alt_off</span>
+        <button
+          type="button"
+          id="clear-filters-btn"
+          class="clear-filters-btn focus-ring"
+          disabled
+        >
+          <span
+            class="material-symbols-outlined clear-filters-btn__icon"
+            aria-hidden="true">filter_alt_off</span
+          >
           清除條件
         </button>
 
         <div class="view-toggle" role="group" aria-label="切換顯示模式">
-          <button type="button" class="view-toggle__btn view-toggle__btn--active" data-view="grid" aria-pressed="true">
-            <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
+          <button
+            type="button"
+            class="view-toggle__btn view-toggle__btn--active"
+            data-view="grid"
+            aria-pressed="true"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true"
+              >grid_view</span
+            >
           </button>
-          <button type="button" class="view-toggle__btn" data-view="list" aria-pressed="false">
-            <span class="material-symbols-outlined" aria-hidden="true">view_list</span>
+          <button
+            type="button"
+            class="view-toggle__btn"
+            data-view="list"
+            aria-pressed="false"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true"
+              >view_list</span
+            >
           </button>
         </div>
       </div>
@@ -164,21 +206,31 @@ function formatMonth(ym: string): string {
   </section>
 
   <section class="container" id="post-sections">
-    {sortedMonths.map((ym) => (
-      <div class="month-section" data-month={ym}>
-        <h3 class="month-section__title">
-          <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
-          {formatMonth(ym)}
-        </h3>
-        <div class="grid post-grid">
-          {postsByMonth[ym].map((post, index) => (
-            <div class="reveal" style={`--i: ${index}`} data-title={post.data.title.toLowerCase()} data-author={post.data.author} data-date={ym}>
-              <PostCard post={post} />
-            </div>
-          ))}
+    {
+      sortedMonths.map((ym) => (
+        <div class="month-section" data-month={ym}>
+          <h3 class="month-section__title">
+            <span class="material-symbols-outlined" aria-hidden="true">
+              calendar_today
+            </span>
+            {formatMonth(ym)}
+          </h3>
+          <div class="grid post-grid">
+            {postsByMonth[ym].map((post, index) => (
+              <div
+                class="reveal"
+                style={`--i: ${index}`}
+                data-title={post.data.title.toLowerCase()}
+                data-author={post.data.author}
+                data-date={ym}
+              >
+                <PostCard post={post} />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
+      ))
+    }
     <p class="empty" id="empty-state" hidden>目前沒有符合條件的貼文。</p>
   </section>
 </BaseLayout>
@@ -239,7 +291,11 @@ function formatMonth(ym: string): string {
   }
 
   .filter-chip--active .filter-chip__icon {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    font-variation-settings:
+      "FILL" 1,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 20;
   }
 
   .filter-chip:hover:not(.filter-chip--active) {
@@ -326,7 +382,11 @@ function formatMonth(ym: string): string {
   }
 
   .view-toggle__btn--active .material-symbols-outlined {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    font-variation-settings:
+      "FILL" 1,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 20;
   }
 
   .view-toggle__btn--active:hover {
@@ -367,7 +427,9 @@ function formatMonth(ym: string): string {
     border: 1px solid var(--color-border);
     border-radius: 999px;
     outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
     box-sizing: border-box;
   }
 
@@ -389,7 +451,9 @@ function formatMonth(ym: string): string {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: background 0.15s ease, color 0.15s ease;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
   }
 
   .search-input__clear:hover {
@@ -441,7 +505,6 @@ function formatMonth(ym: string): string {
     font-size: 16px;
   }
 
-
   /* Filters row */
   .filters-row {
     display: flex;
@@ -454,134 +517,6 @@ function formatMonth(ym: string): string {
     margin-left: auto;
   }
 
-  /* Dropdown (combobox) */
-  .dropdown {
-    position: relative;
-  }
-
-  .dropdown__trigger {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: inherit;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    padding: 8px 14px;
-    cursor: pointer;
-    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-    white-space: nowrap;
-  }
-
-  .dropdown__trigger:hover {
-    color: var(--color-text);
-    border-color: var(--color-primary-light);
-  }
-
-  .dropdown__trigger[aria-expanded="true"] {
-    color: #fff;
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-  }
-
-  .dropdown__icon {
-    font-size: 16px;
-  }
-
-  .dropdown__trigger[aria-expanded="true"] .dropdown__icon {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
-  }
-
-  .dropdown__chevron {
-    font-size: 18px;
-    transition: transform 0.2s ease;
-  }
-
-  .dropdown__trigger[aria-expanded="true"] .dropdown__chevron {
-    transform: rotate(180deg);
-  }
-
-  .dropdown__label {
-    line-height: 1;
-  }
-
-  .dropdown__panel {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    min-width: 200px;
-    max-height: 280px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    z-index: 100;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .dropdown__panel[hidden] {
-    display: none;
-  }
-
-  .dropdown__search-wrap {
-    padding: 8px 8px 4px;
-  }
-
-  .dropdown__search {
-    width: 100%;
-    padding: 7px 12px;
-    font-family: inherit;
-    font-size: 0.85rem;
-    color: var(--color-text);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.15s ease;
-    box-sizing: border-box;
-  }
-
-
-  .dropdown__search::placeholder {
-    color: var(--color-text-muted);
-  }
-
-  .dropdown__list {
-    list-style: none;
-    margin: 0;
-    padding: 4px;
-    overflow-y: auto;
-    max-height: 220px;
-  }
-
-  .dropdown__option {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-    color: var(--color-text);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.1s ease;
-  }
-
-  .dropdown__option:hover {
-    background: var(--color-primary-subtle);
-  }
-
-  .dropdown__option--active {
-    color: var(--color-primary);
-    font-weight: 600;
-    background: var(--color-primary-subtle);
-  }
-
-  .dropdown__option[hidden] {
-    display: none;
-  }
-
   @media (max-width: 560px) {
     .grid {
       grid-template-columns: 1fr;
@@ -589,16 +524,6 @@ function formatMonth(ym: string): string {
 
     .filters-row {
       gap: 8px;
-    }
-
-    .dropdown__panel {
-      position: fixed;
-      top: auto;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      border-radius: 16px 16px 0 0;
-      max-height: 50vh;
     }
   }
 </style>
@@ -610,9 +535,15 @@ function formatMonth(ym: string): string {
 
   const chips = document.querySelectorAll<HTMLButtonElement>(".filter-chip");
   const emptyState = document.getElementById("empty-state");
-  const titleSearchInput = document.getElementById("title-search") as HTMLInputElement;
-  const searchClearBtn = document.getElementById("search-clear-btn") as HTMLButtonElement;
-  const clearFiltersBtn = document.getElementById("clear-filters-btn") as HTMLButtonElement;
+  const titleSearchInput = document.getElementById(
+    "title-search",
+  ) as HTMLInputElement;
+  const searchClearBtn = document.getElementById(
+    "search-clear-btn",
+  ) as HTMLButtonElement;
+  const clearFiltersBtn = document.getElementById(
+    "clear-filters-btn",
+  ) as HTMLButtonElement;
 
   // --- Filter state ---
   let activeFilterType: "category" | "postType" = "category";
@@ -624,7 +555,8 @@ function formatMonth(ym: string): string {
   function applyAllFilters(): void {
     let visibleCount = 0;
     const query = searchQuery.toLowerCase();
-    const monthSections = document.querySelectorAll<HTMLElement>(".month-section");
+    const monthSections =
+      document.querySelectorAll<HTMLElement>(".month-section");
 
     monthSections.forEach((section) => {
       let sectionVisibleCount = 0;
@@ -636,23 +568,29 @@ function formatMonth(ym: string): string {
 
         let matchesFilter = true;
         if (activeFilterType === "category") {
-          matchesFilter = activeFilterValue === ALL_FILTER || card.dataset.category === activeFilterValue;
+          matchesFilter =
+            activeFilterValue === ALL_FILTER ||
+            card.dataset.category === activeFilterValue;
         } else {
           matchesFilter = card.dataset.postType === activeFilterValue;
         }
-        const matchesTitle = !query || (wrapper.dataset.title?.includes(query) ?? false);
-        const matchesAuthor = !selectedAuthor || wrapper.dataset.author === selectedAuthor;
-        const matchesDate = !selectedDate || wrapper.dataset.date === selectedDate;
+        const matchesTitle =
+          !query || (wrapper.dataset.title?.includes(query) ?? false);
+        const matchesAuthor =
+          !selectedAuthor || wrapper.dataset.author === selectedAuthor;
+        const matchesDate =
+          !selectedDate || wrapper.dataset.date === selectedDate;
 
-        const isVisible = matchesFilter && matchesTitle && matchesAuthor && matchesDate;
+        const isVisible =
+          matchesFilter && matchesTitle && matchesAuthor && matchesDate;
         wrapper.hidden = !isVisible;
 
         if (isVisible) {
           sectionVisibleCount += 1;
           visibleCount += 1;
-          wrapper.style.animation = 'none';
+          wrapper.style.animation = "none";
           wrapper.offsetHeight; // force reflow
-          wrapper.style.animation = 'fadeIn 0.3s ease both';
+          wrapper.style.animation = "fadeIn 0.3s ease both";
         }
       });
 
@@ -685,7 +623,8 @@ function formatMonth(ym: string): string {
         other.classList.toggle(ACTIVE_CLASS, isActive);
         other.setAttribute("aria-pressed", isActive ? "true" : "false");
       });
-      activeFilterType = (chip.dataset.filterType as "category" | "postType") ?? "category";
+      activeFilterType =
+        (chip.dataset.filterType as "category" | "postType") ?? "category";
       activeFilterValue = chip.dataset.filter ?? ALL_FILTER;
       applyAllFilters();
     });
@@ -723,7 +662,9 @@ function formatMonth(ym: string): string {
 
     // 3. Reset filter chips UI
     chips.forEach((chip) => {
-      const isAll = chip.dataset.filter === ALL_FILTER && chip.dataset.filterType === "category";
+      const isAll =
+        chip.dataset.filter === ALL_FILTER &&
+        chip.dataset.filterType === "category";
       chip.classList.toggle(ACTIVE_CLASS, isAll);
       chip.setAttribute("aria-pressed", isAll ? "true" : "false");
     });
@@ -731,9 +672,11 @@ function formatMonth(ym: string): string {
     // 4. Reset Author dropdown UI
     const authorDropdown = document.getElementById("author-dropdown");
     if (authorDropdown) {
-      const label = authorDropdown.querySelector<HTMLElement>(".dropdown__label");
+      const label =
+        authorDropdown.querySelector<HTMLElement>(".dropdown__label");
       if (label) label.textContent = "所有作者";
-      const options = authorDropdown.querySelectorAll<HTMLElement>(".dropdown__option");
+      const options =
+        authorDropdown.querySelectorAll<HTMLElement>(".dropdown__option");
       options.forEach((opt) => {
         const isAll = opt.dataset.value === "";
         opt.classList.toggle("dropdown__option--active", isAll);
@@ -746,7 +689,8 @@ function formatMonth(ym: string): string {
     if (dateDropdown) {
       const label = dateDropdown.querySelector<HTMLElement>(".dropdown__label");
       if (label) label.textContent = "所有日期";
-      const options = dateDropdown.querySelectorAll<HTMLElement>(".dropdown__option");
+      const options =
+        dateDropdown.querySelectorAll<HTMLElement>(".dropdown__option");
       options.forEach((opt) => {
         const isAll = opt.dataset.value === "";
         opt.classList.toggle("dropdown__option--active", isAll);
@@ -761,15 +705,21 @@ function formatMonth(ym: string): string {
   clearFiltersBtn?.addEventListener("click", clearAllFilters);
 
   // --- Dropdown logic ---
-  function initDropdown(containerId: string, onSelect: (value: string) => void): void {
+  function initDropdown(
+    containerId: string,
+    onSelect: (value: string) => void,
+  ): void {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    const trigger = container.querySelector<HTMLButtonElement>(".dropdown__trigger");
+    const trigger =
+      container.querySelector<HTMLButtonElement>(".dropdown__trigger");
     const panel = container.querySelector<HTMLElement>(".dropdown__panel");
     const label = container.querySelector<HTMLElement>(".dropdown__label");
-    const options = container.querySelectorAll<HTMLElement>(".dropdown__option");
-    const searchInput = container.querySelector<HTMLInputElement>(".dropdown__search");
+    const options =
+      container.querySelectorAll<HTMLElement>(".dropdown__option");
+    const searchInput =
+      container.querySelector<HTMLInputElement>(".dropdown__search");
 
     if (!trigger || !panel || !label) return;
 
@@ -783,20 +733,26 @@ function formatMonth(ym: string): string {
       panel!.hidden = true;
       trigger!.setAttribute("aria-expanded", "false");
       if (searchInput) searchInput.value = "";
-      options.forEach((opt) => { opt.hidden = false; });
+      options.forEach((opt) => {
+        opt.hidden = false;
+      });
     }
 
     trigger.addEventListener("click", (e) => {
       e.stopPropagation();
       const isOpen = trigger.getAttribute("aria-expanded") === "true";
       // Close other dropdowns first
-      document.querySelectorAll(".dropdown__trigger[aria-expanded='true']").forEach((other) => {
-        if (other !== trigger) {
-          const otherPanel = other.closest(".dropdown")?.querySelector<HTMLElement>(".dropdown__panel");
-          if (otherPanel) otherPanel.hidden = true;
-          other.setAttribute("aria-expanded", "false");
-        }
-      });
+      document
+        .querySelectorAll(".dropdown__trigger[aria-expanded='true']")
+        .forEach((other) => {
+          if (other !== trigger) {
+            const otherPanel = other
+              .closest(".dropdown")
+              ?.querySelector<HTMLElement>(".dropdown__panel");
+            if (otherPanel) otherPanel.hidden = true;
+            other.setAttribute("aria-expanded", "false");
+          }
+        });
       if (isOpen) {
         closePanel();
       } else {
@@ -854,34 +810,49 @@ function formatMonth(ym: string): string {
 
   // Close dropdowns on outside click
   document.addEventListener("click", () => {
-    document.querySelectorAll<HTMLElement>(".dropdown__panel:not([hidden])").forEach((panel) => {
-      panel.hidden = true;
-      const trigger = panel.closest(".dropdown")?.querySelector<HTMLElement>(".dropdown__trigger");
-      if (trigger) trigger.setAttribute("aria-expanded", "false");
-      const search = panel.querySelector<HTMLInputElement>(".dropdown__search");
-      if (search) search.value = "";
-      panel.querySelectorAll<HTMLElement>(".dropdown__option").forEach((opt) => { opt.hidden = false; });
-    });
+    document
+      .querySelectorAll<HTMLElement>(".dropdown__panel:not([hidden])")
+      .forEach((panel) => {
+        panel.hidden = true;
+        const trigger = panel
+          .closest(".dropdown")
+          ?.querySelector<HTMLElement>(".dropdown__trigger");
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+        const search =
+          panel.querySelector<HTMLInputElement>(".dropdown__search");
+        if (search) search.value = "";
+        panel
+          .querySelectorAll<HTMLElement>(".dropdown__option")
+          .forEach((opt) => {
+            opt.hidden = false;
+          });
+      });
   });
 
   // --- Scroll reveal ---
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 },
+  );
 
-  document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+  document
+    .querySelectorAll(".reveal")
+    .forEach((el) => revealObserver.observe(el));
 
   // --- View toggle ---
   const VIEW_ACTIVE_CLASS = "view-toggle__btn--active";
   const LIST_CLASS = "grid--list";
   const VIEW_STORAGE_KEY = "digest-view-mode";
 
-  const viewBtns = document.querySelectorAll<HTMLButtonElement>(".view-toggle__btn");
+  const viewBtns =
+    document.querySelectorAll<HTMLButtonElement>(".view-toggle__btn");
   const postGrids = document.querySelectorAll(".post-grid");
 
   function setView(mode: string): void {
@@ -907,17 +878,17 @@ function formatMonth(ym: string): string {
   });
 
   // Fetch view counts for cards
-  document.querySelectorAll<HTMLElement>('.card__views').forEach(el => {
-    el.querySelector('.card__view-count')!.textContent = '0';
+  document.querySelectorAll<HTMLElement>(".card__views").forEach((el) => {
+    el.querySelector(".card__view-count")!.textContent = "0";
     el.hidden = false;
     const path = el.dataset.viewPath;
     if (!path) return;
     const encoded = encodeURIComponent(path);
     fetch(`https://claude-taiwan.goatcounter.com/counter/${encoded}.json`)
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
         if (data?.count != null) {
-          el.querySelector('.card__view-count')!.textContent = data.count;
+          el.querySelector(".card__view-count")!.textContent = data.count;
         }
       })
       .catch(() => {});

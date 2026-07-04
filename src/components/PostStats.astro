@@ -12,15 +12,23 @@ const { likes, comments, shares } = Astro.props;
 
 <div class="stats">
   <span class="stats__item" title="讚">
-    <span class="material-symbols-outlined stats__icon" aria-hidden="true">favorite</span>
+    <span class="material-symbols-outlined stats__icon" aria-hidden="true"
+      >favorite</span
+    >
     <span><span class="visually-hidden">讚 </span>{formatCount(likes)}</span>
   </span>
   <span class="stats__item" title="留言">
-    <span class="material-symbols-outlined stats__icon" aria-hidden="true">chat_bubble</span>
-    <span><span class="visually-hidden">留言 </span>{formatCount(comments)}</span>
+    <span class="material-symbols-outlined stats__icon" aria-hidden="true"
+      >chat_bubble</span
+    >
+    <span
+      ><span class="visually-hidden">留言 </span>{formatCount(comments)}</span
+    >
   </span>
   <span class="stats__item" title="分享">
-    <span class="material-symbols-outlined stats__icon" aria-hidden="true">share</span>
+    <span class="material-symbols-outlined stats__icon" aria-hidden="true"
+      >share</span
+    >
     <span><span class="visually-hidden">分享 </span>{formatCount(shares)}</span>
   </span>
 </div>

@@ -41,7 +41,9 @@ async function downloadImage(url, filename) {
   }
   const buf = Buffer.from(await res.arrayBuffer());
   await writeFile(dest, buf);
-  console.log(`  Downloaded: ${filename} (${(buf.length / 1024).toFixed(0)} KB)`);
+  console.log(
+    `  Downloaded: ${filename} (${(buf.length / 1024).toFixed(0)} KB)`,
+  );
   return true;
 }
 

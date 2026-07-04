@@ -12,6 +12,7 @@ shares: 92
 images:
   - "/images/posts/claude-meetup-fully-allinone-workflow-0.jpg"
 ---
+
 以下是 Rex 上週在 Claude 開發者 meetup 上 demo 的內容，我有用 AI 幫忙整理這場分享。他用的 deck 連結放在留言區。
 
 Rex 是 FULY AI 創辦人暨 CEO。Rex 也是連續創業者，前一間公司進過 Techstars，更早之前在Yahoo跟趨勢科技當前端工程師。Rex 這次以 live demo 為主，分享他自己做的工作流程小工具，一方面看看能做到什麼程度，一方面也想跟大家交流還能怎麼優化。

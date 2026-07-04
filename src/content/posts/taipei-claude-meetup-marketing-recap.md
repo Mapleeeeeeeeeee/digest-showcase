@@ -13,6 +13,7 @@ images:
   - "/images/posts/taipei-claude-meetup-marketing-recap-cbbfa135ac88.jpg"
 postType: "article"
 ---
+
 昨天晚上，我在台北協辦了一場給行銷人的 Claude meetup。
 
 這次是全新的形式和主題，我們只錄取了約 40 位有行銷經驗、也有用 AI 輔助工作流程經驗的朋友，分成 5 組，每組有一位 moderator 帶討論。進行了兩輪討論之後，開放自由交流的 mixer 讓大家多聊聊。

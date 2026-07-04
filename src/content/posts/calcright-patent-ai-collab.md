@@ -12,6 +12,7 @@ shares: 86
 images:
   - "/images/posts/calcright-patent-ai-collab-0.jpg"
 ---
+
 用 AI 協作，把一個房東實務痛點做成 Android App，並取得新型專利
 分享一個最近完成的里程碑。
 
