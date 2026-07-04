@@ -41,12 +41,12 @@ const authorHref = authorUrl(data.authorId);
       <span class="card__badge">
         {data.postType === "discussion" ? (
           <span class="card__type-badge card__type-badge--discussion">
-            <span class="material-symbols-outlined" style="font-size:12px">forum</span>
+            <span class="material-symbols-outlined">forum</span>
             留言精華
           </span>
         ) : data.postType === "qa" ? (
           <span class="card__type-badge card__type-badge--qa">
-            <span class="material-symbols-outlined" style="font-size:12px">help</span>
+            <span class="material-symbols-outlined">help</span>
             常見問題
           </span>
         ) : (
@@ -71,7 +71,7 @@ const authorHref = authorUrl(data.authorId);
     <div class="card__footer">
       <PostStats likes={data.likes} comments={data.comments} shares={data.shares} />
       <span class="card__views" data-view-path={href} hidden>
-        <span class="material-symbols-outlined" style="font-size:14px">visibility</span>
+        <span class="material-symbols-outlined">visibility</span>
         <span class="card__view-count"></span>
       </span>
     </div>
@@ -170,6 +170,10 @@ const authorHref = authorUrl(data.authorId);
     white-space: nowrap;
   }
 
+  .card__type-badge .material-symbols-outlined {
+    font-size: 12px;
+  }
+
   .card__type-badge--discussion {
     color: #1565c0;
     background: #e3f2fd;
@@ -247,6 +251,10 @@ const authorHref = authorUrl(data.authorId);
     gap: 3px;
     color: var(--color-text-muted);
     font-size: 0.75rem;
+  }
+
+  .card__views .material-symbols-outlined {
+    font-size: 14px;
   }
 
   /* List mode overrides */

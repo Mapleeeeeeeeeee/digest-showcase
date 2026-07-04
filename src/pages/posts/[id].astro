@@ -51,13 +51,13 @@ const authorHref = authorUrl(data.authorId);
         <CategoryBadge category={data.category} />
         {data.postType === "discussion" && (
           <span class="badge-discussion">
-            <span class="material-symbols-outlined" style="font-size:14px">forum</span>
+            <span class="material-symbols-outlined">forum</span>
             留言精華
           </span>
         )}
         {data.postType === "qa" && (
           <span class="badge-qa">
-            <span class="material-symbols-outlined" style="font-size:14px">help</span>
+            <span class="material-symbols-outlined">help</span>
             常見問題
           </span>
         )}
@@ -79,7 +79,7 @@ const authorHref = authorUrl(data.authorId);
           <span class="visually-hidden">瀏覽 </span><span id="view-count"></span>
         </span>
         <button class="share-btn" id="share-btn" type="button" title="分享文章">
-          <span class="material-symbols-outlined" style="font-size:18px">share</span>
+          <span class="material-symbols-outlined">share</span>
           <span class="share-btn__label">分享</span>
         </button>
       </div>
@@ -94,13 +94,13 @@ const authorHref = authorUrl(data.authorId);
         {data.highlights.filter(h => h.isBestAnswer).map(h => (
           <div class="highlight highlight--best">
             <div class="highlight__label">
-              <span class="material-symbols-outlined" style="font-size:18px">check_circle</span>
+              <span class="material-symbols-outlined">check_circle</span>
               最佳解答
             </div>
             <div class="highlight__author">{h.author}</div>
             <div class="highlight__text" set:html={linkify(h.text)} />
             <div class="highlight__likes">
-              <span class="material-symbols-outlined" style="font-size:16px">favorite</span>
+              <span class="material-symbols-outlined">favorite</span>
               {h.likes}
             </div>
           </div>
@@ -115,7 +115,7 @@ const authorHref = authorUrl(data.authorId);
             <div class="highlight__other-header">
               <span class="highlight__author">{h.author}</span>
               <span class="highlight__likes">
-                <span class="material-symbols-outlined" style="font-size:14px">favorite</span>
+                <span class="material-symbols-outlined">favorite</span>
                 {h.likes}
               </span>
             </div>
@@ -527,6 +527,11 @@ const authorHref = authorUrl(data.authorId);
     padding: 2px 8px;
   }
 
+  .badge-discussion .material-symbols-outlined,
+  .badge-qa .material-symbols-outlined {
+    font-size: 14px;
+  }
+
   .badge-discussion {
     color: #1565c0;
     background: #e3f2fd;
@@ -560,6 +565,10 @@ const authorHref = authorUrl(data.authorId);
     margin-bottom: 10px;
   }
 
+  .highlight__label .material-symbols-outlined {
+    font-size: 18px;
+  }
+
   .highlight--best .highlight__author {
     font-weight: 700;
     font-size: 0.95rem;
@@ -580,6 +589,10 @@ const authorHref = authorUrl(data.authorId);
     gap: 4px;
     font-size: 0.82rem;
     color: #2e7d32;
+  }
+
+  .highlight--best .highlight__likes .material-symbols-outlined {
+    font-size: 16px;
   }
 
   .highlight__others-label {
@@ -619,6 +632,10 @@ const authorHref = authorUrl(data.authorId);
     color: var(--color-text-muted);
   }
 
+  .highlight--other .highlight__likes .material-symbols-outlined {
+    font-size: 14px;
+  }
+
   .highlight--other .highlight__text {
     font-size: 0.88rem;
     line-height: 1.6;
@@ -647,6 +664,10 @@ const authorHref = authorUrl(data.authorId);
     transition: color 0.15s ease, border-color 0.15s ease;
     font-family: inherit;
     margin-left: auto;
+  }
+
+  .share-btn .material-symbols-outlined {
+    font-size: 18px;
   }
 
   .share-btn:hover {

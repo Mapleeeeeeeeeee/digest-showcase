@@ -167,7 +167,7 @@ function formatMonth(ym: string): string {
     {sortedMonths.map((ym) => (
       <div class="month-section" data-month={ym}>
         <h3 class="month-section__title">
-          <span class="material-symbols-outlined" aria-hidden="true" style="font-size: 20px; color: var(--color-primary);">calendar_today</span>
+          <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
           {formatMonth(ym)}
         </h3>
         <div class="grid post-grid">
@@ -277,6 +277,11 @@ function formatMonth(ym: string): string {
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+
+  .month-section__title .material-symbols-outlined {
+    font-size: 20px;
+    color: var(--color-primary);
   }
 
   .empty {
