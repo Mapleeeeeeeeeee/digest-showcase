@@ -6,20 +6,27 @@ import CategoryBadge from "../../components/CategoryBadge.astro";
 import PostStats from "../../components/PostStats.astro";
 import { getImageSrc } from "../../lib/images";
 import { formatDateZh } from "../../lib/format";
-import { buildUrl, authorUrl } from "../../lib/url";
+import { buildUrl, authorUrl, postUrl } from "../../lib/url";
 import BackLink from "../../components/BackLink.astro";
+import PostNavigation from "../../components/PostNavigation.astro";
 
 const laptopSrc = buildUrl("/clawd-laptop.json");
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection("posts");
-  return posts.map((post) => ({
+  const posts = (await getCollection("posts")).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  );
+  return posts.map((post, index) => ({
     params: { id: post.id },
-    props: { post },
+    props: {
+      post,
+      prevPost: index < posts.length - 1 ? posts[index + 1] : null,
+      nextPost: index > 0 ? posts[index - 1] : null,
+    },
   }));
 }) satisfies GetStaticPaths;
 
-const { post } = Astro.props;
+const { post, prevPost, nextPost } = Astro.props;
 const { data } = post;
 const { Content } = await render(post);
 
@@ -145,6 +152,8 @@ const authorHref = authorUrl(data.authorId);
         前往原文討論
       </a>
     </div>
+
+    <PostNavigation prevPost={prevPost} nextPost={nextPost} />
   </article>
 
   <div class="lightbox" id="lightbox">

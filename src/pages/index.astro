@@ -63,6 +63,9 @@ function formatMonth(ym: string): string {
         <div class="search-input">
           <span class="material-symbols-outlined search-input__icon" aria-hidden="true">search</span>
           <input type="text" id="title-search" class="search-input__field focus-ring" placeholder="搜尋標題…" autocomplete="off" />
+          <button type="button" id="search-clear-btn" class="search-input__clear" aria-label="清空搜尋內容" hidden>
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
         </div>
       </div>
       <!-- Filters row: chips + dropdowns + view toggle -->
@@ -141,6 +144,12 @@ function formatMonth(ym: string): string {
             </ul>
           </div>
         </div>
+
+        <!-- Clear Filters button -->
+        <button type="button" id="clear-filters-btn" class="clear-filters-btn focus-ring" disabled>
+          <span class="material-symbols-outlined clear-filters-btn__icon" aria-hidden="true">filter_alt_off</span>
+          清除條件
+        </button>
 
         <div class="view-toggle" role="group" aria-label="切換顯示模式">
           <button type="button" class="view-toggle__btn view-toggle__btn--active" data-view="grid" aria-pressed="true">
@@ -345,7 +354,7 @@ function formatMonth(ym: string): string {
 
   .search-input__field {
     width: 100%;
-    padding: 10px 16px 10px 44px;
+    padding: 10px 40px 10px 44px;
     font-family: inherit;
     font-size: 0.92rem;
     color: var(--color-text);
@@ -361,11 +370,77 @@ function formatMonth(ym: string): string {
     color: var(--color-text-muted);
   }
 
+  .search-input__clear {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    padding: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .search-input__clear:hover {
+    background: var(--color-surface-alt);
+    color: var(--color-text);
+  }
+
+  .search-input__clear[hidden] {
+    display: none;
+  }
+
+  .clear-filters-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    background: var(--color-primary-subtle);
+    border: 1px dashed var(--color-primary-light);
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .clear-filters-btn:hover:not(:disabled) {
+    color: #fff;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(217, 119, 87, 0.2);
+  }
+
+  .clear-filters-btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .clear-filters-btn:disabled {
+    color: var(--color-text-muted);
+    background: transparent;
+    border: 1px dashed var(--color-border);
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .clear-filters-btn__icon {
+    font-size: 16px;
+  }
+
 
   /* Filters row */
   .filters-row {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     flex-wrap: wrap;
     gap: 10px;
   }
@@ -531,6 +606,8 @@ function formatMonth(ym: string): string {
   const chips = document.querySelectorAll<HTMLButtonElement>(".filter-chip");
   const emptyState = document.getElementById("empty-state");
   const titleSearchInput = document.getElementById("title-search") as HTMLInputElement;
+  const searchClearBtn = document.getElementById("search-clear-btn") as HTMLButtonElement;
+  const clearFiltersBtn = document.getElementById("clear-filters-btn") as HTMLButtonElement;
 
   // --- Filter state ---
   let activeFilterType: "category" | "postType" = "category";
@@ -578,6 +655,21 @@ function formatMonth(ym: string): string {
     });
 
     if (emptyState) emptyState.hidden = visibleCount > 0;
+
+    // Toggle search clear button
+    if (searchClearBtn) {
+      searchClearBtn.hidden = searchQuery === "";
+    }
+
+    // Toggle clear all filters button
+    if (clearFiltersBtn) {
+      const isAnyFilterActive =
+        activeFilterValue !== ALL_FILTER ||
+        searchQuery !== "" ||
+        selectedAuthor !== "" ||
+        selectedDate !== "";
+      clearFiltersBtn.disabled = !isAnyFilterActive;
+    }
   }
 
   // --- Filter chips (category + postType share the same active group) ---
@@ -599,6 +691,69 @@ function formatMonth(ym: string): string {
     searchQuery = titleSearchInput.value;
     applyAllFilters();
   });
+
+  // --- Search clear button click ---
+  searchClearBtn?.addEventListener("click", () => {
+    if (titleSearchInput) {
+      titleSearchInput.value = "";
+      searchQuery = "";
+      applyAllFilters();
+      titleSearchInput.focus();
+    }
+  });
+
+  // --- Clear all filters click ---
+  function clearAllFilters(): void {
+    // 1. Reset state variables
+    activeFilterType = "category";
+    activeFilterValue = ALL_FILTER;
+    searchQuery = "";
+    selectedAuthor = "";
+    selectedDate = "";
+
+    // 2. Reset title search input
+    if (titleSearchInput) {
+      titleSearchInput.value = "";
+    }
+
+    // 3. Reset filter chips UI
+    chips.forEach((chip) => {
+      const isAll = chip.dataset.filter === ALL_FILTER && chip.dataset.filterType === "category";
+      chip.classList.toggle(ACTIVE_CLASS, isAll);
+      chip.setAttribute("aria-pressed", isAll ? "true" : "false");
+    });
+
+    // 4. Reset Author dropdown UI
+    const authorDropdown = document.getElementById("author-dropdown");
+    if (authorDropdown) {
+      const label = authorDropdown.querySelector<HTMLElement>(".dropdown__label");
+      if (label) label.textContent = "所有作者";
+      const options = authorDropdown.querySelectorAll<HTMLElement>(".dropdown__option");
+      options.forEach((opt) => {
+        const isAll = opt.dataset.value === "";
+        opt.classList.toggle("dropdown__option--active", isAll);
+        opt.setAttribute("aria-selected", isAll ? "true" : "false");
+      });
+    }
+
+    // 5. Reset Date dropdown UI
+    const dateDropdown = document.getElementById("date-dropdown");
+    if (dateDropdown) {
+      const label = dateDropdown.querySelector<HTMLElement>(".dropdown__label");
+      if (label) label.textContent = "所有日期";
+      const options = dateDropdown.querySelectorAll<HTMLElement>(".dropdown__option");
+      options.forEach((opt) => {
+        const isAll = opt.dataset.value === "";
+        opt.classList.toggle("dropdown__option--active", isAll);
+        opt.setAttribute("aria-selected", isAll ? "true" : "false");
+      });
+    }
+
+    // 6. Apply filters
+    applyAllFilters();
+  }
+
+  clearFiltersBtn?.addEventListener("click", clearAllFilters);
 
   // --- Dropdown logic ---
   function initDropdown(containerId: string, onSelect: (value: string) => void): void {
