@@ -8,9 +8,10 @@ import { postUrl, buildUrl, authorUrl } from "../lib/url";
 
 interface Props {
   post: CollectionEntry<"posts">;
+  buildTimeViewCount?: number;
 }
 
-const { post } = Astro.props;
+const { post, buildTimeViewCount = 0 } = Astro.props;
 const { data } = post;
 const thumbnail = getThumbnail(data.images);
 const href = postUrl(post.id);
@@ -77,9 +78,9 @@ const authorHref = authorUrl(data.authorId);
         comments={data.comments}
         shares={data.shares}
       />
-      <span class="card__views" data-view-path={href} hidden>
+      <span class="card__views" data-view-path={href}>
         <span class="material-symbols-outlined">visibility</span>
-        <span class="card__view-count"></span>
+        <span class="card__view-count">{buildTimeViewCount}</span>
       </span>
     </div>
   </div>

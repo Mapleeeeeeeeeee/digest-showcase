@@ -1,10 +1,10 @@
 ---
 title: "設計師和 PM 現在與工程師一起構建 — Yuanlin Lin，Zeabur 共同創辦人"
-author: "Anonymous"
-authorId: "anonymous"
-authorUrl: "https://www.facebook.com"
-date: 2026-07-05T09:56:48.570Z
-category: "知識精華"
+author: "Natalie Feng Lin"
+authorId: "627625202"
+authorUrl: "https://www.facebook.com/627625202"
+date: 2026-03-22T23:30:55.000Z
+category: "社群活動"
 sourceUrl: "https://www.facebook.com/share/p/19g83cYnfx/"
 likes: 0
 comments: 0

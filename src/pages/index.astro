@@ -9,6 +9,22 @@ const posts = (await getCollection("posts")).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 
+// Fetch view counts for all posts at build time
+const viewCounts: Record<string, number> = {};
+try {
+  await Promise.all(
+    posts.map(async (post) => {
+      const path = `/digest-showcase/posts/${post.id}`;
+      const encoded = encodeURIComponent(path);
+      const res = await fetch(`https://claude-taiwan.goatcounter.com/counter/${encoded}.json`);
+      const data = res.ok ? await res.json() : null;
+      viewCounts[post.id] = data ? parseInt(data.count) || 0 : 0;
+    })
+  );
+} catch (e) {
+  console.warn("Failed to fetch view counts at build time:", e);
+}
+
 const postsByMonth: Record<string, typeof posts> = {};
 for (const post of posts) {
   const d = post.data.date;
@@ -205,6 +221,15 @@ const dateOptions = uniqueMonths.map((ym) => ({
     </div>
   </section>
 
+  <!-- Subtle Adblock Warning Notice (hidden by default) -->
+  <div id="adblock-notice" class="adblock-notice container">
+    <span class="material-symbols-outlined" aria-hidden="true">info</span>
+    <span>
+      由於廣告阻擋器，目前已自動切換為靜態統計。
+      <a href="#" id="adblock-help-trigger">了解如何恢復即時統計...</a>
+    </span>
+  </div>
+
   <section class="container" id="post-sections">
     {
       sortedMonths.map((ym) => (
@@ -224,7 +249,7 @@ const dateOptions = uniqueMonths.map((ym) => ({
                 data-author={post.data.author}
                 data-date={ym}
               >
-                <PostCard post={post} />
+                <PostCard post={post} buildTimeViewCount={viewCounts[post.id] || 0} />
               </div>
             ))}
           </div>
@@ -233,6 +258,26 @@ const dateOptions = uniqueMonths.map((ym) => ({
     }
     <p class="empty" id="empty-state" hidden>目前沒有符合條件的貼文。</p>
   </section>
+
+  <!-- Adblock Help Modal -->
+  <dialog id="adblock-modal" class="adblock-modal">
+    <div class="adblock-modal__content">
+      <header class="adblock-modal__header">
+        <h2 class="adblock-modal__title">為什麼看不到即時統計？</h2>
+        <button type="button" class="adblock-modal__close" id="adblock-modal-close" aria-label="關閉">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </header>
+      <div class="adblock-modal__body">
+        <p>本展示櫃使用 <a href="https://www.goatcounter.com" target="_blank" rel="noopener noreferrer">GoatCounter</a> 統計非私人的匿名瀏覽數據。</p>
+        <p>由於 GoatCounter 屬於網站分析（Analytics）服務，多數<strong>廣告阻擋器</strong>（例如 uBlock Origin、AdBlock Plus、Brave 瀏覽器內建 Shields、Safari 內容阻擋等）會自動將其網域阻擋，這會阻礙即時瀏覽數的加載與更新。</p>
+        <p>為了確保您可以流暢瀏覽，本站採用了<strong>預渲染備用技術</strong>，即便被阻擋，您仍能看見建置時的靜態閱讀次數。若您希望看到最即時的數據更新，請考慮在廣告阻擋器中將本站加入白名單，或新增自訂排除規則：</p>
+        <pre style="background: var(--color-border); padding: 12px; border-radius: 6px; font-family: monospace; font-size: 0.88rem; margin: 8px 0; overflow-x: auto;"><code>@@||claude-taiwan.goatcounter.com^
+@@||gc.zgo.at^</code></pre>
+        <p style="margin-top: 12px;">設定完成並重新整理網頁後，系統即會開始即時同步最新的數據。</p>
+      </div>
+    </div>
+  </dialog>
 </BaseLayout>
 
 <style>
@@ -525,6 +570,119 @@ const dateOptions = uniqueMonths.map((ym) => ({
     .filters-row {
       gap: 8px;
     }
+  }
+
+  /* Adblock Notice */
+  .adblock-notice {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    display: none; /* JS toggles this to flex */
+    margin: 0 auto 24px auto;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    max-width: 90%;
+  }
+
+  .adblock-notice .material-symbols-outlined {
+    color: #eab308;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .adblock-notice span {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .adblock-notice a {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    margin-left: 4px;
+    font-weight: 500;
+    transition: opacity 0.15s ease;
+  }
+
+  .adblock-notice a:hover {
+    opacity: 0.75;
+  }
+
+  /* Adblock Modal */
+  .adblock-modal {
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    max-width: 500px;
+    width: calc(100% - 32px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .adblock-modal::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .adblock-modal__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .adblock-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .adblock-modal__title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .adblock-modal__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .adblock-modal__close:hover {
+    background: var(--color-border);
+    color: var(--color-text);
+  }
+
+  .adblock-modal__body {
+    padding: 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .adblock-modal__body a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .adblock-modal__body a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  .adblock-modal__body strong {
+    color: var(--color-text);
   }
 </style>
 
@@ -878,19 +1036,53 @@ const dateOptions = uniqueMonths.map((ym) => ({
   });
 
   // Fetch view counts for cards
-  document.querySelectorAll<HTMLElement>(".card__views").forEach((el) => {
-    el.querySelector(".card__view-count")!.textContent = "0";
-    el.hidden = false;
-    const path = el.dataset.viewPath;
-    if (!path) return;
-    const encoded = encodeURIComponent(path);
-    fetch(`https://claude-taiwan.goatcounter.com/counter/${encoded}.json`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (data?.count != null) {
-          el.querySelector(".card__view-count")!.textContent = data.count;
-        }
-      })
-      .catch(() => {});
-  });
+  const cards = document.querySelectorAll<HTMLElement>(".card__views");
+  const adblockNotice = document.getElementById("adblock-notice");
+  const adblockModal = document.getElementById("adblock-modal") as HTMLDialogElement | null;
+  const adblockTrigger = document.getElementById("adblock-help-trigger");
+  const adblockClose = document.getElementById("adblock-modal-close");
+
+  let adblockDetected = false;
+
+  if (cards.length > 0) {
+    const promises = Array.from(cards).map((el) => {
+      const path = el.dataset.viewPath;
+      if (!path) return Promise.resolve();
+      const encoded = encodeURIComponent(path);
+      return fetch(`https://claude-taiwan.goatcounter.com/counter/${encoded}.json`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          if (data?.count != null) {
+            el.querySelector(".card__view-count")!.textContent = data.count;
+          }
+        })
+        .catch(() => {
+          adblockDetected = true;
+        });
+    });
+
+    Promise.all(promises).then(() => {
+      if (adblockDetected && adblockNotice) {
+        adblockNotice.style.display = "flex";
+      }
+    });
+  }
+
+  // Adblock Help Modal Logic
+  if (adblockModal && adblockClose) {
+    if (adblockTrigger) {
+      adblockTrigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        adblockModal.showModal();
+      });
+    }
+    adblockClose.addEventListener("click", () => {
+      adblockModal.close();
+    });
+    adblockModal.addEventListener("click", (e) => {
+      if (e.target === adblockModal) {
+        adblockModal.close();
+      }
+    });
+  }
 </script>

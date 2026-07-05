@@ -107,10 +107,11 @@ async function run() {
       continue;
     }
 
-    const authorName = post.author?.name || "Anonymous";
-    const authorId = post.author?.id || generateSlug(authorName, "anonymous");
-    const authorUrl = post.author?.profileUrl || "https://www.facebook.com";
-    const dateStr = post.timestamp || new Date().toISOString();
+    const author = post.author || post.user;
+    const authorName = author?.name || "Anonymous";
+    const authorId = author?.id || generateSlug(authorName, "anonymous");
+    const authorUrl = author?.profileUrl || (author?.id ? `https://www.facebook.com/${author.id}` : "https://www.facebook.com");
+    const dateStr = post.time || post.timestamp || new Date().toISOString();
     
     const likes = post.engagement?.likesCount ?? post.likes ?? 0;
     const comments = post.engagement?.commentsCount ?? post.comments ?? 0;

@@ -31,6 +31,18 @@ const { post, prevPost, nextPost } = Astro.props;
 const { data } = post;
 const { Content } = await render(post);
 
+// Fetch view count at build time
+let buildTimeViewCount = 0;
+try {
+  const path = `/digest-showcase/posts/${post.id}`;
+  const encoded = encodeURIComponent(path);
+  const res = await fetch(`https://claude-taiwan.goatcounter.com/counter/${encoded}.json`);
+  const data = res.ok ? await res.json() : null;
+  buildTimeViewCount = data ? parseInt(data.count) || 0 : 0;
+} catch (e) {
+  console.warn("Failed to fetch view count at build time:", e);
+}
+
 const formattedDate = formatDateZh(data.date);
 
 function linkify(text: string): string {
@@ -85,12 +97,16 @@ const authorHref = authorUrl(data.authorId);
           comments={data.comments}
           shares={data.shares}
         />
-        <span class="stats__item stats__item--views" title="瀏覽" hidden>
+        <span class="stats__item stats__item--views" title="瀏覽">
           <span class="material-symbols-outlined stats__icon" aria-hidden="true"
             >visibility</span
           >
           <span class="visually-hidden">瀏覽 </span><span id="view-count"
-          ></span>
+          >{buildTimeViewCount}</span>
+          <span id="adblock-info-container" class="views-help-container" style="display: none;">
+            <span class="material-symbols-outlined adblock-info-icon">info</span>
+            <span class="views-tooltip">偵測到廣告阻擋器。目前顯示為建置時的備用靜態數據。</span>
+          </span>
         </span>
         <button class="share-btn" id="share-btn" type="button" title="分享文章">
           <span class="material-symbols-outlined">share</span>
@@ -217,12 +233,8 @@ const authorHref = authorUrl(data.authorId);
 
   // Fetch view count from GoatCounter
   const viewCountEl = document.getElementById("view-count");
-  const viewContainer = viewCountEl?.closest(
-    ".stats__item--views",
-  ) as HTMLElement | null;
-  if (viewCountEl && viewContainer) {
-    viewCountEl.textContent = "0";
-    viewContainer.hidden = false;
+
+  if (viewCountEl) {
     const path = encodeURIComponent(window.location.pathname);
     fetch(`https://claude-taiwan.goatcounter.com/counter/${path}.json`)
       .then((r) => (r.ok ? r.json() : null))
@@ -231,7 +243,13 @@ const authorHref = authorUrl(data.authorId);
           viewCountEl.textContent = data.count;
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        // If fetch fails (adblocker), show the pre-defined tooltip container
+        const container = document.getElementById("adblock-info-container");
+        if (container) {
+          container.style.display = "inline-flex";
+        }
+      });
   }
 </script>
 
@@ -537,6 +555,58 @@ const authorHref = authorUrl(data.authorId);
   .share-btn:hover {
     color: var(--color-primary);
     border-color: var(--color-primary-light);
+  }
+
+  .adblock-info-icon {
+    margin-left: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #eab308;
+    vertical-align: middle;
+  }
+
+  .views-help-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .views-tooltip {
+    visibility: hidden;
+    position: absolute;
+    bottom: 135%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+  }
+
+  /* Tooltip Arrow */
+  .views-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--color-border) transparent transparent transparent;
+  }
+
+  .views-help-container:hover .views-tooltip {
+    visibility: visible;
+    opacity: 1;
   }
 </style>
 

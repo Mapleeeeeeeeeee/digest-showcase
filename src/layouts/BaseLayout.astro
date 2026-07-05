@@ -109,12 +109,20 @@ const clawdSrc = buildUrl("/clawd.svg");
       document.addEventListener("DOMContentLoaded", function () {
         var header = document.getElementById("clawd-header");
         if (header) {
-          lottie.loadAnimation({
+          var anim = lottie.loadAnimation({
             container: header,
             renderer: "svg",
-            loop: true,
+            loop: false,
             autoplay: true,
             path: header.dataset.lottieSrc,
+          });
+          window.clawdAnim = anim;
+
+          var isFlipped = false;
+          anim.addEventListener("complete", function () {
+            isFlipped = !isFlipped;
+            header.style.transform = isFlipped ? "scaleX(-1)" : "scaleX(1)";
+            anim.goToAndPlay(0, true);
           });
         }
 
