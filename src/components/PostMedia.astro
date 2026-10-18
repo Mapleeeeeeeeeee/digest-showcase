@@ -1,0 +1,114 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getImageSrc } from "../lib/images";
+import { buildUrl } from "../lib/url";
+
+interface Props {
+  title: string;
+  images: string[];
+  videos: CollectionEntry<"posts">["data"]["videos"];
+}
+
+const { title, images, videos } = Astro.props;
+const media = Array.from({ length: images.length + 1 }, (_, position) => [
+  ...videos
+    .filter((video) => video.afterImage === position)
+    .map((video) => ({ type: "video" as const, video })),
+  ...(position < images.length
+    ? [{ type: "image" as const, src: images[position], number: position + 1 }]
+    : []),
+]).flat();
+---
+
+{
+  media.length > 0 && (
+    <section
+      class="post__gallery"
+      aria-label={videos.length ? "貼文照片與影片" : "貼文圖片"}
+    >
+      {media.map((item) =>
+        item.type === "image" ? (
+          <img
+            class="post__image"
+            src={getImageSrc(item.src)}
+            alt={`${title} 圖片 ${item.number}`}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <figure class="post__video">
+            <video
+              controls
+              playsinline
+              preload="metadata"
+              poster={
+                item.video.poster ? getImageSrc(item.video.poster) : undefined
+              }
+              aria-label={`${title} 影片 ${videos.indexOf(item.video) + 1}`}
+            >
+              <source src={buildUrl(item.video.src)} type="video/mp4" />
+              您的瀏覽器不支援影片播放，請透過下方連結觀看原影片。
+            </video>
+            <figcaption>
+              <a
+                href={item.video.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                前往 Facebook 觀看原影片
+              </a>
+            </figcaption>
+          </figure>
+        ),
+      )}
+    </section>
+  )
+}
+
+<style>
+  .post__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+    gap: 14px;
+    margin: 32px 0;
+    align-items: start;
+  }
+
+  .post__image {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-alt);
+    cursor: zoom-in;
+    transition: opacity 0.15s ease;
+  }
+
+  .post__image:hover {
+    opacity: 0.85;
+  }
+
+  .post__video {
+    grid-column: 1 / -1;
+    margin: 0;
+    min-width: 0;
+  }
+
+  .post__video video {
+    display: block;
+    width: 100%;
+    max-height: 80vh;
+    border-radius: var(--radius-md);
+    background: #000;
+  }
+
+  .post__video figcaption {
+    margin-top: 8px;
+    font-size: 0.85rem;
+  }
+
+  .post__video a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

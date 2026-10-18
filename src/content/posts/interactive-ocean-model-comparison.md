@@ -11,6 +11,7 @@ comments: 9
 shares: 50
 images: []
 authorUrl: "https://www.facebook.com/100000164415900"
+videos: [{"src":"/videos/posts/interactive-ocean-model-comparison-1105890245184243.mp4","sourceUrl":"https://www.facebook.com/h94g41up/videos/1105890245184243/?idorvanity=1224997379198346","afterImage":0}]
 ---
 
 同一個互動頁面，GPT花了三倍錢  

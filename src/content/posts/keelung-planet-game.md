@@ -11,6 +11,7 @@ comments: 38
 shares: 55
 images: ["/images/posts/keelung-planet-game-02-10245121800484805.jpg","/images/posts/keelung-planet-game-03-10245121799724786.jpg","/images/posts/keelung-planet-game-05-10245121797844739.jpg","/images/posts/keelung-planet-game-06-10245121777284225.jpg","/images/posts/keelung-planet-game-07-10245121798924766.jpg"]
 authorUrl: "https://www.facebook.com/1388019714"
+videos: [{"src":"/videos/posts/keelung-planet-game-1419543886990222.mp4","sourceUrl":"https://www.facebook.com/neo73/videos/1419543886990222/?idorvanity=1224997379198346","afterImage":0},{"src":"/videos/posts/keelung-planet-game-1190414266847037.mp4","sourceUrl":"https://www.facebook.com/neo73/videos/1190414266847037/?idorvanity=1224997379198346","afterImage":2}]
 ---
 
 我用opus 5\.5做了一個小遊戲「基隆小行星」。  

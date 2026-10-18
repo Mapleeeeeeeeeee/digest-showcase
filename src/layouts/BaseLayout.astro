@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { buildUrl } from "../lib/url";
+import { buildVersion } from "../lib/build-version";
 
 interface Props {
   title: string;
@@ -17,7 +18,11 @@ const clawdSrc = buildUrl("/clawd.svg");
 
 <!doctype html>
 <!-- trigger deploy -->
-<html lang="zh-Hant">
+<html
+  lang="zh-Hant"
+  data-site-version={buildVersion}
+  data-version-endpoint={buildUrl("/version.json")}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -105,6 +110,19 @@ const clawdSrc = buildUrl("/clawd.svg");
       src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"
       integrity="sha384-J8C0MvgX4WP58J4N2W99vCKd2J6z99ynOJ5bEfE6jeP7kVTW1drYtv/jzrxM5jbm"
       crossorigin="anonymous"></script>
+    <script>
+      import { startVersionWatcher } from "../lib/version-watcher";
+      const { siteVersion, versionEndpoint } = document.documentElement.dataset;
+      if (siteVersion && versionEndpoint) {
+        startVersionWatcher({
+          currentVersion: siteVersion,
+          endpoint: versionEndpoint,
+          window,
+          document,
+          fetch: window.fetch.bind(window),
+        });
+      }
+    </script>
     <script is:inline>
       document.addEventListener("DOMContentLoaded", function () {
         var header = document.getElementById("clawd-header");

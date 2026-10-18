@@ -11,6 +11,7 @@ comments: 18
 shares: 50
 images: []
 authorUrl: "https://www.facebook.com/1663177423"
+videos: [{"src":"/videos/posts/stocktown-park-update-2125783635034823.mp4","sourceUrl":"https://www.facebook.com/kenhcchen/videos/2125783635034823/?idorvanity=1224997379198346","afterImage":0}]
 ---
 
 【台股小鎮更新】這兩天台股行情不好「公園紙箱區」擴建了\!  

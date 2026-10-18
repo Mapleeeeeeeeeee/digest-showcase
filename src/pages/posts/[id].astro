@@ -4,7 +4,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CategoryBadge from "../../components/CategoryBadge.astro";
 import PostStats from "../../components/PostStats.astro";
-import { getImageSrc } from "../../lib/images";
+import PostMedia from "../../components/PostMedia.astro";
 import { formatDateZh } from "../../lib/format";
 import { buildUrl, authorUrl, postUrl } from "../../lib/url";
 import BackLink from "../../components/BackLink.astro";
@@ -162,21 +162,7 @@ const authorHref = authorUrl(data.authorId);
         )
     }
 
-    {
-      data.images.length > 0 && (
-        <section class="post__gallery" aria-label="貼文圖片">
-          {data.images.map((image, index) => (
-            <img
-              class="post__image"
-              src={getImageSrc(image)}
-              alt={`${data.title} 圖片 ${index + 1}`}
-              loading="lazy"
-              decoding="async"
-            />
-          ))}
-        </section>
-      )
-    }
+    <PostMedia title={data.title} images={data.images} videos={data.videos} />
 
     <div class="post__source">
       <a
@@ -336,26 +322,6 @@ const authorHref = authorUrl(data.authorId);
     color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: 2px;
-  }
-
-  .post__gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 14px;
-    margin: 32px 0;
-  }
-
-  .post__image {
-    width: 100%;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-border);
-    background: var(--color-surface-alt);
-    cursor: zoom-in;
-    transition: opacity 0.15s ease;
-  }
-
-  .post__image:hover {
-    opacity: 0.85;
   }
 
   .post__source {

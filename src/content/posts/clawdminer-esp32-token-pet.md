@@ -10,6 +10,7 @@ likes: 168
 comments: 17
 shares: 21
 images: ["/images/posts/clawdminer-esp32-token-pet-01-27415646448102631.jpg","/images/posts/clawdminer-esp32-token-pet-02-27415647031435906.jpg","/images/posts/clawdminer-esp32-token-pet-03-27415647694769173.jpg"]
+videos: [{"src":"/videos/posts/clawdminer-esp32-token-pet-2078583039678384.mp4","sourceUrl":"https://www.facebook.com/risky9763/videos/2078583039678384/?idorvanity=1224997379198346","afterImage":2}]
 ---
 
 續昨天分享 撿到的ESP32  
