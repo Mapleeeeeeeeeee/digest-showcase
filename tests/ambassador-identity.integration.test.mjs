@@ -63,5 +63,25 @@ test("Given the homepage when choosing an author role then Ambassador remains se
   assert.match(homepage, /data-filter="true" data-filter-type="ambassador"/);
   assert.match(homepage, /data-filter="知識精華" data-filter-type="category"/);
   assert.match(homepage, /data-filter="社群活動" data-filter-type="category"/);
-  assert.equal((homepage.match(/data-ambassador="true"/g) ?? []).length, 11);
+  assert.equal((homepage.match(/data-ambassador="true"/g) ?? []).length, 9);
 });
+
+for (const id of [
+  "claude-founders-meetup-announcement",
+  "claude-meetup-gaming-announcement",
+]) {
+  test(`Given the archived ${id} announcement when browsing published collections then readers see recaps instead of the invitation`, () => {
+    const archivedPost = readFileSync(`content/archived-posts/${id}.md`, "utf8");
+    const archivedData = load(archivedPost.split("---")[1]);
+    assert.match(archivedData.sourceUrl, /^https:\/\/www\.facebook\.com\/groups\//);
+    assert.ok(archivedPost.split("---").slice(2).join("---").trim().length > 0);
+    for (const html of [
+      homepage,
+      readFileSync("dist/authors/627625202/index.html", "utf8"),
+    ]) {
+      assert.ok(!html.includes(`/posts/${id}`));
+      assert.ok(html.includes("/posts/claude-meetup-gaming-recap"));
+      assert.ok(html.includes("/posts/tammy-ai-native-operations-recap"));
+    }
+  });
+}

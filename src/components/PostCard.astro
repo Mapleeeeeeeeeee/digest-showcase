@@ -103,16 +103,16 @@ const authorHref = authorUrl(data.authorId);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
     overflow: hidden;
-    transition:
-      transform 0.18s ease,
-      box-shadow 0.18s ease,
-      border-color 0.18s ease;
+    transition: box-shadow 0.18s ease;
   }
 
   .card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-card-hover);
-    border-color: var(--color-primary-light);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  .card:has(a:focus-visible) {
+    outline: 2px solid var(--color-text-secondary);
+    outline-offset: 3px;
   }
 
   .card__media-link {
@@ -130,11 +130,6 @@ const authorHref = authorUrl(data.authorId);
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
-  }
-
-  .card:hover .card__thumb {
-    transform: scale(1.05);
   }
 
   .card__placeholder {
@@ -234,7 +229,7 @@ const authorHref = authorUrl(data.authorId);
   }
 
   .card__title-link:hover {
-    color: var(--color-primary);
+    color: inherit;
   }
 
   .card__meta {
@@ -279,10 +274,6 @@ const authorHref = authorUrl(data.authorId);
   :global(.grid--list) .card {
     flex-direction: row;
     height: auto;
-  }
-
-  :global(.grid--list) .card:hover {
-    transform: translateY(-2px);
   }
 
   :global(.grid--list) .card__media-link {
