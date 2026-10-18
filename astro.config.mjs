@@ -5,4 +5,7 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   site: "https://Mapleeeeeeeeeee.github.io",
   base: "/digest-showcase",
+  markdown: {
+    smartypants: false,
+  },
 });
