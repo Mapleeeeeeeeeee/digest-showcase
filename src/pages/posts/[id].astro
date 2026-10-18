@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import AmbassadorBadge from "../../components/AmbassadorBadge.astro";
 import CategoryBadge from "../../components/CategoryBadge.astro";
 import PostStats from "../../components/PostStats.astro";
 import PostMedia from "../../components/PostMedia.astro";
@@ -67,6 +68,7 @@ const authorHref = authorUrl(data.authorId);
     <header class="post__header">
       <div class="post__badges">
         <CategoryBadge category={data.category} />
+        <AmbassadorBadge authorId={data.authorId} />
         {
           data.postType === "discussion" && (
             <span class="badge-discussion">

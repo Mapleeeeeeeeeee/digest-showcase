@@ -11,7 +11,7 @@ comments: 20
 shares: 67
 images: []
 authorUrl: "https://www.facebook.com/100009184694454"
-videos: [{"src":"/videos/posts/minecraft-ai-demo-1866371757683140.mp4","sourceUrl":"https://www.facebook.com/rayfilm0815/videos/1866371757683140/?idorvanity=1224997379198346","afterImage":0}]
+videos: [{"src":"/videos/posts/minecraft-ai-demo-1866371757683140.mp4","sourceUrl":"https://www.facebook.com/rayfilm0815/videos/1866371757683140/?idorvanity=1224997379198346","afterImage":0,"poster":"/images/video-posters/minecraft-ai-demo-1866371757683140.jpg"}]
 ---
 
 Claude 你日子不過了????? Opus等級的直接給這種能力\.\.\.  

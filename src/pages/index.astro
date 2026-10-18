@@ -111,7 +111,7 @@ const dateOptions = uniqueMonths.map((ym) => ({
       </div>
       <!-- Filters row: chips + dropdowns + view toggle -->
       <div class="filters-row">
-        <div class="filters" role="group" aria-label="依分類篩選">
+        <div class="filters" role="group" aria-label="依分類或作者身分篩選">
           {
             filters.map((filter, index) => (
               <button
@@ -153,6 +153,19 @@ const dateOptions = uniqueMonths.map((ym) => ({
               </button>
             ))
           }
+          <button
+            type="button"
+            class="filter-chip"
+            data-filter="true"
+            data-filter-type="ambassador"
+            aria-pressed="false"
+          >
+            <span
+              class="material-symbols-outlined filter-chip__icon"
+              aria-hidden="true">verified</span
+            >
+            Claude Ambassador
+          </button>
         </div>
 
         <!-- Author combobox -->
@@ -695,7 +708,7 @@ const dateOptions = uniqueMonths.map((ym) => ({
   ) as HTMLButtonElement;
 
   // --- Filter state ---
-  let activeFilterType: "category" | "postType" = "category";
+  let activeFilterType: "category" | "postType" | "ambassador" = "category";
   let activeFilterValue = ALL_FILTER;
   let searchQuery = "";
   let selectedAuthor = "";
@@ -720,6 +733,8 @@ const dateOptions = uniqueMonths.map((ym) => ({
           matchesFilter =
             activeFilterValue === ALL_FILTER ||
             card.dataset.category === activeFilterValue;
+        } else if (activeFilterType === "ambassador") {
+          matchesFilter = card.dataset.ambassador === "true";
         } else {
           matchesFilter = card.dataset.postType === activeFilterValue;
         }
@@ -773,7 +788,8 @@ const dateOptions = uniqueMonths.map((ym) => ({
         other.setAttribute("aria-pressed", isActive ? "true" : "false");
       });
       activeFilterType =
-        (chip.dataset.filterType as "category" | "postType") ?? "category";
+        (chip.dataset.filterType as "category" | "postType" | "ambassador") ??
+        "category";
       activeFilterValue = chip.dataset.filter ?? ALL_FILTER;
       applyAllFilters();
     });

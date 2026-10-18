@@ -12,13 +12,11 @@ export function getImageSrc(url: string): string {
   return url;
 }
 
-/**
- * Pick the thumbnail source for a post from its image list.
- * Returns null when the post has no images, so callers can render a tasteful
- * placeholder instead of a broken image.
- */
-export function getThumbnail(images: string[]): string | null {
-  const [first] = images;
-  if (!first) return null;
-  return getImageSrc(first);
+/** Returns the first photo, then the first available video poster, or null. */
+export function getThumbnail(
+  images: string[],
+  videos: { poster?: string }[] = [],
+): string | null {
+  const source = images[0] || videos.find((video) => video.poster)?.poster;
+  return source ? getImageSrc(source) : null;
 }

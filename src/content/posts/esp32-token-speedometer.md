@@ -10,7 +10,7 @@ likes: 255
 comments: 20
 shares: 16
 images: ["/images/posts/esp32-token-speedometer-01-27402906246043318.jpg"]
-videos: [{"src":"/videos/posts/esp32-token-speedometer-1536167618555622.mp4","sourceUrl":"https://www.facebook.com/risky9763/videos/1536167618555622/?idorvanity=1224997379198346","afterImage":0}]
+videos: [{"src":"/videos/posts/esp32-token-speedometer-1536167618555622.mp4","sourceUrl":"https://www.facebook.com/risky9763/videos/1536167618555622/?idorvanity=1224997379198346","afterImage":0,"poster":"/images/video-posters/esp32-token-speedometer-1536167618555622.jpg"}]
 ---
 
 昨天撿到一塊ESP32 帶螢幕的  

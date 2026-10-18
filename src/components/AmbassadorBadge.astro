@@ -1,0 +1,60 @@
+---
+import { getAmbassadorVerification } from "../lib/ambassadors";
+
+interface Props {
+  authorId: string;
+  compact?: boolean;
+}
+
+const { authorId, compact = false } = Astro.props;
+const verification = getAmbassadorVerification(authorId);
+---
+
+{
+  verification && (
+    <a
+      class="ambassador-badge"
+      href={verification.sourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={`${verification.role} · 身分來源（核對日期 ${verification.verifiedAt}）。社群角色不代表 Anthropic 員工或官方公告。`}
+      aria-label={`${verification.name}：${verification.role}，查看身分來源`}
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">
+        verified
+      </span>
+      {compact ? "Claude Ambassador" : verification.role}
+    </a>
+  )
+}
+
+<style>
+  .ambassador-badge {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 4px;
+    max-width: 100%;
+    padding: 3px 8px;
+    border: 1px solid #d4bb84;
+    border-radius: 999px;
+    background: #fbf4e5;
+    color: #705018;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .ambassador-badge:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ambassador-badge .material-symbols-outlined {
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+</style>

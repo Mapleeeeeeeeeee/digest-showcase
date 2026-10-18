@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import AmbassadorBadge from "../../components/AmbassadorBadge.astro";
 import PostCard from "../../components/PostCard.astro";
 import { buildUrl } from "../../lib/url";
 import BackLink from "../../components/BackLink.astro";
@@ -50,6 +51,7 @@ const homeHref = buildUrl("/");
       </div>
       <div>
         <h1 class="author__name">{authorName}</h1>
+        <AmbassadorBadge authorId={Astro.params.id!} />
         <p class="author__stat">{posts.length} 篇精選貼文</p>
       </div>
     </header>
