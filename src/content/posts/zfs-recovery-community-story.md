@@ -15,8 +15,12 @@ authorUrl: "https://www.facebook.com/61585105004197"
 
 Claude 又一次創造奇蹟了  
   
-但不知道為什麼這種事情都是發生在 Claude 身上，還沒看過有人用 Codex 的故事🤣  
-  
+但不知道為什麼這種事情都是發生在 Claude 身上，還沒看過有人用 Codex 的故事🤣
+
+---
+
+轉分享自：[曹書睿](https://www.facebook.com/cao.shu.rui.688850/posts/pfbid03XDQ2VTsa7bqEybu9byajGg7BGaXBMG8x2TBeBZoZUc4TZTCp3MCyPCN3MNbJbvcl)
+
 去年五月底，公司 NAS 突然炸了。  
 所有專案內容，全部炸掉。  
 12 顆 16TB 硬碟，大概 90TB 的動畫製作檔案、序列檔、專案原始檔，一夕之間全部打不開。  
