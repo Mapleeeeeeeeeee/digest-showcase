@@ -4,6 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import Dropdown from "../components/Dropdown.astro";
 import { POST_CATEGORIES } from "../content.config";
+import { getCommunityMonth } from "../lib/format";
 
 const posts = (await getCollection("posts")).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
@@ -27,8 +28,7 @@ try {
 
 const postsByMonth: Record<string, typeof posts> = {};
 for (const post of posts) {
-  const d = post.data.date;
-  const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+  const ym = getCommunityMonth(post.data.date);
   if (!postsByMonth[ym]) {
     postsByMonth[ym] = [];
   }
@@ -53,16 +53,7 @@ const FILTER_ICONS: Record<string, string> = {
 };
 
 const uniqueAuthors = [...new Set(posts.map((p) => p.data.author))].sort();
-const uniqueMonths = [
-  ...new Set(
-    posts.map((p) => {
-      const d = p.data.date;
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-    }),
-  ),
-]
-  .sort()
-  .reverse();
+const uniqueMonths = sortedMonths;
 
 function formatMonth(ym: string): string {
   const [y, m] = ym.split("-");
