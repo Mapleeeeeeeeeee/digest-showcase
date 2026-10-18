@@ -12,6 +12,15 @@ shares: 64
 images:
   - "/images/posts/get-a-life-mandala-tool-0.jpg"
   - "/images/posts/get-a-life-mandala-tool-1.jpg"
+resources:
+  - label: "Get-a-Life GitHub 原始碼與使用說明"
+    url: "https://github.com/dowiosamuelu/get-a-life"
+    sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/1328906972140719/"
+    sourceLabel: "來源原文"
+  - label: "作者留言補充設計心得"
+    url: "https://www.facebook.com/groups/1224997379198346/posts/1328906972140719/?comment_id=1328911505473599"
+    sourceUrl: "https://www.facebook.com/groups/1224997379198346/posts/1328906972140719/?comment_id=1328911505473599"
+    sourceLabel: "來源留言"
 ---
 
 【開源】Get-a-Life 工具（曼陀羅）的開發分享

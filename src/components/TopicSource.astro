@@ -1,0 +1,78 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import PostMedia from "./PostMedia.astro";
+import PostStats from "./PostStats.astro";
+import { sourceAnchor } from "../lib/post-topics";
+import { formatDateZh } from "../lib/format";
+import { authorUrl } from "../lib/url";
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+const { post } = Astro.props;
+const { data } = post;
+const { Content } = await render(post);
+---
+
+<section
+  id={sourceAnchor(post.id)}
+  class="topic-source"
+  data-source-id={post.id}
+>
+  <header>
+    <h2>{data.title}</h2>
+    <p>
+      <a href={authorUrl(data.authorId)}>{data.author}</a> · {
+        formatDateZh(data.date)
+      }
+    </p>
+    <PostStats
+      likes={data.likes}
+      comments={data.comments}
+      shares={data.shares}
+    />
+    <a
+      class="original-link"
+      href={data.sourceUrl}
+      target="_blank"
+      rel="noopener noreferrer">前往這篇 Facebook 原文討論</a
+    >
+  </header>
+  <div class="topic-source__body"><Content /></div>
+  <PostMedia title={data.title} images={data.images} videos={data.videos} />
+</section>
+<style>
+  .topic-source {
+    scroll-margin-top: 24px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 28px;
+    margin-top: 36px;
+  }
+  h2 {
+    font-size: 1.4rem;
+    line-height: 1.5;
+    margin: 0 0 12px;
+  }
+  header p {
+    color: var(--color-text-muted);
+  }
+  a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .original-link {
+    display: inline-block;
+    margin: 16px 0 24px;
+  }
+  .topic-source__body {
+    font-size: 1.02rem;
+  }
+  .topic-source__body :global(p) {
+    margin: 0 0 1.1em;
+  }
+  .topic-source__body :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+    overflow-wrap: anywhere;
+  }
+</style>

@@ -1,13 +1,21 @@
+import { displayId, sourceHtml } from "./helpers/topic-pages.mjs";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import test from "node:test";
 import { load } from "js-yaml";
 
 const verifiedAuthors = new Map([
-  ["627625202", { name: "林楓", sourceUrl: "https://luma.com/claude-taipei-10" }],
+  [
+    "627625202",
+    { name: "林楓", sourceUrl: "https://luma.com/claude-taipei-10" },
+  ],
   [
     "100002197226424",
-    { name: "蕭晊莛", sourceUrl: "https://www.digitimes.com.tw/seminar/DevDaysAsia2026/speakers_en.html" },
+    {
+      name: "蕭晊莛",
+      sourceUrl:
+        "https://www.digitimes.com.tw/seminar/DevDaysAsia2026/speakers_en.html",
+    },
   ],
 ]);
 const posts = readdirSync("src/content/posts").map((file) => ({
@@ -21,9 +29,9 @@ for (const { id, data } of posts) {
     const source = verifiedAuthors.get(String(data.authorId));
     const card = homepage
       .match(/<article\b[^>]*class="card"[\s\S]*?<\/article>/g)
-      ?.find((value) => value.includes(`/posts/${id}\"`));
+      ?.find((value) => value.includes(`/posts/${displayId(id)}\"`));
     assert.ok(card, id);
-    const article = readFileSync(`dist/posts/${id}/index.html`, "utf8");
+    const article = sourceHtml(id);
     assert.equal(card.includes('data-ambassador="true"'), Boolean(source));
     assert.equal(card.includes('class="ambassador-badge"'), Boolean(source));
     assert.equal(article.includes('class="ambassador-badge"'), Boolean(source));
@@ -31,7 +39,11 @@ for (const { id, data } of posts) {
       for (const html of [card, article]) {
         assert.ok(html.includes(`href="${source.sourceUrl}"`));
         assert.ok(html.includes("Claude Community Ambassador"));
-        assert.ok(html.includes(`aria-label="${source.name}：Claude Community Ambassador，查看身分來源"`));
+        assert.ok(
+          html.includes(
+            `aria-label="${source.name}：Claude Community Ambassador，查看身分來源"`,
+          ),
+        );
       }
     }
   });
@@ -53,7 +65,10 @@ for (const authorId of new Set(
     assert.equal(Boolean(badge), Boolean(source));
     if (source) {
       assert.equal(badge.match(/\bhref="([^"]*)"/)?.[1], source.sourceUrl);
-      assert.equal(badge.match(/\baria-label="([^"]*)"/)?.[1], `${source.name}：Claude Community Ambassador，查看身分來源`);
+      assert.equal(
+        badge.match(/\baria-label="([^"]*)"/)?.[1],
+        `${source.name}：Claude Community Ambassador，查看身分來源`,
+      );
       const visibleText = badge.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
       assert.match(visibleText, /Claude Community Ambassador/);
     }
@@ -72,9 +87,15 @@ for (const id of [
   "claude-meetup-gaming-announcement",
 ]) {
   test(`Given the archived ${id} announcement when browsing published collections then readers see recaps instead of the invitation`, () => {
-    const archivedPost = readFileSync(`content/archived-posts/${id}.md`, "utf8");
+    const archivedPost = readFileSync(
+      `content/archived-posts/${id}.md`,
+      "utf8",
+    );
     const archivedData = load(archivedPost.split("---")[1]);
-    assert.match(archivedData.sourceUrl, /^https:\/\/www\.facebook\.com\/groups\//);
+    assert.match(
+      archivedData.sourceUrl,
+      /^https:\/\/www\.facebook\.com\/groups\//,
+    );
     assert.ok(archivedPost.split("---").slice(2).join("---").trim().length > 0);
     for (const html of [
       homepage,

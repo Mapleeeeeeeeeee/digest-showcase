@@ -13,6 +13,11 @@ const localAssetPath = z
     "Media must use a local root-relative asset path",
   );
 
+const resourceUrl = z.string().url().refine(
+  (url) => ["http:", "https:"].includes(new URL(url).protocol),
+  "Resource URL must use HTTP or HTTPS",
+);
+
 const posts = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/posts" }),
   schema: z
@@ -26,6 +31,16 @@ const posts = defineCollection({
       category: z.enum(POST_CATEGORIES),
       tags: z.array(z.string()).default([]),
       sourceUrl: z.string().url(),
+      resources: z
+        .array(
+          z.object({
+            label: z.string().trim().min(1),
+            url: resourceUrl,
+            sourceUrl: resourceUrl,
+            sourceLabel: z.string().optional(),
+          }),
+        )
+        .default([]),
       likes: z.number(),
       comments: z.number(),
       shares: z.number(),

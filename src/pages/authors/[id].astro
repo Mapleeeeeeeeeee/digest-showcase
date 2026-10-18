@@ -5,6 +5,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import AmbassadorBadge from "../../components/AmbassadorBadge.astro";
 import PostCard from "../../components/PostCard.astro";
 import { buildUrl } from "../../lib/url";
+import { getAuthorDisplayEntries } from "../../lib/post-topics";
 import BackLink from "../../components/BackLink.astro";
 
 export const getStaticPaths = (async () => {
@@ -30,9 +31,7 @@ export const getStaticPaths = (async () => {
     props: {
       authorName: data.author,
       authorUrl: data.authorUrl,
-      posts: data.posts.sort(
-        (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-      ),
+      posts: getAuthorDisplayEntries(posts, id),
     },
   }));
 }) satisfies GetStaticPaths;

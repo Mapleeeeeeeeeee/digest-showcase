@@ -10,6 +10,11 @@ likes: 925
 comments: 56
 shares: 222
 images: ["/images/posts/mandala-life-timeline-origin-01-4397505970524747.jpg","/images/posts/mandala-life-timeline-origin-02-4397505927191418.jpg","/images/posts/mandala-life-timeline-origin-03-4397505900524754.jpg","/images/posts/mandala-life-timeline-origin-04-4397506017191409.jpg"]
+resources:
+  - label: "作者後續開源與開發紀錄"
+    url: "https://www.facebook.com/groups/1224997379198346/posts/1328906972140719/"
+    sourceUrl: "https://www.facebook.com/groups/1224997379198346/posts/1327233032308113/?comment_id=1328907968807286"
+    sourceLabel: "來源留言"
 ---
 
 /// 更新：留言處有新貼文，內有 github 連結 ///  

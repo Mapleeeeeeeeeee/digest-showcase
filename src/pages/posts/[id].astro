@@ -10,25 +10,48 @@ import { formatDateZh } from "../../lib/format";
 import { buildUrl, authorUrl, postUrl } from "../../lib/url";
 import BackLink from "../../components/BackLink.astro";
 import PostNavigation from "../../components/PostNavigation.astro";
+import TopicSource from "../../components/TopicSource.astro";
+import PostResources from "../../components/PostResources.astro";
+import {
+  getDisplayEntries,
+  getPostTopic,
+  getTopicSources,
+  sourceAnchor,
+} from "../../lib/post-topics";
 import Lightbox from "../../components/Lightbox.astro";
 
 const laptopSrc = buildUrl("/clawd-laptop.json");
 
 export const getStaticPaths = (async () => {
-  const posts = (await getCollection("posts")).sort(
-    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-  );
-  return posts.map((post, index) => ({
-    params: { id: post.id },
-    props: {
-      post,
-      prevPost: index < posts.length - 1 ? posts[index + 1] : null,
-      nextPost: index > 0 ? posts[index - 1] : null,
-    },
-  }));
+  const posts = await getCollection("posts");
+  const displayPosts = getDisplayEntries(posts);
+  const topicSources = getTopicSources(posts);
+  return posts.map((post) => {
+    const topic = getPostTopic(post.id);
+    const displayId = topic?.primaryId ?? post.id;
+    const index = displayPosts.findIndex((entry) => entry.id === displayId);
+    return {
+      params: { id: post.id },
+      props: {
+        post,
+        topicSources: topic ? topicSources : [],
+        prevPost:
+          index < displayPosts.length - 1 ? displayPosts[index + 1] : null,
+        nextPost: index > 0 ? displayPosts[index - 1] : null,
+      },
+    };
+  });
 }) satisfies GetStaticPaths;
 
-const { post, prevPost, nextPost } = Astro.props;
+const { post, prevPost, nextPost, topicSources } = Astro.props;
+const topic = getPostTopic(post.id);
+if (topic && post.id !== topic.primaryId) {
+  return Astro.redirect(
+    `${postUrl(topic.primaryId)}#${sourceAnchor(post.id)}`,
+    301,
+  );
+}
+const pageTitle = topic?.title ?? post.data.title;
 const { data } = post;
 const { Content } = await render(post);
 
@@ -37,7 +60,9 @@ let buildTimeViewCount = 0;
 try {
   const path = `/digest-showcase/posts/${post.id}`;
   const encoded = encodeURIComponent(path);
-  const res = await fetch(`https://claude-taiwan.goatcounter.com/counter/${encoded}.json`);
+  const res = await fetch(
+    `https://claude-taiwan.goatcounter.com/counter/${encoded}.json`,
+  );
   const data = res.ok ? await res.json() : null;
   buildTimeViewCount = data ? parseInt(data.count) || 0 : 0;
 } catch (e) {
@@ -61,7 +86,7 @@ const homeHref = buildUrl("/");
 const authorHref = authorUrl(data.authorId);
 ---
 
-<BaseLayout title={`${data.title} · Claude Taiwan 社團精華展示櫃`}>
+<BaseLayout title={`${pageTitle} · Claude Taiwan 社團精華展示櫃`}>
   <article class="container post">
     <BackLink href={homeHref} />
 
@@ -87,12 +112,19 @@ const authorHref = authorUrl(data.authorId);
         }
         {data.tags.map((tag) => <span class="tag">#{tag}</span>)}
       </div>
-      <h1 class="post__title">{data.title}</h1>
+      <h1 class="post__title">{pageTitle}</h1>
       <p class="post__meta">
         <a href={authorHref} class="author-link">
           {data.author}
-        </a> · {formattedDate}
+        </a> · {topic && "最新分享 "}{formattedDate}
       </p>
+      {
+        topic && (
+          <p class="post__meta">
+            2 篇原文 · 以下為最新分享的互動數，各篇數字見原文段落。
+          </p>
+        )
+      }
       <div class="post__stats">
         <PostStats
           likes={data.likes}
@@ -104,10 +136,18 @@ const authorHref = authorUrl(data.authorId);
             >visibility</span
           >
           <span class="visually-hidden">瀏覽 </span><span id="view-count"
-          >{buildTimeViewCount}</span>
-          <span id="adblock-info-container" class="views-help-container" style="display: none;">
-            <span class="material-symbols-outlined adblock-info-icon">info</span>
-            <span class="views-tooltip">偵測到廣告阻擋器。目前顯示為建置時的備用靜態數據。</span>
+            >{buildTimeViewCount}</span
+          >
+          <span
+            id="adblock-info-container"
+            class="views-help-container"
+            style="display: none;"
+          >
+            <span class="material-symbols-outlined adblock-info-icon">info</span
+            >
+            <span class="views-tooltip"
+              >偵測到廣告阻擋器。目前顯示為建置時的備用靜態數據。</span
+            >
           </span>
         </span>
         <button class="share-btn" id="share-btn" type="button" title="分享文章">
@@ -117,67 +157,95 @@ const authorHref = authorUrl(data.authorId);
       </div>
     </header>
 
-    <div class="post__body">
-      <Content />
-    </div>
-
     {
-      (data.postType === "discussion" || data.postType === "qa") &&
-        data.highlights.length > 0 && (
-          <section class="post__highlights">
-            {data.highlights
-              .filter((h) => h.isBestAnswer)
-              .map((h) => (
-                <div class="highlight highlight--best">
-                  <div class="highlight__label">
-                    <span class="material-symbols-outlined">check_circle</span>
-                    最佳解答
-                  </div>
-                  <div class="highlight__author">{h.author}</div>
-                  <div class="highlight__text" set:html={linkify(h.text)} />
-                  <div class="highlight__likes">
-                    <span class="material-symbols-outlined">favorite</span>
-                    {h.likes}
-                  </div>
-                </div>
-              ))}
+      topic ? (
+        <>
+          <PostResources posts={topicSources} />
+          <nav aria-label="主題原文">
+            {topicSources.map((source) => (
+              <p>
+                <a href={`#${sourceAnchor(source.id)}`}>
+                  {formatDateZh(source.data.date)} · {source.data.title}
+                </a>
+              </p>
+            ))}
+          </nav>
+          {topicSources.map((source) => (
+            <TopicSource post={source} />
+          ))}
+        </>
+      ) : (
+        <>
+          <PostResources posts={[post]} />
+          <div class="post__body">
+            <Content />
+          </div>
 
-            {data.highlights.filter((h) => !h.isBestAnswer).length > 0 && (
-              <div class="highlight__others-label">其他留言</div>
+          {(data.postType === "discussion" || data.postType === "qa") &&
+            data.highlights.length > 0 && (
+              <section class="post__highlights">
+                {data.highlights
+                  .filter((h) => h.isBestAnswer)
+                  .map((h) => (
+                    <div class="highlight highlight--best">
+                      <div class="highlight__label">
+                        <span class="material-symbols-outlined">
+                          check_circle
+                        </span>
+                        最佳解答
+                      </div>
+                      <div class="highlight__author">{h.author}</div>
+                      <div class="highlight__text" set:html={linkify(h.text)} />
+                      <div class="highlight__likes">
+                        <span class="material-symbols-outlined">favorite</span>
+                        {h.likes}
+                      </div>
+                    </div>
+                  ))}
+
+                {data.highlights.filter((h) => !h.isBestAnswer).length > 0 && (
+                  <div class="highlight__others-label">其他留言</div>
+                )}
+
+                {data.highlights
+                  .filter((h) => !h.isBestAnswer)
+                  .map((h) => (
+                    <div class="highlight highlight--other">
+                      <div class="highlight__other-header">
+                        <span class="highlight__author">{h.author}</span>
+                        <span class="highlight__likes">
+                          <span class="material-symbols-outlined">
+                            favorite
+                          </span>
+                          {h.likes}
+                        </span>
+                      </div>
+                      <div class="highlight__text" set:html={linkify(h.text)} />
+                    </div>
+                  ))}
+              </section>
             )}
 
-            {data.highlights
-              .filter((h) => !h.isBestAnswer)
-              .map((h) => (
-                <div class="highlight highlight--other">
-                  <div class="highlight__other-header">
-                    <span class="highlight__author">{h.author}</span>
-                    <span class="highlight__likes">
-                      <span class="material-symbols-outlined">favorite</span>
-                      {h.likes}
-                    </span>
-                  </div>
-                  <div class="highlight__text" set:html={linkify(h.text)} />
-                </div>
-              ))}
-          </section>
-        )
+          <PostMedia
+            title={data.title}
+            images={data.images}
+            videos={data.videos}
+          />
+
+          <div class="post__source">
+            <a
+              href={data.sourceUrl}
+              class="source-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="source-link__lottie" data-lottie-src={laptopSrc} />
+              前往原文討論
+            </a>
+          </div>
+        </>
+      )
     }
-
-    <PostMedia title={data.title} images={data.images} videos={data.videos} />
-
-    <div class="post__source">
-      <a
-        href={data.sourceUrl}
-        class="source-link"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="source-link__lottie" data-lottie-src={laptopSrc}></span>
-        前往原文討論
-      </a>
-    </div>
-
     <PostNavigation prevPost={prevPost} nextPost={nextPost} />
   </article>
 
@@ -554,10 +622,14 @@ const authorHref = authorUrl(data.authorId);
     font-size: 0.72rem;
     line-height: 1.4;
     white-space: nowrap;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
     z-index: 10;
     opacity: 0;
-    transition: opacity 0.15s ease, visibility 0.15s ease;
+    transition:
+      opacity 0.15s ease,
+      visibility 0.15s ease;
   }
 
   /* Tooltip Arrow */

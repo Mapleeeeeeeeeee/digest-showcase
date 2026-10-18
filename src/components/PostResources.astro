@@ -1,0 +1,90 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { GET_A_LIFE_TOPIC, sourceAnchor } from "../lib/post-topics";
+interface Props {
+  posts: CollectionEntry<"posts">[];
+}
+const { posts } = Astro.props;
+const resources = posts.flatMap((post) => post.data.resources);
+function destination(url: string): string {
+  const target = new URL(url);
+  if (target.search || target.hash) return url;
+  const source = posts.find((post) => {
+    const original = new URL(post.data.sourceUrl);
+    return (
+      original.hostname === target.hostname &&
+      original.pathname.replace("/permalink/", "/posts/") ===
+        target.pathname.replace("/permalink/", "/posts/")
+    );
+  });
+  return source && GET_A_LIFE_TOPIC.sourceIds.some((id) => id === source.id)
+    ? `#${sourceAnchor(source.id)}`
+    : url;
+}
+---
+
+{
+  resources.length > 0 && (
+    <section class="post-resources" aria-labelledby="resources-heading">
+      <h2 id="resources-heading">相關資源</h2>
+      <p>作者於原文或留言補充的連結。</p>
+      <ul>
+        {resources.map((resource) => (
+          <li>
+            <a
+              href={destination(resource.url)}
+              target={
+                destination(resource.url).startsWith("#") ? undefined : "_blank"
+              }
+              rel="noopener noreferrer"
+            >
+              {resource.label}
+            </a>
+            <a
+              class="resource-source"
+              href={resource.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {resource.sourceLabel ?? "來源留言"}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+<style>
+  .post-resources {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+  h2 {
+    font-size: 1.15rem;
+    margin: 0 0 8px;
+  }
+  p {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+  }
+  ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+  }
+  li + li {
+    margin-top: 12px;
+  }
+  a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .resource-source {
+    margin-left: 12px;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+</style>

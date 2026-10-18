@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { getPostTopic } from "../lib/post-topics";
 import AmbassadorBadge from "./AmbassadorBadge.astro";
 import { getAmbassadorVerification } from "../lib/ambassadors";
 import CategoryBadge from "./CategoryBadge.astro";
@@ -15,6 +16,7 @@ interface Props {
 
 const { post, buildTimeViewCount = 0 } = Astro.props;
 const { data } = post;
+const topic = getPostTopic(post.id);
 const thumbnail = getThumbnail(data.images, data.videos);
 const href = postUrl(post.id);
 const formattedDate = formatDateZh(data.date);
@@ -75,9 +77,10 @@ const authorHref = authorUrl(data.authorId);
     <p class="card__meta">
       <a href={authorHref} class="card__author-link">
         {data.author}
-      </a> · {formattedDate}
+      </a> · {topic && "最新分享 "}{formattedDate}
     </p>
     <AmbassadorBadge authorId={data.authorId} compact />
+    {topic && <p class="card__topic-note">2 篇原文 · 以下為最新分享的互動數</p>}
     <div class="card__footer">
       <PostStats
         likes={data.likes}
@@ -93,6 +96,11 @@ const authorHref = authorUrl(data.authorId);
 </article>
 
 <style>
+  .card__topic-note {
+    margin: 0 0 10px;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
   .card {
     position: relative;
     display: flex;

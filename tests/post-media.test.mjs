@@ -1,3 +1,4 @@
+import { sourceHtml } from "./helpers/topic-pages.mjs";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import test from "node:test";
@@ -16,7 +17,7 @@ const expectedVideos = [
 
 for (const [slug, videoId] of expectedVideos) {
   test(`Given Journey 1 ${videoId} when ${slug} renders then a local controllable player and original video link are available`, () => {
-    const html = readFileSync(`dist/posts/${slug}/index.html`, "utf8");
+    const html = sourceHtml(slug);
     const player = html
       .match(/<video\b[^>]*>[\s\S]*?<\/video>/g)
       ?.find((value) => value.includes(`${videoId}.mp4`));
@@ -89,7 +90,7 @@ test("Given Journey 1 existing articles when media renders then all original pho
   for (const slug of readdirSync("dist/posts")) {
     const markdown = readFileSync(`src/content/posts/${slug}.md`, "utf8");
     const frontmatter = load(markdown.split("---")[1]);
-    const html = readFileSync(`dist/posts/${slug}/index.html`, "utf8");
+    const html = sourceHtml(slug);
     const gallery =
       html.match(
         /<section\b[^>]*class="post__gallery"[^>]*>([\s\S]*?)<\/section>/,
