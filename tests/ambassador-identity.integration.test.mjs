@@ -4,10 +4,10 @@ import test from "node:test";
 import { load } from "js-yaml";
 
 const verifiedAuthors = new Map([
-  ["627625202", "https://luma.com/claude-taipei-10"],
+  ["627625202", { name: "林楓", sourceUrl: "https://luma.com/claude-taipei-10" }],
   [
     "100002197226424",
-    "https://www.digitimes.com.tw/seminar/DevDaysAsia2026/speakers_en.html",
+    { name: "蕭晊莛", sourceUrl: "https://www.digitimes.com.tw/seminar/DevDaysAsia2026/speakers_en.html" },
   ],
 ]);
 const posts = readdirSync("src/content/posts").map((file) => ({
@@ -29,8 +29,9 @@ for (const { id, data } of posts) {
     assert.equal(article.includes('class="ambassador-badge"'), Boolean(source));
     if (source) {
       for (const html of [card, article]) {
-        assert.ok(html.includes(`href="${source}"`));
+        assert.ok(html.includes(`href="${source.sourceUrl}"`));
         assert.ok(html.includes("Claude Community Ambassador"));
+        assert.ok(html.includes(`aria-label="${source.name}：Claude Community Ambassador，查看身分來源"`));
       }
     }
   });
@@ -51,8 +52,8 @@ for (const authorId of new Set(
     const source = verifiedAuthors.get(authorId);
     assert.equal(Boolean(badge), Boolean(source));
     if (source) {
-      assert.equal(badge.match(/\bhref="([^"]*)"/)?.[1], source);
-      assert.match(badge, /title="Claude Community Ambassador · 身分來源/);
+      assert.equal(badge.match(/\bhref="([^"]*)"/)?.[1], source.sourceUrl);
+      assert.equal(badge.match(/\baria-label="([^"]*)"/)?.[1], `${source.name}：Claude Community Ambassador，查看身分來源`);
       const visibleText = badge.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
       assert.match(visibleText, /Claude Community Ambassador/);
     }
@@ -63,7 +64,7 @@ test("Given the homepage when choosing an author role then Ambassador remains se
   assert.match(homepage, /data-filter="true" data-filter-type="ambassador"/);
   assert.match(homepage, /data-filter="知識精華" data-filter-type="category"/);
   assert.match(homepage, /data-filter="社群活動" data-filter-type="category"/);
-  assert.equal((homepage.match(/data-ambassador="true"/g) ?? []).length, 9);
+  assert.equal((homepage.match(/data-ambassador="true"/g) ?? []).length, 22);
 });
 
 for (const id of [

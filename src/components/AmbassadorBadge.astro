@@ -17,7 +17,6 @@ const verification = getAmbassadorVerification(authorId);
       href={verification.sourceUrl}
       target="_blank"
       rel="noopener noreferrer"
-      title={`${verification.role} · 身分來源（核對日期 ${verification.verifiedAt}）。社群角色不代表 Anthropic 員工或官方公告。`}
       aria-label={`${verification.name}：${verification.role}，查看身分來源`}
     >
       <span class="material-symbols-outlined" aria-hidden="true">
