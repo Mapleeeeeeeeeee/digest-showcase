@@ -12,17 +12,23 @@ shares: 21
 images: []
 ---
 
-> 本文為整理摘要。
-
-作者延續 ESP32 用量儀表板，把即時 Token 消耗轉成會隨使用速度改變的動畫，另加入隨累積用量成長的放置遊戲與按鍵技能。留言提供 ClawdMiner 開源專案與中文說明。
-
-來源提供的連結：
-
-- [https://github.com/ppcvote/ClawdMiner](https://github.com/ppcvote/ClawdMiner)
-- [https://ultralab.tw/blog/clawd-miner-esp32-claude-usage-pet](https://ultralab.tw/blog/clawd-miner-esp32-claude-usage-pet)
-
- 
-
-[閱讀 Facebook 原文](https://www.facebook.com/groups/1224997379198346/permalink/1348426676855415/)
-
-互動數為 2026 年 10 月 18 日讀取時的快照；讚數欄位記錄所有心情數。
+續昨天分享 撿到的ESP32  
+把他寫成了即時Token消耗監測  
+  
+左邊Claude吃錢速度會隨開發速度變動  
+  
+燒越快吃錢吃越快  
+  
+另一頁寫成了放置型遊戲  
+  
+累積燒越多Token就越強  
+  
+長按按鈕還可以放技能  
+  
+板子本身還在挖礦  
+  
+有一種在養電子雞的感覺  
+  
+專案已開源，詳細說明在留言  
+  
+有興趣的可以看

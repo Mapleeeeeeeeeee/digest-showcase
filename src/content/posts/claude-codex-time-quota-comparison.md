@@ -13,10 +13,22 @@ images: []
 authorUrl: "https://www.facebook.com/100000859881838"
 ---
 
-> 本文為整理摘要。
-
-作者轉述 AI Coding Daily 的十組程式任務比較，討論完成時間、短期額度與每週額度的取捨。他的心得是依自己是否需要等待結果來選工具。時間、測試數與模型名稱來自貼文轉述；原文為一組特定任務的比較。
-
-[閱讀 Facebook 原文](https://www.facebook.com/groups/1224997379198346/permalink/1412825010415581/)
-
-互動數為 2026 年 10 月 18 日讀取時的快照；讚數欄位記錄所有心情數。
+實測月付 20 美元，Claude Code 跟 Codex 的差距。差距是「完成時間」，不是「燒額度」。  
+  
+網路上YT影片播主用相同的 10 組 coding 任務測試：  
+  
+（ID是AI Coding Daily，或搜尋「I Tested Claude/Codex/Cursor $20/mo Plan Limits: 10 Coding Prompts」。）  
+  
+Claude Opus 5\.5 Medium 花 27 分 22 秒完成，5 小時額度消耗 41%；Codex Sol 6\.1 Medium 花 54 分 30 秒，額度只用了 25%。兩者結果品質在這次測試中相同：350 個測試都是 0 failure，週額度消耗也都是 4%。  
+  
+換算下來，Claude 完成同一批工作的速度接近 Codex 的 2 倍，省下約 27 分鐘；代價是短期5h額度消耗比 Codex 高約 64%。  
+  
+但換成週額度，兩邊都是4％。  
+  
+另外兩個模型的結果是：Sonnet 5\.5 High 最快，只花 19 分 24 秒、5 小時額度 27%，但出現 6/350 個測試失敗；Grok 4\.6 High 則花了 73 分 53 秒，並有 10/350 個失敗。  
+  
+我看完結論是：  
+  
+Codex 用時間換額度，Claude Opus 用額度換時間。  
+  
+如果你像我一樣把事情扔給 Agent 後去做別的事，Codex 的額度效率比較有吸引力；如果人得坐在螢幕前等結果，Claude 省下來的時間更有價值。

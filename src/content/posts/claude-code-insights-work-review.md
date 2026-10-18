@@ -13,14 +13,15 @@ images: []
 authorUrl: "https://www.facebook.com/100002197226424"
 ---
 
-> 本文為整理摘要。
-
-作者介紹 Claude Code 的 /insights，用來回顧近期工作、辨識重複摩擦與習慣，並產生可加入 CLAUDE.md 的建議。貼文也把它視為工作紀錄回顧工具；留言另分享 cc-session-reader，屬相關工具而非 /insights 本身。
-
-來源提供的連結：
-
-- [https://github.com/Mapleeeeeeeeeee/cc-session-reader](https://github.com/Mapleeeeeeeeeee/cc-session-reader)
-
-[閱讀 Facebook 原文](https://www.facebook.com/groups/1224997379198346/permalink/1347074903657259/)
-
-互動數為 2026 年 10 月 18 日讀取時的快照；讚數欄位記錄所有心情數。
+最近在公司分享之後才知道  
+很多人不知道原來 Claude Code 有這樣的指令  
+  
+/insights  
+  
+他可以幫你分析過去三十天內你都在做什麼  
+找出你和 Claude Code 重複出現的摩擦點與習慣  
+根據這些摩擦自動生成可直接貼進 CLAUDE\.md的規則建議  
+適合想了解自己實際怎麼用 Claude Code、順手優化工作流程的人  
+  
+但我自己更喜歡他幫我總結一下我最近都在忙些什麼  
+很適合需要回顧工作紀錄的時候😆

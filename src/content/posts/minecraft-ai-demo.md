@@ -13,14 +13,12 @@ images: []
 authorUrl: "https://www.facebook.com/100009184694454"
 ---
 
-> 本文為整理摘要。
-
-作者分享在 Minecraft 中實現的 AI 展示，並連結先前使用相同提示詞的作品作為比較。此篇以影片展示為主，具體成果詳見原文。
-
-來源提供的連結：
-
-- [https://www.facebook.com/groups/1224997379198346/posts/1385118879852861/](https://www.facebook.com/groups/1224997379198346/posts/1385118879852861/)
-
-[閱讀 Facebook 原文](https://www.facebook.com/groups/1224997379198346/permalink/1405529837811765/)
-
-互動數為 2026 年 10 月 18 日讀取時的快照；讚數欄位記錄所有心情數。
+Claude 你日子不過了????? Opus等級的直接給這種能力\.\.\.  
+  
+完全無法想像這是在Minecraft裡實現的  
+  
+這樣到時Fable5\.5\(?\)又得多強阿🥶  
+  
+之前發過Fable5\.1做的 提示詞都一樣  
+  
+[https://www\.facebook\.com/groups/1224997379198346/posts/1385118879852861/](<https://www.facebook.com/groups/1224997379198346/posts/1385118879852861/>)

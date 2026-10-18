@@ -12,15 +12,16 @@ shares: 156
 images: []
 ---
 
-> 本文為整理摘要。
-
-作者彙整兩個月的 Claude Code 使用、文獻與工具研究，將個人工作區延伸成公開網站。內容包含 Anthropic 與 Claude 最佳實踐、Harness Engineering，以及個人調整工作流程的心得，繁中與英文資料並存。
-
-來源提供的連結：
-
-- [https://zeuikli.github.io/cc-workspace-docs](https://zeuikli.github.io/cc-workspace-docs)
-- [https://www.facebook.com/share/p/17YkbQZMFK/?mibextid=wwXIfr](https://www.facebook.com/share/p/17YkbQZMFK/?mibextid=wwXIfr)
-
-[閱讀 Facebook 原文](https://www.facebook.com/groups/1224997379198346/permalink/1306516841046399/)
-
-互動數為 2026 年 10 月 18 日讀取時的快照；讚數欄位記錄所有心情數。
+花了200美金 終於是把最後一哩路走完了  
+  
+用了Claude Code 兩個月，看別人都是分享些SKILL還有 CLAUDE\.md 怎麼寫，我是蒐集了很多文獻和資料，原先是仿造 Andrej Karpathy LLM Wiki 做了一個個人工作區的彙總。  
+  
+後來突發奇想把 Gbrain 和 Hermes Agent 一起加入研究，最後在今天嘗試把做完的研究和精選的文章製作成一個獨立的網站，提供大家參閱。  
+  
+算是把自己這兩個月來的研究作一個整理，裡面有很多是Anthropic / Claude 的最佳實踐，對於很多人好奇的 Harness Engineering 我也彙整了多篇論文，還有我個人對於 Claude Code 調教的心得都整理到這個網站。  
+  
+大多數文章都是繁體中文，少部分是我為了研究還是留下了英文全文，所以有需求的人就按照自己的需求，分開閱讀。  
+  
+歡迎交流 如何奴役Claude 或是被Claude奴役  
+  
+[https://zeuikli\.github\.io/cc\-workspace\-docs](<https://zeuikli.github.io/cc-workspace-docs>)

@@ -13,14 +13,25 @@ images: []
 authorUrl: "https://www.facebook.com/1388019714"
 ---
 
-> 本文為整理摘要。
-
-作者用 Claude 製作「基隆小行星」，將廟口、正濱彩色屋、和平島等景點放進可步行與騎車探索的小星球，加入日夜和下雨變化。貼文提供網頁版。
-
-來源提供的連結：
-
-- [https://keelung-planet.aipost.tw/](https://keelung-planet.aipost.tw/)
-
-[閱讀 Facebook 原文](https://www.facebook.com/groups/1224997379198346/permalink/1420678272963588/)
-
-互動數為 2026 年 10 月 18 日讀取時的快照；讚數欄位記錄所有心情數。
+我用opus 5\.5做了一個小遊戲「基隆小行星」。  
+我沒有一萬美元可以做 台北狂飆\(GTA\)  
+  
+100美元倒是還可以刷下去😐  
+  
+把基隆縮成一顆繞一圈只有兩百多公尺的小星球，上面有廟口、陸橋、正濱彩色屋、田寮河、和平島、外木山、中正公園，還有山上的 KEELUNG 字。  
+  
+你可以在裡面亂逛：去廟口買鼎邊趖、去慶安宮求籤、騎機車兜風、跳進海興游泳池，或是晚上去猜燈謎、撈金魚。  
+  
+遊戲裡會天黑，也會下雨，畢竟是基隆。  
+  
+用手機或電腦打開就能玩，不用下載；Android 也可以從 Google Play 安裝。  
+  
+基隆人應該會在裡面認出很多熟悉的角落，歡迎來逛逛。  
+  
+網頁版：[https://keelung\-planet\.aipost\.tw/](<https://keelung-planet.aipost.tw/>)  
+  
+Google Play：[https://play\.google\.com/store/apps/details?id\=tw\.aipost\.keelungplanet](<https://play.google.com/store/apps/details?id=tw.aipost.keelungplanet>)  
+  
+\#基隆小行星  
+  
+\#基隆人跟喜歡基隆的人或是沒來過基隆的人

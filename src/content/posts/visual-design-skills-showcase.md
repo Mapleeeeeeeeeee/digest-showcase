@@ -13,10 +13,8 @@ images: []
 authorUrl: "https://www.facebook.com/1379217751"
 ---
 
-> 本文為整理摘要。
-
-作者展示自己用 Skills 製作的視覺成果，並建議將截圖交給 Claude 辨識安裝。具體 Skill 名稱見原文圖片。
-
-[閱讀 Facebook 原文](https://www.facebook.com/groups/1224997379198346/permalink/1311785077186242/)
-
-互動數為 2026 年 10 月 18 日讀取時的快照；讚數欄位記錄所有心情數。
+這是我實測可以讓你的Claude做出漂亮東西的Skill  
+\(這份就是裏頭的東西做出來的\)  
+  
+不用留言，截圖餵給Claude 讓它安裝就好  
+很香
