@@ -12,7 +12,7 @@ const posts = defineCollection({
     title: z.string(),
     author: z.string(),
     authorId: z.string(),
-    authorUrl: z.string().url(),
+    authorUrl: z.string().url().optional(),
     // ISO datetime string in frontmatter -> Date via coercion.
     date: z.coerce.date(),
     category: z.enum(POST_CATEGORIES),

@@ -11,7 +11,7 @@ export const getStaticPaths = (async () => {
 
   const authorMap = new Map<
     string,
-    { author: string; authorUrl: string; posts: typeof posts }
+    { author: string; authorUrl: string | undefined; posts: typeof posts }
   >();
 
   posts.forEach((post) => {
@@ -19,7 +19,9 @@ export const getStaticPaths = (async () => {
     if (!authorMap.has(authorId)) {
       authorMap.set(authorId, { author, authorUrl, posts: [] });
     }
-    authorMap.get(authorId)!.posts.push(post);
+    const authorData = authorMap.get(authorId)!;
+    authorData.authorUrl ??= authorUrl;
+    authorData.posts.push(post);
   });
 
   return Array.from(authorMap.entries()).map(([id, data]) => ({
@@ -52,17 +54,21 @@ const homeHref = buildUrl("/");
       </div>
     </header>
 
-    <a
-      href={authorUrl}
-      class="author__fb-link"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <span class="material-symbols-outlined" aria-hidden="true"
-        >open_in_new</span
-      >
-      前往 Facebook 個人檔案
-    </a>
+    {
+      authorUrl && (
+        <a
+          href={authorUrl}
+          class="author__fb-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">
+            open_in_new
+          </span>
+          前往 Facebook 個人檔案
+        </a>
+      )
+    }
 
     <h2 class="author__section-title">精選貼文</h2>
 
