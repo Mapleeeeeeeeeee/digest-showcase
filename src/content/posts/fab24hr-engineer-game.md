@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/141163104
 likes: 1765
 comments: 96
 shares: 237
-images: []
+images: ["/images/posts/fab24hr-engineer-game-01-28560792463573182.jpg","/images/posts/fab24hr-engineer-game-02-28560792696906492.jpg","/images/posts/fab24hr-engineer-game-03-28560793033573125.jpg","/images/posts/fab24hr-engineer-game-04-28560792143573214.jpg","/images/posts/fab24hr-engineer-game-05-28560792736906488.jpg"]
 authorUrl: "https://www.facebook.com/100002074288663"
 ---
 

@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/140722245
 likes: 212
 comments: 11
 shares: 78
-images: []
+images: ["/images/posts/line-ai-assistant-integration-lessons-01-10163740796551094.jpg","/images/posts/line-ai-assistant-integration-lessons-02-10163740796881094.jpg"]
 ---
 
 【用 Claude Code 做一個「在 LINE 裡用自己的 AI」的機器人：踩到的 8 個坑】  

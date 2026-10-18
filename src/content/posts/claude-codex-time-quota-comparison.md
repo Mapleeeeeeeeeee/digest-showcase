@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/141282501
 likes: 699
 comments: 40
 shares: 105
-images: []
+images: ["/images/posts/claude-codex-time-quota-comparison-01-28711805885098025.jpg"]
 authorUrl: "https://www.facebook.com/100000859881838"
 ---
 

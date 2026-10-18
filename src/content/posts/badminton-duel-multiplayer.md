@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/141831253
 likes: 1109
 comments: 91
 shares: 161
-images: []
+images: ["/images/posts/badminton-duel-multiplayer-01-3792546787551685.jpg","/images/posts/badminton-duel-multiplayer-02-3792546850885012.jpg","/images/posts/badminton-duel-multiplayer-03-3792546920885005.jpg","/images/posts/badminton-duel-multiplayer-04-3792547090884988.jpg","/images/posts/badminton-duel-multiplayer-05-3792547190884978.jpg","/images/posts/badminton-duel-multiplayer-06-3792547270884970.jpg","/images/posts/badminton-duel-multiplayer-07-3792644550875242.jpg","/images/posts/badminton-duel-multiplayer-08-3792644667541897.jpg"]
 authorUrl: "https://www.facebook.com/100003892046177"
 ---
 

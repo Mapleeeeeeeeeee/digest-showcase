@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/131455514
 likes: 1570
 comments: 69
 shares: 423
-images: []
+images: ["/images/posts/ben-mann-developer-day-notes-01-27626239156968839.jpg"]
 authorUrl: "https://www.facebook.com/100000283788583"
 ---
 

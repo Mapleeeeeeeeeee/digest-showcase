@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/134842667
 likes: 168
 comments: 17
 shares: 21
-images: []
+images: ["/images/posts/clawdminer-esp32-token-pet-01-27415646448102631.jpg","/images/posts/clawdminer-esp32-token-pet-02-27415647031435906.jpg","/images/posts/clawdminer-esp32-token-pet-03-27415647694769173.jpg"]
 ---
 
 續昨天分享 撿到的ESP32  

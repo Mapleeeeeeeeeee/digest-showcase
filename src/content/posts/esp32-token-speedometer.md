@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/134757984
 likes: 255
 comments: 20
 shares: 16
-images: []
+images: ["/images/posts/esp32-token-speedometer-01-27402906246043318.jpg"]
 ---
 
 昨天撿到一塊ESP32 帶螢幕的  

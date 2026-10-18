@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/127809043
 likes: 1961
 comments: 49
 shares: 685
-images: []
+images: ["/images/posts/claude-code-statusline-dashboard-01-1419406673272879.jpg"]
 ---
 
 Claude 其實什麼都知道，只是不想告訴你  

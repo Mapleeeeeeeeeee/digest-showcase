@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/137354587
 likes: 227
 comments: 12
 shares: 26
-images: []
+images: ["/images/posts/claude-founders-meetup-announcement-01-10174988197900203.jpg"]
 authorUrl: "https://www.facebook.com/627625202"
 ---
 

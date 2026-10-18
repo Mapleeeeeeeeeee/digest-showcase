@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/142223293
 likes: 35
 comments: 4
 shares: 3
-images: []
+images: ["/images/posts/claude-meetup-gaming-recap-01-10175502316170203.jpg"]
 authorUrl: "https://www.facebook.com/627625202"
 ---
 

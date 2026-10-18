@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/138295192
 likes: 903
 comments: 30
 shares: 188
-images: []
+images: ["/images/posts/claude-architect-certification-experience-01-122191406186770236.jpg"]
 authorUrl: "https://www.facebook.com/61573107102361"
 ---
 

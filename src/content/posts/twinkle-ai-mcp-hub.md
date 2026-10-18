@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/129463253
 likes: 1859
 comments: 95
 shares: 708
-images: []
+images: ["/images/posts/twinkle-ai-mcp-hub-01-122304794672031303.jpg"]
 authorUrl: "https://www.facebook.com/61550939098667"
 ---
 

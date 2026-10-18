@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/136858474
 likes: 591
 comments: 42
 shares: 136
-images: []
+images: ["/images/posts/eli5-output-style-01-122136445959170166.jpg"]
 authorUrl: "https://www.facebook.com/61585105004197"
 ---
 

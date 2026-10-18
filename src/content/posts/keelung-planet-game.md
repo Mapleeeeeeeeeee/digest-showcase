@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/142067827
 likes: 615
 comments: 38
 shares: 55
-images: []
+images: ["/images/posts/keelung-planet-game-02-10245121800484805.jpg","/images/posts/keelung-planet-game-03-10245121799724786.jpg","/images/posts/keelung-planet-game-05-10245121797844739.jpg","/images/posts/keelung-planet-game-06-10245121777284225.jpg","/images/posts/keelung-planet-game-07-10245121798924766.jpg"]
 authorUrl: "https://www.facebook.com/1388019714"
 ---
 

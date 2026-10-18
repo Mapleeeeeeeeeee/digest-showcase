@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/130078667
 likes: 1463
 comments: 81
 shares: 870
-images: []
+images: ["/images/posts/claude-code-eli5-practices-01-27404185029174254.jpg"]
 authorUrl: "https://www.facebook.com/100000283788583"
 ---
 

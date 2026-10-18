@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/138845762
 likes: 42
 comments: 5
 shares: 16
-images: []
+images: ["/images/posts/eric-lin-persona-memory-recap-01-10175146699070203.jpg"]
 authorUrl: "https://www.facebook.com/627625202"
 ---
 

@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/134707490
 likes: 684
 comments: 11
 shares: 157
-images: []
+images: ["/images/posts/claude-code-insights-work-review-01-27763001206689747.jpg"]
 authorUrl: "https://www.facebook.com/100002197226424"
 ---
 

@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/137873842
 likes: 482
 comments: 22
 shares: 50
-images: []
+images: ["/images/posts/lost-pet-map-engineering-01-10231830436843674.jpg","/images/posts/lost-pet-map-engineering-02-10231830437123681.jpg","/images/posts/lost-pet-map-engineering-03-10231830437003678.jpg","/images/posts/lost-pet-map-engineering-04-10231830437683695.jpg","/images/posts/lost-pet-map-engineering-05-10231830437843699.jpg"]
 ---
 
 用 Claude 做了一個走失寵物地圖，過程比想像中有意思，分享一下。  

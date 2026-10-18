@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/140411616
 likes: 166
 comments: 2
 shares: 1
-images: []
+images: ["/images/posts/claude-meetup-mid-autumn-recap-01-10175302845570203.jpg"]
 authorUrl: "https://www.facebook.com/627625202"
 ---
 

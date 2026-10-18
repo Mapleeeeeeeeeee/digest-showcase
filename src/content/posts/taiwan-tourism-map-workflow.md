@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/137519670
 likes: 939
 comments: 84
 shares: 199
-images: []
+images: ["/images/posts/taiwan-tourism-map-workflow-01-10216804440340318.jpg"]
 authorUrl: "https://www.facebook.com/1742586485"
 ---
 

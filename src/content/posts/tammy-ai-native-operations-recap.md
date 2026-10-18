@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/138767849
 likes: 138
 comments: 2
 shares: 64
-images: []
+images: ["/images/posts/tammy-ai-native-operations-recap-01-10175138797855203.jpg"]
 authorUrl: "https://www.facebook.com/627625202"
 ---
 

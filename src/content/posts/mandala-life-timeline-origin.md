@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/132723303
 likes: 925
 comments: 56
 shares: 222
-images: []
+images: ["/images/posts/mandala-life-timeline-origin-01-4397505970524747.jpg","/images/posts/mandala-life-timeline-origin-02-4397505927191418.jpg","/images/posts/mandala-life-timeline-origin-03-4397505900524754.jpg","/images/posts/mandala-life-timeline-origin-04-4397506017191409.jpg"]
 ---
 
 /// 更新：留言處有新貼文，內有 github 連結 ///  

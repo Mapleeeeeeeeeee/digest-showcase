@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/138933760
 likes: 51
 comments: 4
 shares: 10
-images: []
+images: ["/images/posts/howie-young-community-ai-recap-01-10175155652500203.jpg"]
 authorUrl: "https://www.facebook.com/627625202"
 ---
 

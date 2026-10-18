@@ -9,7 +9,7 @@ sourceUrl: "https://www.facebook.com/groups/1224997379198346/permalink/126952261
 likes: 814
 comments: 33
 shares: 91
-images: []
+images: ["/images/posts/zfs-recovery-community-story-01-27150197351230961.jpg","/images/posts/zfs-recovery-community-story-02-27150197171230979.jpg","/images/posts/zfs-recovery-community-story-03-27150197261230970.jpg","/images/posts/zfs-recovery-community-story-04-27150197387897624.jpg"]
 authorUrl: "https://www.facebook.com/61585105004197"
 ---
 
