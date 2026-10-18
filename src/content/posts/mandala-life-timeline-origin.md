@@ -1,7 +1,7 @@
 ---
 title: "曼陀羅與時間軸：用 Claude Code 製作生活目標工具"
 author: "呂乃源"
-authorId: "pfbid0TnDKP9sxutKMpsrwvuvnKig6LigpvFHaNrj4Cw5gzNgCrdgvQCL54esdiPPF6eYEl"
+authorId: "pfbid0TvU6MdSAUYi2q6KU9z8daDTjnReEQKtB47Ck8Z6wUhZbr5BS8XokCMRtQzhTh3eBl"
 date: "2026-06-21T07:21:46.000Z"
 category: "知識精華"
 tags: ["Claude Code", "生活規劃", "Obsidian"]
@@ -10,7 +10,6 @@ likes: 925
 comments: 56
 shares: 222
 images: []
-authorUrl: "https://www.facebook.com/pfbid0TnDKP9sxutKMpsrwvuvnKig6LigpvFHaNrj4Cw5gzNgCrdgvQCL54esdiPPF6eYEl"
 ---
 
 > 本文為整理摘要。
